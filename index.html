@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>WAR ROOM · CONFLICTO IRÁN 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAR ROOM - Iran USA Israel Conflict 2026 | Live Dashboard</title>
+<meta name="description" content="Live war room dashboard tracking the Iran-USA-Israel conflict 2026. Real-time markets, verified events, Kahn escalation scale, FX impact, and AI analyst. Updated D+5.">
+<meta property="og:title" content="WAR ROOM - Iran USA Israel Conflict 2026 | Live Dashboard">
+<meta property="og:description" content="Live war room dashboard: verified events, real-time markets (Brent, Gold, DXY), Kahn escalation scale, Hormuz status, AI analyst. D+5 04 Mar 2026.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://war-room.live">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WAR ROOM - Iran USA Israel Conflict 2026">
+<meta name="twitter:description" content="Live dashboard: verified events, real-time markets, Kahn escalation, Hormuz status, AI analyst. D+5.">
+<meta name="twitter:creator" content="@nelson_ad">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"WAR ROOM","url":"https://war-room.live","description":"Live war room dashboard tracking Iran-USA-Israel conflict 2026 with verified data, real-time markets, and AI analysis.","applicationCategory":"NewsApplication","operatingSystem":"Web","author":{"@type":"Person","name":"Nelson Perez","url":"https://x.com/nelson_ad"}}
+</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" onload="this.rel='stylesheet'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/></noscript>
 <style>
 :root {
   --bg:    #040810;
@@ -142,6 +156,8 @@ body::after{content:'';position:fixed;inset:0;
 @keyframes scroll{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
 .sep{color:var(--red);margin:0 16px;}
 .real-tag{color:var(--green);font-size:9px;vertical-align:super;}
+.ticker-inner a.ticker-link{color:var(--t1);text-decoration:none;border-bottom:1px dotted var(--t2);transition:.15s;}
+.ticker-inner a.ticker-link:hover{color:var(--blue);border-bottom-color:var(--blue);}
 
 /* ── MAIN LAYOUT ── */
 .workspace{
@@ -242,6 +258,109 @@ body::after{content:'';position:fixed;inset:0;
   margin-top:8px;border-top:1px solid var(--bdr);padding-top:7px;
 }
 .kahn-sc{font-size:10px;font-family:'Space Mono';}
+.kahn-extra{margin-top:8px;border-top:1px solid var(--bdr);padding-top:7px;font-family:'Space Mono';font-size:9px;color:var(--t2);line-height:1.6;}
+.kahn-extra strong{color:var(--amber);font-size:8px;letter-spacing:1px;}
+.kahn-extra .deesc{color:var(--green);margin-top:4px;}
+
+/* ── INTEL ANALYSIS SECTION ── */
+.intel-section{flex-shrink:0;border-bottom:2px solid var(--bdr);}
+.intel-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 14px;background:var(--bg3);cursor:pointer;
+  border-bottom:1px solid var(--bdr);user-select:none;
+}
+.intel-toggle:hover{background:var(--dim);}
+.intel-toggle-title{
+  font-family:'Barlow Condensed';font-size:12px;font-weight:700;
+  letter-spacing:3px;color:var(--amber);display:flex;align-items:center;gap:8px;
+}
+.intel-toggle-chevron{font-size:10px;color:var(--t2);transition:transform .2s;}
+.intel-section.open .intel-toggle-chevron{transform:rotate(90deg);}
+.intel-grid{
+  display:none;padding:8px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
+}
+.intel-section:not(.open) .intel-grid{display:none;}
+.intel-section.open .intel-grid{display:grid;}
+.intel-card{
+  background:var(--bg2);border:1px solid var(--bdr);
+  overflow:hidden;transition:all .2s;
+}
+.intel-card-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 8px;background:var(--bg3);cursor:pointer;
+  border-bottom:1px solid var(--bdr);gap:4px;
+}
+.intel-card-hdr:hover{background:var(--dim);}
+.intel-card-title{
+  font-family:'Space Mono';font-size:10px;font-weight:700;
+  letter-spacing:1px;color:var(--t1);flex:1;
+}
+.intel-card-hdr .refresh-btn{
+  background:none;border:none;cursor:pointer;font-size:11px;
+  padding:2px 4px;opacity:.5;transition:.2s;
+}
+.intel-card-hdr .refresh-btn:hover{opacity:1;}
+.intel-card-chevron{font-size:8px;color:var(--t2);transition:transform .2s;}
+.intel-card.expanded .intel-card-chevron{transform:rotate(90deg);}
+.intel-card-body{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+  padding:0 8px;
+}
+.intel-card.expanded .intel-card-body{
+  max-height:800px;padding:8px;
+}
+.intel-timestamp{font-family:'Space Mono';font-size:7px;color:var(--t2);margin-top:4px;text-align:right;}
+.intel-refreshing{opacity:.5;pointer-events:none;}
+/* PMESII 4x2 grid */
+.pmesii-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.pmesii-cell{padding:6px 8px;background:var(--bg3);border-left:2px solid var(--amber);font-size:10px;line-height:1.5;}
+.pmesii-cell .pm-icon{font-size:12px;margin-right:4px;}
+.pmesii-cell .pm-domain{font-family:'Space Mono';font-size:9px;font-weight:700;color:var(--amber);letter-spacing:1px;display:block;margin-bottom:3px;}
+.pmesii-cell .pm-text{color:var(--t2);}
+/* Red/Blue columns */
+.rb-cols{display:flex;gap:6px;}
+.rb-col{flex:1;padding:8px;font-size:10px;line-height:1.5;}
+.rb-col.blue-side{background:rgba(26,159,255,.06);border-left:2px solid var(--blue);}
+.rb-col.red-side{background:rgba(240,20,45,.06);border-left:2px solid var(--red);}
+.rb-col .rb-title{font-family:'Space Mono';font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.rb-col.blue-side .rb-title{color:var(--blue);}
+.rb-col.red-side .rb-title{color:var(--red);}
+.rb-entry{margin-bottom:4px;color:var(--t2);}
+.rb-entry strong{color:var(--t1);font-size:9px;letter-spacing:.5px;}
+/* COA rows */
+.coa-group{margin-bottom:6px;}
+.coa-actor{font-family:'Space Mono';font-size:9px;font-weight:700;letter-spacing:1px;color:var(--amber);margin-bottom:4px;}
+.coa-row{display:flex;gap:5px;margin-bottom:4px;}
+.coa-entry{flex:1;padding:6px 8px;background:var(--bg3);font-size:9px;line-height:1.5;border-top:2px solid var(--dim);}
+.coa-entry.high{border-top-color:var(--green);}
+.coa-entry.mid{border-top-color:var(--amber);}
+.coa-entry.low{border-top-color:var(--red);}
+.coa-entry .coa-lbl{font-weight:700;color:var(--t1);font-size:10px;}
+.coa-entry .coa-prob{font-family:'Space Mono';font-size:9px;color:var(--green);}
+.coa-entry .coa-detail{color:var(--t2);margin-top:2px;}
+/* Balance of Power columns */
+.bop-cols{display:flex;gap:4px;}
+.bop-col{flex:1;padding:6px 8px;font-size:10px;line-height:1.6;}
+.bop-col .bop-title{font-family:'Space Mono';font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:5px;}
+.bop-col:nth-child(1) .bop-title{color:var(--blue);}
+.bop-col:nth-child(2) .bop-title{color:var(--red);}
+.bop-col:nth-child(3) .bop-title{color:var(--amber);}
+.bop-country{color:var(--t2);margin-bottom:3px;}
+/* Scenario cards */
+.scenario-cards{display:flex;gap:6px;}
+.scenario-card{flex:1;padding:8px;background:var(--bg3);font-size:10px;line-height:1.5;border-top:3px solid var(--dim);}
+.scenario-card:nth-child(1){border-top-color:var(--green);}
+.scenario-card:nth-child(2){border-top-color:var(--blue);}
+.scenario-card:nth-child(3){border-top-color:var(--amber);}
+.scenario-card:nth-child(4){border-top-color:var(--red);}
+.scenario-card .sc-name{font-family:'Space Mono';font-weight:700;color:var(--t1);font-size:10px;}
+.scenario-card .sc-prob{font-family:'Space Mono';color:var(--green);font-size:10px;margin:3px 0;}
+.scenario-card .sc-detail{color:var(--t2);}
+@media(max-width:900px){
+  .intel-grid{grid-template-columns:1fr;}
+  .rb-cols,.bop-cols,.scenario-cards,.coa-row{flex-direction:column;}
+}
 
 /* ── FX PANEL ── */
 .fx-row{
@@ -379,15 +498,6 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
 @media(max-width:600px){
   .mkt-cell{min-width:90px;}
 }
-  border-bottom:1px solid rgba(26,48,80,.4);font-size:11px;animation:fi .4s;}
-@keyframes fi{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-.ev-time{font-family:'Space Mono';font-size:9px;color:var(--blue);flex-shrink:0;width:44px;margin-top:1px;}
-.ev-tag{font-size:9px;font-weight:700;padding:1px 5px;flex-shrink:0;letter-spacing:.5px;}
-.t-atk{background:rgba(240,20,45,.18);color:var(--red);}
-.t-rep{background:rgba(245,166,35,.18);color:var(--amber);}
-.t-dip{background:rgba(26,159,255,.15);color:var(--blue);}
-.t-int{background:rgba(0,229,160,.15);color:var(--green);}
-.ev-txt{flex:1;color:var(--t1);line-height:1.4;}
 
 .esc-pane{
   border-left:1px solid var(--bdr);
@@ -619,11 +729,43 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
   .esc-pane{border-left:none;border-top:1px solid var(--bdr);}
   .mkt-cell{min-width:80px;}
 }
+
+/* ── EVENT PULSE ── */
+@keyframes evPulse{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(0,229,160,.5)}70%{transform:scale(1.15);box-shadow:0 0 0 6px rgba(0,229,160,0)}100%{transform:scale(1);box-shadow:0 0 0 0 rgba(0,229,160,0)}}
+.ev-pulse{animation:evPulse .6s ease-out;}
+
+/* ── PRINT STYLES ── */
+@media print{
+  body::after,.chat-fab,.chat-panel,.world-fab,.world-panel,.ticker-wrap,.map-mini-wrap,.map-mini-hdr,.qbtns,.chat-input-row{display:none!important;}
+  body,body.light{background:#fff!important;color:#000!important;}
+  .topbar{background:#fff!important;border-color:#000!important;box-shadow:none!important;}
+  .logo-text .main{color:#000!important;}
+  *{animation:none!important;transition:none!important;}
+  .stat-val,.mkt-val,.fx-val{color:#000!important;}
+  .col-l,.col-r,.col-c,.main-grid,.workspace,.markets-strip,.mkt-cell,.sec-panel,.stat-cell,.fx-row,.hormuz-box,.kahn-panel{background:#fff!important;border-color:#ccc!important;}
+  .sec-title,.stat-lbl,.mkt-lbl,.fx-pair,.hormuz-detail,.kahn-explain,.kahn-next,.kahn-sc{color:#333!important;}
+  .ev-row{border-color:#ccc!important;}
+  .ev-txt,.ev-time{color:#000!important;}
+  /* Intel section: force expanded in print */
+  .intel-section,.intel-section .intel-grid{display:grid!important;}
+  .intel-card .intel-card-body{max-height:none!important;padding:8px!important;}
+  .intel-card,.intel-section,.intel-card-hdr,.intel-toggle,.pmesii-cell,.rb-col,.coa-entry,.bop-col,.scenario-card{background:#fff!important;border-color:#ccc!important;}
+  .intel-card-title,.pm-domain,.rb-title,.coa-actor,.bop-title,.sc-name{color:#000!important;}
+  .pm-text,.rb-entry,.coa-detail,.bop-country,.sc-detail,.kahn-extra{color:#333!important;}
+  .refresh-btn{display:none!important;}
+}
+/* ── LIGHT MODE — INTEL ── */
+body.light .intel-toggle{background:#e8eef8;}
+body.light .intel-card{background:#fff;border-color:var(--bdr);}
+body.light .intel-card-hdr{background:#f0f4fa;}
+body.light .pmesii-cell,.intel-card-body .coa-entry,.intel-card-body .scenario-card{background:#f0f4fa;}
+body.light .kahn-extra{color:var(--t2);}
 </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
+<header role="banner">
 <div class="topbar">
   <div class="tb-left">
     <div class="logo-hex">⬡</div>
@@ -657,42 +799,44 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
   </div>
 </div>
 
+</header>
+
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-lbl">◀ REAL</div>
-  <div class="ticker-inner">
-    🔴 <span class="real-tag">D+5 · 04 MAR 2026</span> MUERTOS EN IRAN: 1,045+ (Tasnim / Al Jazeera) · BAJAS USA: 6 KIA · BARCOS IRAN HUNDIDOS: 17+ (CENTCOM)
+  <div class="ticker-inner" id="tickerContent">
+    🔴 <span class="real-tag">D+5 · 04 MAR 2026</span> <a class="ticker-link" href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank">IRAN DEAD: 1,045+ (Tasnim / Al Jazeera) · US KIA: 6 · IRAN SHIPS SUNK: 17+ (CENTCOM)</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL CNBC 03/03</span> BRENT: $84.18/bbl (+18.84% vs semana) · WTI: $77.00 · GAS NAT EUROPA: +38% en un día (mayor subida desde 2022)
+    <a class="ticker-link" href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank"><span class="real-tag">✔REAL CNBC 03/03</span> BRENT: $84.18/bbl (+18.84% vs week) · WTI: $77.00 · EU NAT GAS: +38% in one day (largest since 2022)</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL LSEG 02/03</span> VLCC SUPERTANKERS: $423,000/día — RÉCORD HISTÓRICO (+94% en una sola jornada). Estrecho de Ormuz: tráfico efectivamente detenido
+    <a class="ticker-link" href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank"><span class="real-tag">✔REAL LSEG 02/03</span> VLCC SUPERTANKERS: $423,000/day — ALL-TIME RECORD (+94% in a single session). Strait of Hormuz: traffic effectively halted</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL investing.com 04/03</span> ORO: $5,187 · cayó -4.8% el martes · "Cash became king" (Reuters) · rebotando hoy en Asia — rango hoy $5,084-$5,206
+    <a class="ticker-link" href="https://www.investing.com/commodities/gold" target="_blank"><span class="real-tag">✔REAL investing.com 04/03</span> GOLD: $5,187 · fell -4.8% Tuesday · "Cash became king" (Reuters) · rebounding in Asia — range today $5,084-$5,206</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL TradingEcon 03/03</span> DOW: -437 pts (48,468) · S&P: -0.94% · 10Y YIELD: 4.107% (desde 3.96%) — Fed: probabilidad recorte verano = CERO
+    <a class="ticker-link" href="https://tradingeconomics.com/united-states/stock-market" target="_blank"><span class="real-tag">✔REAL TradingEcon 03/03</span> DOW: -437 pts (48,468) · S&P: -0.94% · 10Y YIELD: 4.107% (from 3.96%) — Fed: summer rate cut probability = ZERO</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL CNN 04/03</span> Trump: "suministro virtualmente ilimitado de municiones. Wars can be fought forever." (Truth Social) · No descarta tropas terrestres
+    <a class="ticker-link" href="https://edition.cnn.com/world/live-news/israel-iran-attack-02-28-26-hnk-intl" target="_blank"><span class="real-tag">✔REAL CNN 04/03</span> Trump: "virtually unlimited supply of munitions. Wars can be fought forever." (Truth Social) · Ground troops not ruled out</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL Wikipedia/CENTCOM 04/03</span> Fragata IRIS DENA hundida en Océano Índico por submarino USA, 40mn sur de Sri Lanka. 32 tripulantes rescatados
+    <a class="ticker-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank"><span class="real-tag">✔REAL Wikipedia/CENTCOM 04/03</span> Frigate IRIS DENA sunk in Indian Ocean by US submarine, 40nm south of Sri Lanka. 32 crew rescued</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL Al Jazeera 04/03</span> ISRAEL lanza DÉCIMA OLA de ataques: Teherán, Karaj, Isfahan, Qom. IRGC: "230 drones en operaciones de campo"
+    <a class="ticker-link" href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank"><span class="real-tag">✔REAL Al Jazeera 04/03</span> ISRAEL launches 10TH WAVE of strikes: Tehran, Karaj, Isfahan, Qom. IRGC: "230 drones in field operations"</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL Rusia/Al Jazeera 04/03</span> Rusia advierte: Planta nuclear BUSHEHR bajo amenaza — "explosiones escuchadas a kilómetros del perímetro"
+    <a class="ticker-link" href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank"><span class="real-tag">✔REAL Russia/Al Jazeera 04/03</span> Russia warns: BUSHEHR nuclear plant under threat — "explosions heard kilometers from perimeter"</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL Turquía/NATO 03/03</span> Turquía: Sistema NATO destruyó misil balístico iraní en Mediterráneo oriental. Objetivo aún no confirmado
+    <a class="ticker-link" href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank"><span class="real-tag">✔REAL Turkey/NATO 03/03</span> Turkey: NATO system destroyed Iranian ballistic missile in eastern Mediterranean. Target not yet confirmed</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL CNBC 03/03</span> QatarEnergy PARÓ producción GNL (Ras Laffan). 11,000+ vuelos cancelados · +1 MILLÓN de viajeros atrapados
+    <a class="ticker-link" href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank"><span class="real-tag">✔REAL CNBC 03/03</span> QatarEnergy HALTED LNG production (Ras Laffan). 11,000+ flights cancelled · +1 MILLION travelers stranded</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL NYT/CIA 03/03</span> INTELIGENCIA: CIA rastreó movimientos de Khamenei, supo que estaría en compound Teherán el sábado — timing del strike determinado por eso
+    <a class="ticker-link" href="https://www.nytimes.com/2026/03/03/us/politics/cia-khamenei-iran-strike.html" target="_blank"><span class="real-tag">✔REAL NYT/CIA 03/03</span> INTELLIGENCE: CIA tracked Khamenei's movements, knew he'd be in Tehran compound Saturday — strike timing determined by this</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL Rubio/Capitol 03/03</span> Rubio: "Los GOLPES MÁS DUROS aún están por venir. Dos fuerzas aéreas más poderosas del mundo desmantelarán este régimen terrorista"
+    <a class="ticker-link" href="https://edition.cnn.com/world/live-news/israel-iran-attack-02-28-26-hnk-intl" target="_blank"><span class="real-tag">✔REAL Rubio/Capitol 03/03</span> Rubio: "The HARDEST BLOWS are yet to come. Two most powerful air forces in the world will dismantle this terrorist regime"</a>
     <span class="sep">◆</span>
-    <span class="real-tag">✔REAL Jamie Dimon CNBC 02/03</span> CEO JPMorgan: "Esperamos ciberataques y ataques terroristas. Los bancos pueden ser objetivos. Pero el mundo occidental debe permanecer libre"
+    <a class="ticker-link" href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank"><span class="real-tag">✔REAL Jamie Dimon CNBC 02/03</span> CEO JPMorgan: "Expect cyberattacks and terrorist attacks. Banks may be targets. But the Western world must remain free"</a>
   </div>
 </div>
 
 <!-- MAIN WORKSPACE -->
-<!-- MAIN WORKSPACE -->
+<main role="main">
 <div class="workspace">
 
   <!-- MARKETS STRIP — DATOS REALES 04 MAR 2026 D+5 -->
@@ -756,6 +900,179 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
       <div class="mkt-val up">+38%</div>
       <div class="mkt-chg up" data-i18n="mkt_gas_chg">largest since 2022</div>
       <div class="mkt-src">CNN Business 02/03</div>
+    </div>
+  </div>
+
+  <!-- INTELLIGENCE ANALYSIS SECTION -->
+  <div class="intel-section open" id="intelSection">
+    <div class="intel-toggle" onclick="toggleIntelSection()">
+      <div class="intel-toggle-title">
+        <div class="sec-acc" style="background:var(--amber)"></div>
+        <span data-i18n="intel_section_title">INTELLIGENCE ANALYSIS</span>
+        <span style="font-size:8px;color:var(--t2);font-family:'Space Mono'" data-i18n="intel_section_sub">D+5 · 6 FRAMEWORKS</span>
+      </div>
+      <span class="intel-toggle-chevron">▶</span>
+    </div>
+    <div class="intel-grid">
+
+      <!-- PANEL 1: PMESII-PT -->
+      <div class="intel-card" id="intel-pmesii">
+        <div class="intel-card-hdr" onclick="toggleIntelCard('intel-pmesii')">
+          <span class="intel-card-title" data-i18n="intel_pmesii_title">📊 PMESII-PT (8-DOMAIN)</span>
+          <button class="refresh-btn" onclick="event.stopPropagation();refreshAnalysis('pmesii')" title="Refresh with AI">🔄</button>
+          <span class="intel-card-chevron">▶</span>
+        </div>
+        <div class="intel-card-body" id="intel-pmesii-body">
+          <div class="pmesii-grid">
+            <div class="pmesii-cell"><span class="pm-icon">🏛</span><span class="pm-domain" data-i18n="pm_pol">P — POLITICAL</span><span class="pm-text" data-i18n="pm_pol_txt">Khamenei killed D+0. Assembly of Experts bombed. Trump "~4 weeks". E3 endorses. Kaine demands War Powers vote.</span></div>
+            <div class="pmesii-cell"><span class="pm-icon">⚔</span><span class="pm-domain" data-i18n="pm_mil">M — MILITARY</span><span class="pm-text" data-i18n="pm_mil_txt">10 waves, 17+ ships sunk, 6 US KIA, 1,045+ Iran dead. IRIS Dena sunk. Mossad ground ops inside Iran.</span></div>
+            <div class="pmesii-cell"><span class="pm-icon">💰</span><span class="pm-domain" data-i18n="pm_eco">E — ECONOMIC</span><span class="pm-text" data-i18n="pm_eco_txt">Brent $84.18 (+19%). VLCC $423K/day ATR. EU gas +38%. Gold $5,187. QatarEnergy halted LNG.</span></div>
+            <div class="pmesii-cell"><span class="pm-icon">👥</span><span class="pm-domain" data-i18n="pm_soc">S — SOCIAL</span><span class="pm-text" data-i18n="pm_soc_txt">1M+ stranded, 11K flights cancelled. Iran internet 4%. 3 embassies closed. Shelter-in-place.</span></div>
+            <div class="pmesii-cell"><span class="pm-icon">🏗</span><span class="pm-domain" data-i18n="pm_inf">I — INFRASTRUCTURE</span><span class="pm-text" data-i18n="pm_inf_txt">Natanz/Fordow/Isfahan struck. IRIB HQ destroyed. Ras Laffan offline. Bushehr threatened.</span></div>
+            <div class="pmesii-cell"><span class="pm-icon">📡</span><span class="pm-domain" data-i18n="pm_info">I — INFORMATION</span><span class="pm-text" data-i18n="pm_info_txt">Iran internet blackout. Media HQ destroyed. OSINT active. Truth Social as primary US comms channel.</span></div>
+            <div class="pmesii-cell"><span class="pm-icon">🌍</span><span class="pm-domain" data-i18n="pm_phy">P — PHYSICAL</span><span class="pm-text" data-i18n="pm_phy_txt">5 theaters: Gulf, E. Mediterranean, Indian Ocean, Lebanon, Yemen. Hormuz closed to traffic.</span></div>
+            <div class="pmesii-cell"><span class="pm-icon">⏱</span><span class="pm-domain" data-i18n="pm_time">T — TIME</span><span class="pm-text" data-i18n="pm_time_txt">D+5. Trump "~4 weeks". No ceasefire talks. Markets pricing 2-week premium. Escalation accelerating.</span></div>
+          </div>
+          <div class="intel-timestamp" id="intel-pmesii-ts"></div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: RED TEAM / BLUE TEAM -->
+      <div class="intel-card" id="intel-redblue">
+        <div class="intel-card-hdr" onclick="toggleIntelCard('intel-redblue')">
+          <span class="intel-card-title" data-i18n="intel_rb_title">🔵🔴 RED TEAM / BLUE TEAM</span>
+          <button class="refresh-btn" onclick="event.stopPropagation();refreshAnalysis('redblue')" title="Refresh with AI">🔄</button>
+          <span class="intel-card-chevron">▶</span>
+        </div>
+        <div class="intel-card-body" id="intel-redblue-body">
+          <div class="rb-cols">
+            <div class="rb-col blue-side">
+              <div class="rb-title" data-i18n="rb_blue_title">🔵 BLUE — US + ISRAEL</div>
+              <div class="rb-entry"><strong data-i18n="rb_obj">OBJECTIVE:</strong> <span data-i18n="rb_blue_obj">Neutralize Iran nuclear program, decapitate leadership, force regime collapse.</span></div>
+              <div class="rb-entry"><strong data-i18n="rb_cap">CAPABILITIES:</strong> <span data-i18n="rb_blue_cap">10 strike waves completed. Full air superiority. 2 carrier groups. Mossad ground ops. Arrow-3 defense ~80%.</span></div>
+              <div class="rb-entry"><strong data-i18n="rb_vul">VULNERABILITIES:</strong> <span data-i18n="rb_blue_vul">6 KIA already. Friendly fire (3 F-15s). Overextension across 5 theaters. Political opposition (Kaine).</span></div>
+              <div class="rb-entry"><strong data-i18n="rb_next">NEXT MOVES:</strong> <span data-i18n="rb_blue_next">Continue air campaign. Possible ground troops. Tanker escort in Gulf. Pressure on Bushehr.</span></div>
+            </div>
+            <div class="rb-col red-side">
+              <div class="rb-title" data-i18n="rb_red_title">🔴 RED — IRAN + PROXIES</div>
+              <div class="rb-entry"><strong data-i18n="rb_obj">OBJECTIVE:</strong> <span data-i18n="rb_red_obj">Survive initial strike, inflict costs, close Hormuz, activate proxy network, force ceasefire.</span></div>
+              <div class="rb-entry"><strong data-i18n="rb_cap">CAPABILITIES:</strong> <span data-i18n="rb_red_cap">230 drones deployed. Hormuz closed. Hezbollah 150K+ projectiles. Houthis active. PMF attacking US bases.</span></div>
+              <div class="rb-entry"><strong data-i18n="rb_vul">VULNERABILITIES:</strong> <span data-i18n="rb_red_vul">1,045+ dead. 17+ ships lost. Internet 4%. Leadership decapitated. Nuclear sites struck. Navy destroyed.</span></div>
+              <div class="rb-entry"><strong data-i18n="rb_next">NEXT MOVES:</strong> <span data-i18n="rb_red_next">Asymmetric attacks. Cyberattacks (Dimon warning). Proxy escalation. Maintain Hormuz closure.</span></div>
+            </div>
+          </div>
+          <div class="intel-timestamp" id="intel-redblue-ts"></div>
+        </div>
+      </div>
+
+      <!-- PANEL 3: COA ANALYSIS -->
+      <div class="intel-card" id="intel-coa">
+        <div class="intel-card-hdr" onclick="toggleIntelCard('intel-coa')">
+          <span class="intel-card-title" data-i18n="intel_coa_title">🎯 COURSE OF ACTION ANALYSIS</span>
+          <button class="refresh-btn" onclick="event.stopPropagation();refreshAnalysis('coa')" title="Refresh with AI">🔄</button>
+          <span class="intel-card-chevron">▶</span>
+        </div>
+        <div class="intel-card-body" id="intel-coa-body">
+          <div class="coa-group">
+            <div class="coa-actor" data-i18n="coa_us">🇺🇸 UNITED STATES</div>
+            <div class="coa-row">
+              <div class="coa-entry high"><div class="coa-lbl" data-i18n="coa_us1_lbl">Sustained air + naval</div><div class="coa-prob">45%</div><div class="coa-detail" data-i18n="coa_us1_det">Continue current tempo. Advantage: minimal US casualties. Risk: war fatigue.</div></div>
+              <div class="coa-entry mid"><div class="coa-lbl" data-i18n="coa_us2_lbl">Limited ground ops</div><div class="coa-prob">35%</div><div class="coa-detail" data-i18n="coa_us2_det">Special forces + regime targets. Advantage: decisive. Risk: escalation, casualties.</div></div>
+              <div class="coa-entry low"><div class="coa-lbl" data-i18n="coa_us3_lbl">Negotiate ceasefire</div><div class="coa-prob">20%</div><div class="coa-detail" data-i18n="coa_us3_det">Declare objectives met. Advantage: de-escalation. Risk: appears weak.</div></div>
+            </div>
+          </div>
+          <div class="coa-group">
+            <div class="coa-actor" data-i18n="coa_iran">🇮🇷 IRAN</div>
+            <div class="coa-row">
+              <div class="coa-entry high"><div class="coa-lbl" data-i18n="coa_ir1_lbl">Asymmetric attrition</div><div class="coa-prob">50%</div><div class="coa-detail" data-i18n="coa_ir1_det">Proxy war + Hormuz + cyber. Advantage: inflicts economic pain. Risk: further strikes.</div></div>
+              <div class="coa-entry mid"><div class="coa-lbl" data-i18n="coa_ir2_lbl">Full retaliation</div><div class="coa-prob">30%</div><div class="coa-detail" data-i18n="coa_ir2_det">All missiles at Israel + US bases. Advantage: show of force. Risk: total destruction.</div></div>
+              <div class="coa-entry low"><div class="coa-lbl" data-i18n="coa_ir3_lbl">Seek mediation</div><div class="coa-prob">20%</div><div class="coa-detail" data-i18n="coa_ir3_det">Accept China/Turkey mediation. Advantage: survival. Risk: regime collapse anyway.</div></div>
+            </div>
+          </div>
+          <div class="coa-group">
+            <div class="coa-actor" data-i18n="coa_israel">🇮🇱 ISRAEL</div>
+            <div class="coa-row">
+              <div class="coa-entry high"><div class="coa-lbl" data-i18n="coa_il1_lbl">Maximize nuclear damage</div><div class="coa-prob">55%</div><div class="coa-detail" data-i18n="coa_il1_det">Hit all nuclear sites + Bushehr. Advantage: removes existential threat. Risk: radiation.</div></div>
+              <div class="coa-entry mid"><div class="coa-lbl" data-i18n="coa_il2_lbl">Two-front war</div><div class="coa-prob">30%</div><div class="coa-detail" data-i18n="coa_il2_det">Simultaneous Hezbollah + Iran. Advantage: comprehensive. Risk: overextension.</div></div>
+              <div class="coa-entry low"><div class="coa-lbl" data-i18n="coa_il3_lbl">Declare victory early</div><div class="coa-prob">15%</div><div class="coa-detail" data-i18n="coa_il3_det">Claim nuclear threat eliminated. Advantage: minimize costs. Risk: incomplete.</div></div>
+            </div>
+          </div>
+          <div class="intel-timestamp" id="intel-coa-ts"></div>
+        </div>
+      </div>
+
+      <!-- PANEL 5: BANDWAGON / BALANCE OF POWER -->
+      <div class="intel-card" id="intel-bop">
+        <div class="intel-card-hdr" onclick="toggleIntelCard('intel-bop')">
+          <span class="intel-card-title" data-i18n="intel_bop_title">⚖ BANDWAGON / BALANCE OF POWER</span>
+          <button class="refresh-btn" onclick="event.stopPropagation();refreshAnalysis('bop')" title="Refresh with AI">🔄</button>
+          <span class="intel-card-chevron">▶</span>
+        </div>
+        <div class="intel-card-body" id="intel-bop-body">
+          <div class="bop-cols">
+            <div class="bop-col">
+              <div class="bop-title" data-i18n="bop_bandwagon">🔵 BANDWAGONING (Pro-US/Israel)</div>
+              <div class="bop-country" data-i18n="bop_bw1">🇬🇧🇫🇷🇩🇪 E3: Full endorsement of strikes</div>
+              <div class="bop-country" data-i18n="bop_bw2">🇸🇦 Saudi: Silent compliance, closed embassy</div>
+              <div class="bop-country" data-i18n="bop_bw3">🇦🇪 UAE: Intercepted Iranian missiles</div>
+              <div class="bop-country" data-i18n="bop_bw4">🇰🇼 Kuwait: 178 missiles + 384 drones intercepted</div>
+              <div class="bop-country" data-i18n="bop_bw5">🇦🇺🇯🇵🇰🇷 Pacific allies: Verbal support</div>
+            </div>
+            <div class="bop-col">
+              <div class="bop-title" data-i18n="bop_balance">🔴 BALANCING (Pro-Iran / Anti-US)</div>
+              <div class="bop-country" data-i18n="bop_bl1">🇷🇺 Russia: Warns on Bushehr, arms leverage</div>
+              <div class="bop-country" data-i18n="bop_bl2">🇻🇪 Venezuela: Maduro condemns "imperial aggression"</div>
+              <div class="bop-country" data-i18n="bop_bl3">🇸🇾 Syria: Proxy coordination with Iran</div>
+              <div class="bop-country" data-i18n="bop_bl4">🇾🇪 Houthis: Active attacks, drones + missiles</div>
+              <div class="bop-country" data-i18n="bop_bl5">🇮🇶 Iraq PMF: Attacking Al-Asad base</div>
+            </div>
+            <div class="bop-col">
+              <div class="bop-title" data-i18n="bop_hedging">🟡 HEDGING / MEDIATION</div>
+              <div class="bop-country" data-i18n="bop_hd1">🇨🇳 China: "Strategic restraint" — buys discounted oil</div>
+              <div class="bop-country" data-i18n="bop_hd2">🇮🇳 India: Evacuating nationals, neutral stance</div>
+              <div class="bop-country" data-i18n="bop_hd3">🇹🇷 Turkey: NATO missile intercept but offers mediation</div>
+              <div class="bop-country" data-i18n="bop_hd4">🇶🇦 Qatar: Halted LNG, potential mediator</div>
+              <div class="bop-country" data-i18n="bop_hd5">🇧🇷 Brazil: Calls for ceasefire at UNSC</div>
+            </div>
+          </div>
+          <div class="intel-timestamp" id="intel-bop-ts"></div>
+        </div>
+      </div>
+
+      <!-- PANEL 6: PROBABILISTIC SCENARIOS -->
+      <div class="intel-card" id="intel-scenarios">
+        <div class="intel-card-hdr" onclick="toggleIntelCard('intel-scenarios')">
+          <span class="intel-card-title" data-i18n="intel_sc_title">📈 PROBABILISTIC SCENARIOS</span>
+          <button class="refresh-btn" onclick="event.stopPropagation();refreshAnalysis('scenarios')" title="Refresh with AI">🔄</button>
+          <span class="intel-card-chevron">▶</span>
+        </div>
+        <div class="intel-card-body" id="intel-scenarios-body">
+          <div class="scenario-cards">
+            <div class="scenario-card">
+              <div class="sc-name" data-i18n="sc1_name">🟢 QUICK RESOLUTION</div>
+              <div class="sc-prob">10%</div>
+              <div class="sc-detail" data-i18n="sc1_detail">Triggers: Iran signals via China/Turkey. Nuclear sites confirmed destroyed. Timeline: 1-2 weeks. Markets: Brent $70, Gold $4,800, VIX normalizes.</div>
+            </div>
+            <div class="scenario-card">
+              <div class="sc-name" data-i18n="sc2_name">🔵 SUSTAINED AIR CAMPAIGN</div>
+              <div class="sc-prob">45%</div>
+              <div class="sc-detail" data-i18n="sc2_detail">Triggers: US continues "~4 weeks" plan. No ground troops. Hormuz partially reopens. Timeline: 3-5 weeks. Markets: Brent $85-95, Gold $5,200+.</div>
+            </div>
+            <div class="scenario-card">
+              <div class="sc-name" data-i18n="sc3_name">🟡 PROLONGED REGIONAL</div>
+              <div class="sc-prob">30%</div>
+              <div class="sc-detail" data-i18n="sc3_detail">Triggers: Lebanon escalates. Hezbollah all-in. Hormuz stays closed. Timeline: 2-4 months. Markets: Brent $100-120, recession risk.</div>
+            </div>
+            <div class="scenario-card">
+              <div class="sc-name" data-i18n="sc4_name">🔴 EXTREME ESCALATION</div>
+              <div class="sc-prob">15%</div>
+              <div class="sc-detail" data-i18n="sc4_detail">Triggers: Bushehr struck (radiation). Iran uses non-conventional weapons. Russia intervenes. Timeline: months+. Markets: Brent $150+, global crisis.</div>
+            </div>
+          </div>
+          <div class="intel-timestamp" id="intel-scenarios-ts"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -851,6 +1168,14 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
             <div class="kahn-sc" style="color:var(--amber)" data-i18n="scenario_2">🟡 Prolonged war: 50%</div>
             <div class="kahn-sc" style="color:var(--red)" data-i18n="scenario_3">🔴 Regional escalation: 35%</div>
           </div>
+          <div class="kahn-extra">
+            <strong data-i18n="kahn_triggers_title">⚠ TRIGGERS TO LEVEL 9:</strong><br>
+            <span data-i18n="kahn_triggers">• Bushehr struck → radiation release<br>• Iran deploys chemical/bio agents<br>• Russia provides S-400 / direct military aid<br>• Nuclear device detonation threat</span><br><br>
+            <strong data-i18n="kahn_historical_title">📖 HISTORICAL COMPARISON:</strong><br>
+            <span data-i18n="kahn_historical">• Cuban Missile Crisis (1962): peaked Level 7-8, resolved via back-channel<br>• Gulf War (1991): Level 6-7, coalition air → ground in 100h<br>• Current conflict: Level 8 — exceeds both in theaters and proxy involvement</span><br><br>
+            <strong data-i18n="kahn_deesc_title">🕊 DE-ESCALATION PATH:</strong><br>
+            <span class="deesc" data-i18n="kahn_deesc">• China/Turkey mediation channel (active but stalled)<br>• Iran signals via Swiss embassy (traditional back-channel)<br>• US declares nuclear objectives met → ceasefire offer<br>• Hormuz partial reopening as confidence measure</span>
+          </div>
         </div>
       </div>
 
@@ -865,7 +1190,10 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
         <span class="badge bdg" id="ev-count">27 EVT</span>
       </div>
 
-      <!-- Events scroll - hero -->
+      <!-- Events search + scroll -->
+      <div style="padding:4px 8px;border-bottom:1px solid var(--bdr);flex-shrink:0;">
+        <input type="text" id="evSearch" oninput="filterEvents()" data-i18n-placeholder="ev_search" placeholder="Search events…" style="width:100%;background:var(--bg3);border:1px solid var(--bdr);color:var(--t1);font-family:'Space Mono';font-size:10px;padding:4px 8px;outline:none;"/>
+      </div>
       <div class="events-hero">
         <div class="events-scroll" id="evlog"></div>
       </div>
@@ -1012,10 +1340,10 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
   </div><!-- /main-grid -->
 
 </div><!-- /workspace -->
-</div><!-- /workspace -->
+</main>
 
 <!-- GLOBE FAB -->
-<div class="world-fab" onclick="toggleWorld()" title="Posiciones globales en X">
+<div class="world-fab" onclick="toggleWorld()" title="Global positions on X">
   𝕏
   <div class="fab-badge2">🌍</div>
 </div>
@@ -1023,31 +1351,31 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
 <!-- WORLD PANEL -->
 <div class="world-panel" id="worldPanel">
   <div class="wp-hdr">
-    <div class="wp-title">𝕏 POSICIONES GLOBALES EN X — DECLARACIONES REALES VERIFICADAS</div>
-    <button class="wp-close" onclick="toggleWorld()">✕ CERRAR</button>
+    <div class="wp-title"><span data-i18n="wp_title">𝕏 GLOBAL POSITIONS ON X — VERIFIED REAL STATEMENTS</span></div>
+    <button class="wp-close" onclick="toggleWorld()">✕ <span data-i18n="wp_close">CLOSE</span></button>
   </div>
   <div class="wp-body">
     <div id="worldmap"></div>
     <div class="x-panel">
-      <div class="x-hdr"><span class="x-logo">𝕏</span> REACCIONES VERIFICADAS — 28 FEB 2026 <span class="badge bdb" style="margin-left:auto">REAL</span></div>
+      <div class="x-hdr"><span class="x-logo">𝕏</span> <span data-i18n="x_hdr">VERIFIED REACTIONS — 28 FEB 2026</span> <span class="badge bdb" style="margin-left:auto">REAL</span></div>
       <div class="x-filters">
-        <button class="xfbtn" onclick="filterX('all')">TODO</button>
-        <button class="xfbtn" onclick="filterX('sup')">✅ APOYA</button>
-        <button class="xfbtn" onclick="filterX('opp')">❌ CONDENA</button>
-        <button class="xfbtn" onclick="filterX('neu')">🕊 NEUTRAL</button>
-        <button class="xfbtn" onclick="filterX('amb')">↔ AMBIGUO</button>
-        <button class="xfbtn" onclick="filterX('med')">🤝 MEDIACIÓN</button>
+        <button class="xfbtn" onclick="filterX('all')" data-i18n="xf_all">ALL</button>
+        <button class="xfbtn" onclick="filterX('sup')" data-i18n="xf_sup">✅ SUPPORTS</button>
+        <button class="xfbtn" onclick="filterX('opp')" data-i18n="xf_opp">❌ CONDEMNS</button>
+        <button class="xfbtn" onclick="filterX('neu')" data-i18n="xf_neu">🕊 NEUTRAL</button>
+        <button class="xfbtn" onclick="filterX('amb')" data-i18n="xf_amb">↔ AMBIGUOUS</button>
+        <button class="xfbtn" onclick="filterX('med')" data-i18n="xf_med">🤝 MEDIATION</button>
       </div>
       <div class="x-feed" id="xfeed"></div>
     </div>
   </div>
   <div class="wp-legend">
-    <div class="wl-item"><div class="wl-dot" style="background:var(--green)"></div>Apoya EE.UU./Israel</div>
-    <div class="wl-item"><div class="wl-dot" style="background:var(--red)"></div>Condena / Pro-Irán</div>
-    <div class="wl-item"><div class="wl-dot" style="background:var(--amber)"></div>Neutral / Restraint</div>
-    <div class="wl-item"><div class="wl-dot" style="background:var(--blue)"></div>Ambigüedad estratégica</div>
-    <div class="wl-item"><div class="wl-dot" style="background:var(--purple)"></div>Ofrece mediación</div>
-    <span style="margin-left:auto;font-size:9px;color:var(--t2);font-family:'Space Mono'">✔ Fuentes: CNN · Jerusalem Post · Responsible Statecraft · Euronews · El Español</span>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--green)"></div><span data-i18n="wl_sup">Supports US/Israel</span></div>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--red)"></div><span data-i18n="wl_opp">Condemns / Pro-Iran</span></div>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--amber)"></div><span data-i18n="wl_neu">Neutral / Restraint</span></div>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--blue)"></div><span data-i18n="wl_amb">Strategic ambiguity</span></div>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--purple)"></div><span data-i18n="wl_med">Offers mediation</span></div>
+    <span style="margin-left:auto;font-size:9px;color:var(--t2);font-family:'Space Mono'">✔ Sources: CNN · Jerusalem Post · Responsible Statecraft · Euronews · El Español</span>
   </div>
 </div>
 
@@ -1059,27 +1387,31 @@ body.rtl .hormuz-links{flex-direction:row-reverse;}
 <!-- CHAT PANEL -->
 <div class="chat-panel" id="chatPanel">
   <div class="chat-hdr">
-    <div class="chat-title"><div class="ai-dot"></div>ANALISTA IA — WAR ROOM</div>
+    <div class="chat-title"><div class="ai-dot"></div><span data-i18n="chat_title">AI ANALYST — WAR ROOM</span></div>
     <button class="chat-close" onclick="toggleChat()">✕</button>
   </div>
-  <div class="chat-ctx">🔴 Ctx activo: Irán–EE.UU.–Israel · 28 Feb/01 Mar 2026 · Datos reales cargados</div>
+  <div style="padding:4px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(162,89,247,.15);flex-shrink:0;">
+    <label style="font-size:8px;font-family:'Space Mono';color:var(--t2);white-space:nowrap" data-i18n="api_key_label">API KEY</label>
+    <input type="password" id="apiKey" placeholder="sk-ant-..." style="flex:1;background:var(--bg3);border:1px solid var(--bdr);color:var(--t1);font-family:'Space Mono';font-size:10px;padding:3px 6px;outline:none;"/>
+  </div>
+  <div class="chat-ctx" data-i18n="chat_ctx">🔴 Active ctx: Iran–USA–Israel · D+5 04 Mar 2026 · Verified data loaded</div>
   <div class="chat-msgs" id="chatMsgs">
     <div class="bubble bubble-ai">
-      <div class="bubble-lbl">◆ ANALISTA IA</div>
-      Sistema activo con datos reales verificados. Brent $72.87, DXY 97.61, Gold $5,247. Puedo analizar escalada, impacto FX, posiciones nacionales, proyecciones al 31 Mar. ¿Qué deseas consultar?
+      <div class="bubble-lbl">◆ AI ANALYST</div>
+      <span data-i18n="chat_welcome">System active with verified real data. Brent $84.18, DXY 98.54, Gold $5,187. I can analyze escalation, FX impact, national positions, projections to Mar 31. What would you like to know?</span>
     </div>
   </div>
   <div class="qbtns">
-    <button class="qbtn" onclick="qsend('¿Por qué el DXY está en 97 y no sube más si hay guerra?')">DXY & guerra</button>
-    <button class="qbtn" onclick="qsend('¿Por qué el Brent no subió más?')">Brent $73</button>
-    <button class="qbtn" onclick="qsend('Probabilidad de cierre del Estrecho de Ormuz')">Ormuz 62%</button>
-    <button class="qbtn" onclick="qsend('¿Qué harán los mercados el lunes?')">Lunes abre</button>
-    <button class="qbtn" onclick="qsend('Postura de China: ¿neutral o pro-Irán?')">China</button>
-    <button class="qbtn" onclick="qsend('Proyección escenario más probable al 31 de marzo')">Mar 31</button>
+    <button class="qbtn" data-i18n="q_dxy" onclick="qsend(LANGS[currentLang].q_dxy_q||'Why is DXY at 98 and not higher during a war?')">DXY & war</button>
+    <button class="qbtn" data-i18n="q_brent" onclick="qsend(LANGS[currentLang].q_brent_q||'Why hasn\'t Brent risen more?')">Brent $84</button>
+    <button class="qbtn" data-i18n="q_hormuz" onclick="qsend(LANGS[currentLang].q_hormuz_q||'Probability of Hormuz staying closed')">Hormuz</button>
+    <button class="qbtn" data-i18n="q_markets" onclick="qsend(LANGS[currentLang].q_markets_q||'What will markets do next?')">Markets</button>
+    <button class="qbtn" data-i18n="q_china" onclick="qsend(LANGS[currentLang].q_china_q||'China\'s stance: neutral or pro-Iran?')">China</button>
+    <button class="qbtn" data-i18n="q_scenario" onclick="qsend(LANGS[currentLang].q_scenario_q||'Most likely scenario projection to March 31')">Mar 31</button>
   </div>
   <div class="chat-input-row">
-    <input class="chat-in" id="chatIn" placeholder="Pregunta estratégica o de mercados…" onkeydown="if(event.key==='Enter')doSend()"/>
-    <button class="chat-send" id="sendBtn" onclick="doSend()">ENVIAR</button>
+    <input class="chat-in" id="chatIn" data-i18n-placeholder="chat_placeholder" placeholder="Strategic or market question…" onkeydown="if(event.key==='Enter')doSend()"/>
+    <button class="chat-send" id="sendBtn" data-i18n="chat_send" onclick="doSend()">SEND</button>
   </div>
 </div>
 
@@ -1121,6 +1453,79 @@ const LANGS = {
     mkt_sp_chg:'▼ -0.94% close', mkt_close:'close 03/03', mkt_yield_chg:'▲ from 3.96%', mkt_yield_src:'war inflation',
     mkt_vix_chg:'↑ intraday · closed +8%', mkt_dxy_chg:'▲ +0.95% (haven)', mkt_dxy_src:'erases YTD losses',
     mkt_vlcc_chg:'▲ +94% one day RECORD', mkt_gas_chg:'largest since 2022',
+    // Chat panel
+    chat_title:'AI ANALYST — WAR ROOM', chat_ctx:'🔴 Active ctx: Iran–USA–Israel · D+5 04 Mar 2026 · Verified data loaded',
+    chat_welcome:'System active with verified real data. Brent $84.18, DXY 98.54, Gold $5,187. I can analyze escalation, FX impact, national positions, projections to Mar 31. What would you like to know?',
+    chat_send:'SEND', chat_placeholder:'Strategic or market question…',
+    api_key_label:'API KEY', chat_no_key:'Please enter your Anthropic API key above to use the AI analyst.',
+    q_dxy:'DXY & war', q_brent:'Brent $84', q_hormuz:'Hormuz', q_markets:'Markets', q_china:'China', q_scenario:'Mar 31',
+    q_dxy_q:'Why is DXY at 98 and not higher during a war?', q_brent_q:'Why hasn\'t Brent risen more?',
+    q_hormuz_q:'Probability of Hormuz staying closed', q_markets_q:'What will markets do next?',
+    q_china_q:'China\'s stance: neutral or pro-Iran?', q_scenario_q:'Most likely scenario projection to March 31',
+    // World panel
+    wp_title:'𝕏 GLOBAL POSITIONS ON X — VERIFIED REAL STATEMENTS', wp_close:'CLOSE',
+    x_hdr:'VERIFIED REACTIONS — 28 FEB 2026',
+    xf_all:'ALL', xf_sup:'✅ SUPPORTS', xf_opp:'❌ CONDEMNS', xf_neu:'🕊 NEUTRAL', xf_amb:'↔ AMBIGUOUS', xf_med:'🤝 MEDIATION',
+    wl_sup:'Supports US/Israel', wl_opp:'Condemns / Pro-Iran', wl_neu:'Neutral / Restraint', wl_amb:'Strategic ambiguity', wl_med:'Offers mediation',
+    // Event search
+    ev_search:'Search events…',
+    // Intel analysis section
+    intel_section_title:'INTELLIGENCE ANALYSIS', intel_section_sub:'D+5 · 6 FRAMEWORKS',
+    intel_pmesii_title:'📊 PMESII-PT (8-DOMAIN)',
+    pm_pol:'P — POLITICAL', pm_mil:'M — MILITARY', pm_eco:'E — ECONOMIC', pm_soc:'S — SOCIAL',
+    pm_inf:'I — INFRASTRUCTURE', pm_info:'I — INFORMATION', pm_phy:'P — PHYSICAL', pm_time:'T — TIME',
+    pm_pol_txt:'Khamenei killed D+0. Assembly of Experts bombed. Trump "~4 weeks". E3 endorses. Kaine demands War Powers vote.',
+    pm_mil_txt:'10 waves, 17+ ships sunk, 6 US KIA, 1,045+ Iran dead. IRIS Dena sunk. Mossad ground ops inside Iran.',
+    pm_eco_txt:'Brent $84.18 (+19%). VLCC $423K/day ATR. EU gas +38%. Gold $5,187. QatarEnergy halted LNG.',
+    pm_soc_txt:'1M+ stranded, 11K flights cancelled. Iran internet 4%. 3 embassies closed. Shelter-in-place.',
+    pm_inf_txt:'Natanz/Fordow/Isfahan struck. IRIB HQ destroyed. Ras Laffan offline. Bushehr threatened.',
+    pm_info_txt:'Iran internet blackout. Media HQ destroyed. OSINT active. Truth Social as primary US comms channel.',
+    pm_phy_txt:'5 theaters: Gulf, E. Mediterranean, Indian Ocean, Lebanon, Yemen. Hormuz closed to traffic.',
+    pm_time_txt:'D+5. Trump "~4 weeks". No ceasefire talks. Markets pricing 2-week premium. Escalation accelerating.',
+    intel_rb_title:'🔵🔴 RED TEAM / BLUE TEAM',
+    rb_blue_title:'🔵 BLUE — US + ISRAEL', rb_red_title:'🔴 RED — IRAN + PROXIES',
+    rb_obj:'OBJECTIVE:', rb_cap:'CAPABILITIES:', rb_vul:'VULNERABILITIES:', rb_next:'NEXT MOVES:',
+    rb_blue_obj:'Neutralize Iran nuclear program, decapitate leadership, force regime collapse.',
+    rb_blue_cap:'10 strike waves completed. Full air superiority. 2 carrier groups. Mossad ground ops. Arrow-3 defense ~80%.',
+    rb_blue_vul:'6 KIA already. Friendly fire (3 F-15s). Overextension across 5 theaters. Political opposition (Kaine).',
+    rb_blue_next:'Continue air campaign. Possible ground troops. Tanker escort in Gulf. Pressure on Bushehr.',
+    rb_red_obj:'Survive initial strike, inflict costs, close Hormuz, activate proxy network, force ceasefire.',
+    rb_red_cap:'230 drones deployed. Hormuz closed. Hezbollah 150K+ projectiles. Houthis active. PMF attacking US bases.',
+    rb_red_vul:'1,045+ dead. 17+ ships lost. Internet 4%. Leadership decapitated. Nuclear sites struck. Navy destroyed.',
+    rb_red_next:'Asymmetric attacks. Cyberattacks (Dimon warning). Proxy escalation. Maintain Hormuz closure.',
+    intel_coa_title:'🎯 COURSE OF ACTION ANALYSIS',
+    coa_us:'🇺🇸 UNITED STATES', coa_iran:'🇮🇷 IRAN', coa_israel:'🇮🇱 ISRAEL',
+    coa_us1_lbl:'Sustained air + naval', coa_us1_det:'Continue current tempo. Advantage: minimal US casualties. Risk: war fatigue.',
+    coa_us2_lbl:'Limited ground ops', coa_us2_det:'Special forces + regime targets. Advantage: decisive. Risk: escalation, casualties.',
+    coa_us3_lbl:'Negotiate ceasefire', coa_us3_det:'Declare objectives met. Advantage: de-escalation. Risk: appears weak.',
+    coa_ir1_lbl:'Asymmetric attrition', coa_ir1_det:'Proxy war + Hormuz + cyber. Advantage: inflicts economic pain. Risk: further strikes.',
+    coa_ir2_lbl:'Full retaliation', coa_ir2_det:'All missiles at Israel + US bases. Advantage: show of force. Risk: total destruction.',
+    coa_ir3_lbl:'Seek mediation', coa_ir3_det:'Accept China/Turkey mediation. Advantage: survival. Risk: regime collapse anyway.',
+    coa_il1_lbl:'Maximize nuclear damage', coa_il1_det:'Hit all nuclear sites + Bushehr. Advantage: removes existential threat. Risk: radiation.',
+    coa_il2_lbl:'Two-front war', coa_il2_det:'Simultaneous Hezbollah + Iran. Advantage: comprehensive. Risk: overextension.',
+    coa_il3_lbl:'Declare victory early', coa_il3_det:'Claim nuclear threat eliminated. Advantage: minimize costs. Risk: incomplete.',
+    intel_bop_title:'⚖ BANDWAGON / BALANCE OF POWER',
+    bop_bandwagon:'🔵 BANDWAGONING (Pro-US/Israel)', bop_balance:'🔴 BALANCING (Pro-Iran / Anti-US)', bop_hedging:'🟡 HEDGING / MEDIATION',
+    bop_bw1:'🇬🇧🇫🇷🇩🇪 E3: Full endorsement of strikes', bop_bw2:'🇸🇦 Saudi: Silent compliance, closed embassy',
+    bop_bw3:'🇦🇪 UAE: Intercepted Iranian missiles', bop_bw4:'🇰🇼 Kuwait: 178 missiles + 384 drones intercepted',
+    bop_bw5:'🇦🇺🇯🇵🇰🇷 Pacific allies: Verbal support',
+    bop_bl1:'🇷🇺 Russia: Warns on Bushehr, arms leverage', bop_bl2:'🇻🇪 Venezuela: Maduro condemns "imperial aggression"',
+    bop_bl3:'🇸🇾 Syria: Proxy coordination with Iran', bop_bl4:'🇾🇪 Houthis: Active attacks, drones + missiles',
+    bop_bl5:'🇮🇶 Iraq PMF: Attacking Al-Asad base',
+    bop_hd1:'🇨🇳 China: "Strategic restraint" — buys discounted oil', bop_hd2:'🇮🇳 India: Evacuating nationals, neutral stance',
+    bop_hd3:'🇹🇷 Turkey: NATO missile intercept but offers mediation', bop_hd4:'🇶🇦 Qatar: Halted LNG, potential mediator',
+    bop_hd5:'🇧🇷 Brazil: Calls for ceasefire at UNSC',
+    intel_sc_title:'📈 PROBABILISTIC SCENARIOS',
+    sc1_name:'🟢 QUICK RESOLUTION', sc1_detail:'Triggers: Iran signals via China/Turkey. Nuclear sites confirmed destroyed. Timeline: 1-2 weeks. Markets: Brent $70, Gold $4,800, VIX normalizes.',
+    sc2_name:'🔵 SUSTAINED AIR CAMPAIGN', sc2_detail:'Triggers: US continues "~4 weeks" plan. No ground troops. Hormuz partially reopens. Timeline: 3-5 weeks. Markets: Brent $85-95, Gold $5,200+.',
+    sc3_name:'🟡 PROLONGED REGIONAL', sc3_detail:'Triggers: Lebanon escalates. Hezbollah all-in. Hormuz stays closed. Timeline: 2-4 months. Markets: Brent $100-120, recession risk.',
+    sc4_name:'🔴 EXTREME ESCALATION', sc4_detail:'Triggers: Bushehr struck (radiation). Iran uses non-conventional weapons. Russia intervenes. Timeline: months+. Markets: Brent $150+, global crisis.',
+    // Enhanced Kahn
+    kahn_triggers_title:'⚠ TRIGGERS TO LEVEL 9:', kahn_historical_title:'📖 HISTORICAL COMPARISON:', kahn_deesc_title:'🕊 DE-ESCALATION PATH:',
+    kahn_triggers:'• Bushehr struck → radiation release\n• Iran deploys chemical/bio agents\n• Russia provides S-400 / direct military aid\n• Nuclear device detonation threat',
+    kahn_historical:'• Cuban Missile Crisis (1962): peaked Level 7-8, resolved via back-channel\n• Gulf War (1991): Level 6-7, coalition air → ground in 100h\n• Current conflict: Level 8 — exceeds both in theaters and proxy involvement',
+    kahn_deesc:'• China/Turkey mediation channel (active but stalled)\n• Iran signals via Swiss embassy (traditional back-channel)\n• US declares nuclear objectives met → ceasefire offer\n• Hormuz partial reopening as confidence measure',
+    intel_refresh_nokey:'Enter your API key in the chat panel first.',
   },
   es: {
     subtitle:'CONFLICTO IRÁN–EE.UU.–ISRAEL 2026',
@@ -1157,6 +1562,75 @@ const LANGS = {
     mkt_sp_chg:'▼ -0.94% cierre', mkt_close:'cierre 03/03', mkt_yield_chg:'▲ desde 3.96%', mkt_yield_src:'inflación guerra',
     mkt_vix_chg:'↑ intraday · cerró +8%', mkt_dxy_chg:'▲ +0.95% (haven)', mkt_dxy_src:'borra pérdidas año',
     mkt_vlcc_chg:'▲ +94% un día RÉCORD', mkt_gas_chg:'mayor desde 2022',
+    chat_title:'ANALISTA IA — WAR ROOM', chat_ctx:'🔴 Ctx activo: Irán–EE.UU.–Israel · D+5 04 Mar 2026 · Datos reales cargados',
+    chat_welcome:'Sistema activo con datos reales verificados. Brent $84.18, DXY 98.54, Gold $5,187. Puedo analizar escalada, impacto FX, posiciones nacionales, proyecciones al 31 Mar. ¿Qué deseas consultar?',
+    chat_send:'ENVIAR', chat_placeholder:'Pregunta estratégica o de mercados…',
+    api_key_label:'CLAVE API', chat_no_key:'Ingresa tu clave API de Anthropic arriba para usar el analista IA.',
+    q_dxy:'DXY & guerra', q_brent:'Brent $84', q_hormuz:'Ormuz', q_markets:'Mercados', q_china:'China', q_scenario:'Mar 31',
+    q_dxy_q:'¿Por qué el DXY está en 98 y no sube más si hay guerra?', q_brent_q:'¿Por qué el Brent no subió más?',
+    q_hormuz_q:'Probabilidad de cierre del Estrecho de Ormuz', q_markets_q:'¿Qué harán los mercados?',
+    q_china_q:'Postura de China: ¿neutral o pro-Irán?', q_scenario_q:'Proyección escenario más probable al 31 de marzo',
+    wp_title:'𝕏 POSICIONES GLOBALES EN X — DECLARACIONES REALES VERIFICADAS', wp_close:'CERRAR',
+    x_hdr:'REACCIONES VERIFICADAS — 28 FEB 2026',
+    xf_all:'TODO', xf_sup:'✅ APOYA', xf_opp:'❌ CONDENA', xf_neu:'🕊 NEUTRAL', xf_amb:'↔ AMBIGUO', xf_med:'🤝 MEDIACIÓN',
+    wl_sup:'Apoya EE.UU./Israel', wl_opp:'Condena / Pro-Irán', wl_neu:'Neutral / Contención', wl_amb:'Ambigüedad estratégica', wl_med:'Ofrece mediación',
+    ev_search:'Buscar eventos…',
+    // Intel analysis section
+    intel_section_title:'ANÁLISIS DE INTELIGENCIA', intel_section_sub:'D+5 · 6 MARCOS',
+    intel_pmesii_title:'📊 PMESII-PT (8 DOMINIOS)',
+    pm_pol:'P — POLÍTICO', pm_mil:'M — MILITAR', pm_eco:'E — ECONÓMICO', pm_soc:'S — SOCIAL',
+    pm_inf:'I — INFRAESTRUCTURA', pm_info:'I — INFORMACIÓN', pm_phy:'P — FÍSICO', pm_time:'T — TIEMPO',
+    pm_pol_txt:'Khamenei eliminado D+0. Asamblea de Expertos bombardeada. Trump "~4 semanas". E3 apoya. Kaine exige voto War Powers.',
+    pm_mil_txt:'10 oleadas, 17+ barcos hundidos, 6 KIA EEUU, 1,045+ muertos Irán. IRIS Dena hundido. Mossad ops terrestres dentro de Irán.',
+    pm_eco_txt:'Brent $84.18 (+19%). VLCC $423K/día récord. Gas UE +38%. Oro $5,187. QatarEnergy detuvo GNL.',
+    pm_soc_txt:'1M+ varados, 11K vuelos cancelados. Internet Irán 4%. 3 embajadas cerradas. Refugio activado.',
+    pm_inf_txt:'Natanz/Fordow/Isfahan atacados. HQ IRIB destruido. Ras Laffan fuera de línea. Bushehr amenazado.',
+    pm_info_txt:'Apagón de internet en Irán. HQ de medios destruido. OSINT activo. Truth Social como canal principal EEUU.',
+    pm_phy_txt:'5 teatros: Golfo, Mediterráneo oriental, Océano Índico, Líbano, Yemen. Ormuz cerrado.',
+    pm_time_txt:'D+5. Trump "~4 semanas". Sin conversaciones de alto al fuego. Mercados con prima de 2 semanas. Escalada acelerándose.',
+    intel_rb_title:'🔵🔴 EQUIPO ROJO / EQUIPO AZUL',
+    rb_blue_title:'🔵 AZUL — EEUU + ISRAEL', rb_red_title:'🔴 ROJO — IRÁN + PROXIES',
+    rb_obj:'OBJETIVO:', rb_cap:'CAPACIDADES:', rb_vul:'VULNERABILIDADES:', rb_next:'PRÓXIMOS MOVIMIENTOS:',
+    rb_blue_obj:'Neutralizar programa nuclear iraní, decapitar liderazgo, forzar colapso del régimen.',
+    rb_blue_cap:'10 oleadas completadas. Superioridad aérea total. 2 grupos de portaaviones. Mossad ops terrestres. Arrow-3 ~80%.',
+    rb_blue_vul:'6 KIA ya. Fuego amigo (3 F-15). Sobreextensión en 5 teatros. Oposición política (Kaine).',
+    rb_blue_next:'Continuar campaña aérea. Posibles tropas terrestres. Escolta de tanqueros en Golfo. Presión sobre Bushehr.',
+    rb_red_obj:'Sobrevivir ataque inicial, infligir costos, cerrar Ormuz, activar red proxy, forzar alto al fuego.',
+    rb_red_cap:'230 drones desplegados. Ormuz cerrado. Hezbolá 150K+ proyectiles. Hutíes activos. PMF atacando bases EEUU.',
+    rb_red_vul:'1,045+ muertos. 17+ barcos perdidos. Internet 4%. Liderazgo decapitado. Sitios nucleares golpeados. Marina destruida.',
+    rb_red_next:'Ataques asimétricos. Ciberataques (advertencia Dimon). Escalada proxy. Mantener cierre de Ormuz.',
+    intel_coa_title:'🎯 ANÁLISIS CURSOS DE ACCIÓN',
+    coa_us:'🇺🇸 ESTADOS UNIDOS', coa_iran:'🇮🇷 IRÁN', coa_israel:'🇮🇱 ISRAEL',
+    coa_us1_lbl:'Campaña aérea + naval sostenida', coa_us1_det:'Continuar tempo actual. Ventaja: mínimas bajas EEUU. Riesgo: fatiga bélica.',
+    coa_us2_lbl:'Ops terrestres limitadas', coa_us2_det:'Fuerzas especiales + objetivos régimen. Ventaja: decisivo. Riesgo: escalada, bajas.',
+    coa_us3_lbl:'Negociar alto al fuego', coa_us3_det:'Declarar objetivos cumplidos. Ventaja: desescalada. Riesgo: parece débil.',
+    coa_ir1_lbl:'Desgaste asimétrico', coa_ir1_det:'Guerra proxy + Ormuz + ciber. Ventaja: dolor económico. Riesgo: más ataques.',
+    coa_ir2_lbl:'Represalia total', coa_ir2_det:'Todos los misiles contra Israel + bases EEUU. Ventaja: demostración de fuerza. Riesgo: destrucción total.',
+    coa_ir3_lbl:'Buscar mediación', coa_ir3_det:'Aceptar mediación China/Turquía. Ventaja: supervivencia. Riesgo: colapso del régimen de todos modos.',
+    coa_il1_lbl:'Maximizar daño nuclear', coa_il1_det:'Golpear todos sitios nucleares + Bushehr. Ventaja: elimina amenaza existencial. Riesgo: radiación.',
+    coa_il2_lbl:'Guerra en dos frentes', coa_il2_det:'Simultáneo Hezbolá + Irán. Ventaja: integral. Riesgo: sobreextensión.',
+    coa_il3_lbl:'Declarar victoria temprana', coa_il3_det:'Amenaza nuclear eliminada. Ventaja: minimizar costos. Riesgo: incompleto.',
+    intel_bop_title:'⚖ BANDWAGON / BALANCE DE PODER',
+    bop_bandwagon:'🔵 BANDWAGONING (Pro-EEUU/Israel)', bop_balance:'🔴 BALANCEO (Pro-Irán / Anti-EEUU)', bop_hedging:'🟡 COBERTURA / MEDIACIÓN',
+    bop_bw1:'🇬🇧🇫🇷🇩🇪 E3: Respaldo total a los ataques', bop_bw2:'🇸🇦 Arabia Saudí: Cumplimiento silencioso, embajada cerrada',
+    bop_bw3:'🇦🇪 EAU: Interceptó misiles iraníes', bop_bw4:'🇰🇼 Kuwait: 178 misiles + 384 drones interceptados',
+    bop_bw5:'🇦🇺🇯🇵🇰🇷 Aliados Pacífico: Apoyo verbal',
+    bop_bl1:'🇷🇺 Rusia: Advierte sobre Bushehr, palanca de armas', bop_bl2:'🇻🇪 Venezuela: Maduro condena "agresión imperial"',
+    bop_bl3:'🇸🇾 Siria: Coordinación proxy con Irán', bop_bl4:'🇾🇪 Hutíes: Ataques activos, drones + misiles',
+    bop_bl5:'🇮🇶 Irak PMF: Atacando base Al-Asad',
+    bop_hd1:'🇨🇳 China: "Contención estratégica" — compra petróleo con descuento', bop_hd2:'🇮🇳 India: Evacuando nacionales, postura neutral',
+    bop_hd3:'🇹🇷 Turquía: Intercepción misil NATO pero ofrece mediación', bop_hd4:'🇶🇦 Qatar: Detuvo GNL, potencial mediador',
+    bop_hd5:'🇧🇷 Brasil: Pide alto al fuego en CSNU',
+    intel_sc_title:'📈 ESCENARIOS PROBABILÍSTICOS',
+    sc1_name:'🟢 RESOLUCIÓN RÁPIDA', sc1_detail:'Disparadores: Irán señala vía China/Turquía. Sitios nucleares destruidos confirmado. Plazo: 1-2 semanas. Mercados: Brent $70, Oro $4,800, VIX normaliza.',
+    sc2_name:'🔵 CAMPAÑA AÉREA SOSTENIDA', sc2_detail:'Disparadores: EEUU continúa plan "~4 semanas". Sin tropas terrestres. Ormuz reabre parcialmente. Plazo: 3-5 semanas. Mercados: Brent $85-95, Oro $5,200+.',
+    sc3_name:'🟡 REGIONAL PROLONGADO', sc3_detail:'Disparadores: Líbano escala. Hezbolá todo-in. Ormuz cerrado. Plazo: 2-4 meses. Mercados: Brent $100-120, riesgo recesión.',
+    sc4_name:'🔴 ESCALADA EXTREMA', sc4_detail:'Disparadores: Bushehr atacado (radiación). Irán usa armas no-conv. Rusia interviene. Plazo: meses+. Mercados: Brent $150+, crisis global.',
+    kahn_triggers_title:'⚠ DETONANTES NIVEL 9:', kahn_historical_title:'📖 COMPARACIÓN HISTÓRICA:', kahn_deesc_title:'🕊 RUTA DE DESESCALADA:',
+    kahn_triggers:'• Bushehr atacado → liberación radiación\n• Irán despliega agentes químicos/bio\n• Rusia provee S-400 / ayuda militar directa\n• Amenaza detonación dispositivo nuclear',
+    kahn_historical:'• Crisis Misiles Cuba (1962): pico Nivel 7-8, resuelto por canal secreto\n• Guerra del Golfo (1991): Nivel 6-7, aire → terrestre en 100h\n• Conflicto actual: Nivel 8 — supera ambos en teatros e involucración proxy',
+    kahn_deesc:'• Canal mediación China/Turquía (activo pero estancado)\n• Irán señala vía embajada suiza (canal tradicional)\n• EEUU declara objetivos nucleares cumplidos → oferta alto al fuego\n• Reapertura parcial Ormuz como medida de confianza',
+    intel_refresh_nokey:'Ingresa tu clave API en el panel de chat primero.',
   },
   fr: {
     subtitle:'CONFLIT IRAN–ÉTATS-UNIS–ISRAËL 2026',
@@ -1193,6 +1667,19 @@ const LANGS = {
     mkt_sp_chg:'▼ -0,94% clôture', mkt_close:'clôture 03/03', mkt_yield_chg:'▲ depuis 3,96%', mkt_yield_src:'inflation de guerre',
     mkt_vix_chg:'↑ intraday · clôturé +8%', mkt_dxy_chg:'▲ +0,95% (refuge)', mkt_dxy_src:'efface pertes YTD',
     mkt_vlcc_chg:'▲ +94% un jour RECORD', mkt_gas_chg:'plus haut depuis 2022',
+    chat_title:'ANALYSTE IA — WAR ROOM', chat_ctx:'🔴 Ctx actif : Iran–É.-U.–Israël · J+5 04 Mar 2026 · Données réelles chargées',
+    chat_welcome:'Système actif avec données réelles vérifiées. Brent $84.18, DXY 98.54, Or $5,187. Escalade, FX, positions nationales, projections au 31 mars.',
+    chat_send:'ENVOYER', chat_placeholder:'Question stratégique ou marchés…',
+    api_key_label:'CLÉ API', chat_no_key:'Entrez votre clé API Anthropic ci-dessus pour utiliser l\'analyste IA.',
+    q_dxy:'DXY & guerre', q_brent:'Brent $84', q_hormuz:'Ormuz', q_markets:'Marchés', q_china:'Chine', q_scenario:'Mar 31',
+    q_dxy_q:'Pourquoi le DXY est-il à 98 et ne monte pas plus en temps de guerre ?', q_brent_q:'Pourquoi le Brent n\'a-t-il pas plus monté ?',
+    q_hormuz_q:'Probabilité de fermeture d\'Ormuz', q_markets_q:'Que feront les marchés ensuite ?',
+    q_china_q:'Position de la Chine : neutre ou pro-Iran ?', q_scenario_q:'Projection du scénario le plus probable au 31 mars',
+    wp_title:'𝕏 POSITIONS GLOBALES SUR X — DÉCLARATIONS RÉELLES VÉRIFIÉES', wp_close:'FERMER',
+    x_hdr:'RÉACTIONS VÉRIFIÉES — 28 FÉV 2026',
+    xf_all:'TOUT', xf_sup:'✅ SOUTIENT', xf_opp:'❌ CONDAMNE', xf_neu:'🕊 NEUTRE', xf_amb:'↔ AMBIGU', xf_med:'🤝 MÉDIATION',
+    wl_sup:'Soutient É.-U./Israël', wl_opp:'Condamne / Pro-Iran', wl_neu:'Neutre / Retenue', wl_amb:'Ambiguïté stratégique', wl_med:'Offre médiation',
+    ev_search:'Rechercher événements…',
   },
   pt: {
     subtitle:'CONFLITO IRÃ–EUA–ISRAEL 2026',
@@ -1229,6 +1716,19 @@ const LANGS = {
     mkt_sp_chg:'▼ -0,94% fechamento', mkt_close:'fechamento 03/03', mkt_yield_chg:'▲ de 3,96%', mkt_yield_src:'inflação de guerra',
     mkt_vix_chg:'↑ intraday · fechou +8%', mkt_dxy_chg:'▲ +0,95% (refúgio)', mkt_dxy_src:'apaga perdas YTD',
     mkt_vlcc_chg:'▲ +94% um dia RECORDE', mkt_gas_chg:'maior desde 2022',
+    chat_title:'ANALISTA IA — WAR ROOM', chat_ctx:'🔴 Ctx ativo: Irã–EUA–Israel · D+5 04 Mar 2026 · Dados reais carregados',
+    chat_welcome:'Sistema ativo com dados reais verificados. Brent $84.18, DXY 98.54, Ouro $5,187. Escalada, FX, posições nacionais, projeções até 31 Mar.',
+    chat_send:'ENVIAR', chat_placeholder:'Pergunta estratégica ou de mercados…',
+    api_key_label:'CHAVE API', chat_no_key:'Insira sua chave API Anthropic acima para usar o analista IA.',
+    q_dxy:'DXY & guerra', q_brent:'Brent $84', q_hormuz:'Ormuz', q_markets:'Mercados', q_china:'China', q_scenario:'Mar 31',
+    q_dxy_q:'Por que o DXY está em 98 e não sobe mais em guerra?', q_brent_q:'Por que o Brent não subiu mais?',
+    q_hormuz_q:'Probabilidade de Ormuz permanecer fechado', q_markets_q:'O que os mercados farão?',
+    q_china_q:'Posição da China: neutra ou pró-Irã?', q_scenario_q:'Projeção do cenário mais provável até 31 de março',
+    wp_title:'𝕏 POSIÇÕES GLOBAIS NO X — DECLARAÇÕES REAIS VERIFICADAS', wp_close:'FECHAR',
+    x_hdr:'REAÇÕES VERIFICADAS — 28 FEV 2026',
+    xf_all:'TUDO', xf_sup:'✅ APOIA', xf_opp:'❌ CONDENA', xf_neu:'🕊 NEUTRO', xf_amb:'↔ AMBÍGUO', xf_med:'🤝 MEDIAÇÃO',
+    wl_sup:'Apoia EUA/Israel', wl_opp:'Condena / Pró-Irã', wl_neu:'Neutro / Contenção', wl_amb:'Ambiguidade estratégica', wl_med:'Oferece mediação',
+    ev_search:'Buscar eventos…',
   },
   ru: {
     subtitle:'КОНФЛИКТ ИРАН–США–ИЗРАИЛЬ 2026',
@@ -1265,6 +1765,19 @@ const LANGS = {
     mkt_sp_chg:'▼ -0,94% закрытие', mkt_close:'закрытие 03/03', mkt_yield_chg:'▲ с 3,96%', mkt_yield_src:'военная инфляция',
     mkt_vix_chg:'↑ внутри дня · закрыл +8%', mkt_dxy_chg:'▲ +0,95% (убежище)', mkt_dxy_src:'стирает потери YTD',
     mkt_vlcc_chg:'▲ +94% за день РЕКОРД', mkt_gas_chg:'максимум с 2022',
+    chat_title:'ИИ-АНАЛИТИК — WAR ROOM', chat_ctx:'🔴 Активный контекст: Иран–США–Израиль · Д+5 04 Мар 2026 · Реальные данные загружены',
+    chat_welcome:'Система активна с проверенными реальными данными. Brent $84.18, DXY 98.54, Золото $5,187. Эскалация, валюты, национальные позиции, прогнозы до 31 марта.',
+    chat_send:'ОТПРАВИТЬ', chat_placeholder:'Стратегический или рыночный вопрос…',
+    api_key_label:'API КЛЮЧ', chat_no_key:'Введите ваш API-ключ Anthropic выше для использования ИИ-аналитика.',
+    q_dxy:'DXY и война', q_brent:'Brent $84', q_hormuz:'Ормуз', q_markets:'Рынки', q_china:'Китай', q_scenario:'Мар 31',
+    q_dxy_q:'Почему DXY на уровне 98 и не растёт выше при войне?', q_brent_q:'Почему Brent не вырос больше?',
+    q_hormuz_q:'Вероятность закрытия Ормуза', q_markets_q:'Что будут делать рынки дальше?',
+    q_china_q:'Позиция Китая: нейтральная или про-иранская?', q_scenario_q:'Наиболее вероятный сценарий к 31 марта',
+    wp_title:'𝕏 МИРОВЫЕ ПОЗИЦИИ В X — ВЕРИФИЦИРОВАННЫЕ РЕАЛЬНЫЕ ЗАЯВЛЕНИЯ', wp_close:'ЗАКРЫТЬ',
+    x_hdr:'ВЕРИФИЦИРОВАННЫЕ РЕАКЦИИ — 28 ФЕВ 2026',
+    xf_all:'ВСЕ', xf_sup:'✅ ПОДДЕРЖКА', xf_opp:'❌ ОСУЖДЕНИЕ', xf_neu:'🕊 НЕЙТРАЛЬН.', xf_amb:'↔ ДВУСМЫСЛ.', xf_med:'🤝 МЕДИАЦИЯ',
+    wl_sup:'Поддерживает США/Израиль', wl_opp:'Осуждает / Про-Иран', wl_neu:'Нейтральный / Сдержанность', wl_amb:'Стратегическая двусмысленность', wl_med:'Предлагает посредничество',
+    ev_search:'Поиск событий…',
   },
   ar: {
     subtitle:'صراع إيران–أمريكا–إسرائيل 2026',
@@ -1301,6 +1814,19 @@ const LANGS = {
     mkt_sp_chg:'▼ -0.94% إغلاق', mkt_close:'إغلاق 03/03', mkt_yield_chg:'▲ من 3.96%', mkt_yield_src:'تضخم الحرب',
     mkt_vix_chg:'↑ خلال اليوم · أغلق +8%', mkt_dxy_chg:'▲ +0.95% (ملاذ)', mkt_dxy_src:'يمحو خسائر YTD',
     mkt_vlcc_chg:'▲ +94% يوم واحد قياسي', mkt_gas_chg:'الأعلى منذ 2022',
+    chat_title:'محلل ذكاء اصطناعي — WAR ROOM', chat_ctx:'🔴 سياق نشط: إيران–أمريكا–إسرائيل · ي+5 04 مارس 2026 · بيانات حقيقية محملة',
+    chat_welcome:'النظام نشط مع بيانات حقيقية موثقة. برنت $84.18, DXY 98.54, ذهب $5,187. يمكنني تحليل التصعيد وتأثير العملات والمواقف الدولية.',
+    chat_send:'إرسال', chat_placeholder:'سؤال استراتيجي أو عن الأسواق…',
+    api_key_label:'مفتاح API', chat_no_key:'أدخل مفتاح API الخاص بك من Anthropic أعلاه لاستخدام المحلل.',
+    q_dxy:'DXY والحرب', q_brent:'برنت $84', q_hormuz:'هرمز', q_markets:'الأسواق', q_china:'الصين', q_scenario:'مارس 31',
+    q_dxy_q:'لماذا DXY عند 98 ولا يرتفع أكثر في الحرب؟', q_brent_q:'لماذا لم يرتفع برنت أكثر؟',
+    q_hormuz_q:'احتمال بقاء هرمز مغلقاً', q_markets_q:'ماذا ستفعل الأسواق؟',
+    q_china_q:'موقف الصين: محايد أم مؤيد لإيران؟', q_scenario_q:'السيناريو الأكثر احتمالاً حتى 31 مارس',
+    wp_title:'𝕏 مواقف عالمية على X — تصريحات حقيقية موثقة', wp_close:'إغلاق',
+    x_hdr:'ردود فعل موثقة — 28 فبراير 2026',
+    xf_all:'الكل', xf_sup:'✅ يؤيد', xf_opp:'❌ يدين', xf_neu:'🕊 محايد', xf_amb:'↔ غامض', xf_med:'🤝 وساطة',
+    wl_sup:'يؤيد أمريكا/إسرائيل', wl_opp:'يدين / مؤيد لإيران', wl_neu:'محايد / ضبط النفس', wl_amb:'غموض استراتيجي', wl_med:'يقدم وساطة',
+    ev_search:'بحث في الأحداث…',
   },
   zh: {
     subtitle:'伊朗–美国–以色列冲突 2026',
@@ -1337,6 +1863,19 @@ const LANGS = {
     mkt_sp_chg:'▼ -0.94% 收盘', mkt_close:'收盘 03/03', mkt_yield_chg:'▲ 从3.96%', mkt_yield_src:'战争通胀',
     mkt_vix_chg:'↑ 盘中 · 收涨+8%', mkt_dxy_chg:'▲ +0.95%（避险）', mkt_dxy_src:'抹去年初跌幅',
     mkt_vlcc_chg:'▲ +94% 单日纪录', mkt_gas_chg:'2022年以来最大涨幅',
+    chat_title:'AI分析师 — WAR ROOM', chat_ctx:'🔴 当前上下文：伊朗–美国–以色列 · D+5 2026年3月4日 · 已加载验证数据',
+    chat_welcome:'系统已启动，载入经验证真实数据。布伦特$84.18，DXY 98.54，黄金$5,187。可分析升级、外汇影响、各国立场、3月31日预测。',
+    chat_send:'发送', chat_placeholder:'战略或市场问题…',
+    api_key_label:'API密钥', chat_no_key:'请在上方输入您的Anthropic API密钥以使用AI分析师。',
+    q_dxy:'DXY与战争', q_brent:'布伦特$84', q_hormuz:'霍尔木兹', q_markets:'市场', q_china:'中国', q_scenario:'3月31日',
+    q_dxy_q:'为什么战争期间DXY在98而不是更高？', q_brent_q:'为什么布伦特没有涨更多？',
+    q_hormuz_q:'霍尔木兹海峡继续封锁的概率', q_markets_q:'市场接下来会怎样？',
+    q_china_q:'中国的立场：中立还是亲伊朗？', q_scenario_q:'截至3月31日最可能的情景预测',
+    wp_title:'𝕏 全球立场 — 经验证的真实声明', wp_close:'关闭',
+    x_hdr:'经验证反应 — 2026年2月28日',
+    xf_all:'全部', xf_sup:'✅ 支持', xf_opp:'❌ 谴责', xf_neu:'🕊 中立', xf_amb:'↔ 模糊', xf_med:'🤝 调解',
+    wl_sup:'支持美国/以色列', wl_opp:'谴责/亲伊朗', wl_neu:'中立/克制', wl_amb:'战略模糊', wl_med:'提供调解',
+    ev_search:'搜索事件…',
   },
   fa: {
     subtitle:'درگیری ایران–آمریکا–اسرائیل ۲۰۲۶',
@@ -1373,7 +1912,143 @@ const LANGS = {
     mkt_sp_chg:'▼ -۰.۹۴٪ بسته', mkt_close:'بسته ۰۳/۰۳', mkt_yield_chg:'▲ از ۳.۹۶٪', mkt_yield_src:'تورم جنگ',
     mkt_vix_chg:'↑ حین بازار · بست +۸٪', mkt_dxy_chg:'▲ +۰.۹۵٪ (پناه)', mkt_dxy_src:'جبران زیان سالانه',
     mkt_vlcc_chg:'▲ +۹۴٪ یک‌روزه رکورد', mkt_gas_chg:'بزرگترین از ۲۰۲۲',
+    chat_title:'تحلیلگر هوش مصنوعی — WAR ROOM', chat_ctx:'🔴 زمینه فعال: ایران–آمریکا–اسرائیل · روز+۵ ۰۴ مارس ۲۰۲۶ · داده‌های واقعی بارگذاری‌شده',
+    chat_welcome:'سیستم فعال با داده‌های واقعی تأییدشده. برنت $84.18، DXY 98.54، طلا $5,187. تحلیل تشدید، ارز، مواضع کشورها.',
+    chat_send:'ارسال', chat_placeholder:'پرسش استراتژیک یا بازار…',
+    api_key_label:'کلید API', chat_no_key:'لطفاً کلید API خود از Anthropic را در بالا وارد کنید.',
+    q_dxy:'DXY و جنگ', q_brent:'برنت $84', q_hormuz:'هرمز', q_markets:'بازارها', q_china:'چین', q_scenario:'مارس ۳۱',
+    q_dxy_q:'چرا DXY در ۹۸ است و در جنگ بالاتر نمی‌رود؟', q_brent_q:'چرا برنت بیشتر بالا نرفت؟',
+    q_hormuz_q:'احتمال بسته ماندن هرمز', q_markets_q:'بازارها چه خواهند کرد؟',
+    q_china_q:'موضع چین: بی‌طرف یا طرفدار ایران؟', q_scenario_q:'محتمل‌ترین سناریو تا ۳۱ مارس',
+    wp_title:'𝕏 مواضع جهانی در X — بیانیه‌های واقعی تأییدشده', wp_close:'بستن',
+    x_hdr:'واکنش‌های تأییدشده — ۲۸ فوریه ۲۰۲۶',
+    xf_all:'همه', xf_sup:'✅ حمایت', xf_opp:'❌ محکومیت', xf_neu:'🕊 بی‌طرف', xf_amb:'↔ مبهم', xf_med:'🤝 میانجیگری',
+    wl_sup:'حمایت از آمریکا/اسرائیل', wl_opp:'محکومیت / طرفدار ایران', wl_neu:'بی‌طرف / خویشتنداری', wl_amb:'ابهام استراتژیک', wl_med:'پیشنهاد میانجیگری',
+    ev_search:'جستجوی رویدادها…',
   },
+};
+
+// ─── TICKER I18N ───
+const TICKER_EN = document.getElementById('tickerContent')?.innerHTML || '';
+const TICKER_I18N = {
+  en: TICKER_EN,
+  es: '🔴 <span class="real-tag">D+5 · 04 MAR 2026</span> <a class="ticker-link" href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank">MUERTOS EN IRÁN: 1,045+ (Tasnim / Al Jazeera) · BAJAS USA: 6 KIA · BARCOS IRÁN HUNDIDOS: 17+ (CENTCOM)</a> <span class="sep">◆</span> <a class="ticker-link" href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank"><span class="real-tag">✔REAL CNBC 03/03</span> BRENT: $84.18/bbl (+18.84% vs semana) · WTI: $77.00 · GAS NAT EUROPA: +38% en un día (mayor subida desde 2022)</a> <span class="sep">◆</span> <a class="ticker-link" href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank"><span class="real-tag">✔REAL LSEG 02/03</span> VLCC SUPERTANKERS: $423,000/día — RÉCORD HISTÓRICO (+94% en una sola jornada). Estrecho de Ormuz: tráfico efectivamente detenido</a> <span class="sep">◆</span> <a class="ticker-link" href="https://www.investing.com/commodities/gold" target="_blank"><span class="real-tag">✔REAL investing.com 04/03</span> ORO: $5,187 · cayó -4.8% martes · "Cash became king" (Reuters) · rebotando hoy en Asia</a> <span class="sep">◆</span> <a class="ticker-link" href="https://edition.cnn.com/world/live-news/israel-iran-attack-02-28-26-hnk-intl" target="_blank"><span class="real-tag">✔REAL CNN 04/03</span> Trump: "suministro virtualmente ilimitado de municiones. Wars can be fought forever." · No descarta tropas terrestres</a> <span class="sep">◆</span> <a class="ticker-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank"><span class="real-tag">✔REAL Wikipedia/CENTCOM 04/03</span> Fragata IRIS DENA hundida en Océano Índico por submarino USA, 40mn sur de Sri Lanka</a> <span class="sep">◆</span> <a class="ticker-link" href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank"><span class="real-tag">✔REAL Al Jazeera 04/03</span> ISRAEL lanza DÉCIMA OLA: Teherán, Karaj, Isfahan, Qom. IRGC: "230 drones en operaciones"</a> <span class="sep">◆</span> <a class="ticker-link" href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank"><span class="real-tag">✔REAL Rusia/Al Jazeera 04/03</span> Rusia advierte: Planta nuclear BUSHEHR bajo amenaza</a> <span class="sep">◆</span> <a class="ticker-link" href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank"><span class="real-tag">✔REAL Turquía/NATO 03/03</span> NATO destruyó misil balístico iraní en Mediterráneo oriental</a> <span class="sep">◆</span> <a class="ticker-link" href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank"><span class="real-tag">✔REAL CNBC 03/03</span> QatarEnergy PARÓ producción GNL. 11,000+ vuelos cancelados · +1 MILLÓN viajeros atrapados</a> <span class="sep">◆</span> <a class="ticker-link" href="https://edition.cnn.com/world/live-news/israel-iran-attack-02-28-26-hnk-intl" target="_blank"><span class="real-tag">✔REAL Rubio 03/03</span> "Los GOLPES MÁS DUROS aún están por venir"</a> <span class="sep">◆</span> <a class="ticker-link" href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank"><span class="real-tag">✔REAL Jamie Dimon 02/03</span> "Esperamos ciberataques y ataques terroristas. Los bancos pueden ser objetivos"</a>'
+};
+
+// ─── EVENTS I18N ───
+const EVS_I18N = {
+  en: [
+    {t:'D+0 02:14',k:'atk',x:'[28 FEB] Israel launches "Op. Roaring Lion" + US "Op. Epic Fury" — first strike Tehran. (Euronews)'},
+    {t:'D+0 02:28',k:'atk',x:'[28 FEB] Netanyahu: "Remove existential nuclear threat." Khamenei killed — CIA tracked him to residential compound.'},
+    {t:'D+0 02:31',k:'atk',x:'[28 FEB] Trump (Truth Social): "Bombs will be dropping everywhere… Major combat operations."'},
+    {t:'D+0 02:51',k:'rep',x:'[28 FEB] Iran "Op. True Promise IV". Internet at 4% (NetBlocks). Khamenei evacuated → confirmed dead hours later.'},
+    {t:'D+0 04:00',k:'dip',x:'[28 FEB] E3 Macron+Merz+Starmer: Support Israel, endorse strikes, call for negotiations. (Responsible Statecraft)'},
+    {t:'D+0 04:20',k:'dip',x:'[28 FEB] Tim Kaine (CNN): "Dangerous, unnecessary, idiotic. Colossal mistake." Demands War Powers vote.'},
+    {t:'D+1 09:00',k:'atk',x:'[01 MAR] US+Israel: 1,200+ munitions across 24 of 31 Iranian provinces. IRGC: attacked 27 US bases in region.'},
+    {t:'D+1 11:00',k:'rep',x:'[01 MAR] QatarEnergy HALTS LNG production after Iranian strike on Ras Laffan. EU gas +38% in one day.'},
+    {t:'D+1 14:00',k:'rep',x:'[01 MAR] IRGC declares Strait of Hormuz CLOSED. Threatens to burn any vessel. VLCC rate: $423K/day (+94%).'},
+    {t:'D+1 17:00',k:'int',x:'[01 MAR] Kuwait intercepted 178 missiles + 384 drones. 3 US F-15s downed by friendly fire from Kuwait.'},
+    {t:'D+1 18:00',k:'atk',x:'[01 MAR] CENTCOM: "17 Iranian ships destroyed + most operational submarine hull breached."'},
+    {t:'D+2 08:30',k:'atk',x:'[02 MAR] Israel hits IRGC Malek-Ashtar building Tehran (Iran International). Mossad special ops inside Iran.'},
+    {t:'D+2 10:00',k:'rep',x:'[02 MAR] US Embassy Riyadh: 2 drones, limited fire, no casualties. Embassies Kuwait+Lebanon+Saudi closed.'},
+    {t:'D+2 12:00',k:'dip',x:'[02 MAR] Rubio: "The hardest blows are yet to come. Two most powerful air forces in the world." Addresses Congress.'},
+    {t:'D+2 14:00',k:'int',x:'[02 MAR] Trump: war will last "~4 weeks", US "substantially ahead" of schedule. Offers tanker escort.'},
+    {t:'D+2 15:30',k:'rep',x:'[02 MAR] Hezbollah launches missiles at northern Israel "avenging Khamenei\'s death". Israel strikes Beirut.'},
+    {t:'D+2 16:00',k:'dip',x:'[02 MAR] Jamie Dimon (JPMorgan): "Expect cyberattacks and terrorist attacks. Banks may be targets."'},
+    {t:'D+3 02:00',k:'atk',x:'[03 MAR] Israel strikes IRIB HQ (state broadcaster) Tehran. Golestan Palace (UNESCO) damaged.'},
+    {t:'D+3 06:00',k:'atk',x:'[03 MAR] 10th wave of Israeli strikes. Simultaneous Tehran + Beirut. Israel: evacuate 50+ Lebanese villages.'},
+    {t:'D+3 08:00',k:'rep',x:'[03 MAR] Turkey/NATO: defense system destroys Iranian ballistic missile in eastern Mediterranean.'},
+    {t:'D+3 09:30',k:'dip',x:'[03 MAR] Russia warns: Bushehr nuclear plant under threat. "Explosions heard kilometers from perimeter."'},
+    {t:'D+3 11:00',k:'int',x:'[03 MAR] Dow opens -900 pts. S&P falls -2.49% intraday before recovering. Close: S&P -0.94%, Dow -437 pts.'},
+    {t:'D+3 14:00',k:'rep',x:'[03 MAR] IRGC announces "ground forces entered operations" + naval operation against US ships.'},
+    {t:'D+4 05:00',k:'atk',x:'[04 MAR] Iranian frigate IRIS Dena sunk in Indian Ocean by US submarine, 40nm south of Sri Lanka.'},
+    {t:'D+4 07:00',k:'atk',x:'[04 MAR] Iran dead surpass 1,045 (Tasnim). Al Jazeera confirms "10th wave" of Israeli strikes on Tehran.'},
+    {t:'D+4 08:00',k:'rep',x:'[04 MAR] Iranian parliament and Assembly of Experts (convened to choose new leader) bombed by Israel.'},
+    {t:'D+4 09:00',k:'int',x:'[04 MAR] Trump: "virtually unlimited supply of munitions. Wars can be fought forever." (Truth Social)'},
+  ],
+  es: [
+    {t:'D+0 02:14',k:'atk',x:'[28 FEB] Israel lanza "Op. Roaring Lion" + EEUU "Op. Epic Fury" — primer strike Teherán. (Euronews)'},
+    {t:'D+0 02:28',k:'atk',x:'[28 FEB] Netanyahu: "Remover amenaza nuclear existencial." Khamenei eliminado — CIA lo ubicó en compound residencial.'},
+    {t:'D+0 02:31',k:'atk',x:'[28 FEB] Trump (Truth Social): "Bombs will be dropping everywhere… Major combat operations."'},
+    {t:'D+0 02:51',k:'rep',x:'[28 FEB] Irán "Op. True Promise IV". Internet al 4% (NetBlocks). Khamenei evacuado → confirmado muerto horas después.'},
+    {t:'D+0 04:00',k:'dip',x:'[28 FEB] E3 Macron+Merz+Starmer: Apoyan Israel, endosan strikes, piden negociaciones. (Responsible Statecraft)'},
+    {t:'D+0 04:20',k:'dip',x:'[28 FEB] Tim Kaine (CNN): "Dangerous, unnecessary, idiotic. Colossal mistake." Pide voto War Powers.'},
+    {t:'D+1 09:00',k:'atk',x:'[01 MAR] EEUU+Israel: 1,200+ municiones sobre 24 de 31 provincias iraníes. IRGC: atacó 27 bases USA en región.'},
+    {t:'D+1 11:00',k:'rep',x:'[01 MAR] QatarEnergy DETIENE producción GNL tras ataque iraní en Ras Laffan. Gas Europa +38% en un día.'},
+    {t:'D+1 14:00',k:'rep',x:'[01 MAR] IRGC declara Estrecho de Ormuz CERRADO. Amenaza incendiar cualquier buque. Tasa VLCC: $423K/día (+94%).'},
+    {t:'D+1 17:00',k:'int',x:'[01 MAR] Kuwait interceptó 178 misiles + 384 drones. 3 cazas F-15 USA derribados por error por Kuwait.'},
+    {t:'D+1 18:00',k:'atk',x:'[01 MAR] CENTCOM: "17 barcos iraníes destruidos + submarino más operativo con agujero en casco."'},
+    {t:'D+2 08:30',k:'atk',x:'[02 MAR] Israel hits IRGC Malek-Ashtar building Teherán (Iran International). Operaciones especiales Mossad dentro de Irán.'},
+    {t:'D+2 10:00',k:'rep',x:'[02 MAR] Embajada USA Riyadh: 2 drones, incendio limitado, sin bajas. Embajadas Kuwait+Líbano+Saudi cerradas.'},
+    {t:'D+2 12:00',k:'dip',x:'[02 MAR] Rubio: "Los golpes más duros aún están por venir. Dos fuerzas aéreas más poderosas del mundo."'},
+    {t:'D+2 14:00',k:'int',x:'[02 MAR] Trump: guerra durará "~4 semanas", EEUU "sustancialmente adelantado" del cronograma. Ofrece escoltar tanqueros.'},
+    {t:'D+2 15:30',k:'rep',x:'[02 MAR] Hezbolá lanza misiles norte Israel "en venganza por muerte de Khamenei". Israel arremete contra Beirut.'},
+    {t:'D+2 16:00',k:'dip',x:'[02 MAR] Jamie Dimon (JPMorgan): "Esperar ciberataques y ataques terroristas. Los bancos pueden ser objetivos."'},
+    {t:'D+3 02:00',k:'atk',x:'[03 MAR] Israel golpea HQ de IRIB (emisora estatal iraní) en Teherán. Palacio Golestan (UNESCO) dañado.'},
+    {t:'D+3 06:00',k:'atk',x:'[03 MAR] 10ª ola de ataques israelíes. Simultáneos en Teherán y Beirut. Israel: pide evacuación 50+ aldeas Líbano.'},
+    {t:'D+3 08:00',k:'rep',x:'[03 MAR] Turquía/NATO: sistema defensivo destruye misil balístico iraní en Mediterráneo oriental.'},
+    {t:'D+3 09:30',k:'dip',x:'[03 MAR] Rusia advierte: planta nuclear Bushehr bajo amenaza. "Explosiones escuchadas a kilómetros."'},
+    {t:'D+3 11:00',k:'int',x:'[03 MAR] Dow abre -900 pts. S&P cae -2.49% intraday antes de recuperar. Cierre: S&P -0.94%, Dow -437 pts.'},
+    {t:'D+3 14:00',k:'rep',x:'[03 MAR] IRGC anuncia "fuerzas terrestres entraron en operaciones" + operación naval contra barcos USA.'},
+    {t:'D+4 05:00',k:'atk',x:'[04 MAR] Fragata iraní IRIS Dena hundida en Océano Índico por submarino USA, 40mn al sur de Sri Lanka.'},
+    {t:'D+4 07:00',k:'atk',x:'[04 MAR] Muertos en Irán superan 1,045 (Tasnim). Al Jazeera confirma "10ª ola" sobre Teherán.'},
+    {t:'D+4 08:00',k:'rep',x:'[04 MAR] Parlamento iraní y Asamblea de Expertos bombardeados por Israel.'},
+    {t:'D+4 09:00',k:'int',x:'[04 MAR] Trump: "suministro virtualmente ilimitado de municiones. Las guerras pueden librarse forever." (Truth Social)'},
+  ]
+};
+const MORE_EVS_I18N = {
+  en: [
+    {t:'D+5 live',k:'atk',x:'[04 MAR NOW] Qom + additional cities under attack. IRGC: 230 drones in operations. Bushehr plant in danger zone.'},
+    {t:'D+5 live',k:'rep',x:'[04 MAR NOW] Iran launches missiles at Israel, Tel Aviv + Jerusalem on alert. MDA: "systems working to intercept."'},
+    {t:'D+5 live',k:'dip',x:'[04 MAR NOW] Trump: doesn\'t rule out ground troops in Iran "if necessary." S&P Global warns on Israel finances.'},
+  ],
+  es: [
+    {t:'D+5 live',k:'atk',x:'[04 MAR AHORA] Qom + ciudades adicionales bajo ataque. IRGC: 230 drones en operaciones. Planta Bushehr en zona de peligro.'},
+    {t:'D+5 live',k:'rep',x:'[04 MAR AHORA] Iran lanza misiles contra Israel, Tel Aviv + Jerusalén en alerta. MDA: "sistemas trabajando para interceptar."'},
+    {t:'D+5 live',k:'dip',x:'[04 MAR AHORA] Trump: no descarta tropas terrestres en Irán "si es necesario." S&P Global advierte sobre finanzas Israel.'},
+  ]
+};
+
+// ─── MAP POPUP I18N ───
+const MAP_DATA = {
+  en: {
+    tehran:['TEHRAN','Explosions near Khamenei compound. Khamenei evacuated (Reuters).'],
+    isfahan:['ISFAHAN','Nuclear facilities. Multiple confirmed impacts.'],
+    natanz:['NATANZ','Enrichment plant. Primary operation target.'],
+    fordow:['FORDOW','Underground mountain facility Qom. Bunker-busters used.'],
+    qom:['QOM','IRGC and infrastructure.'],
+    karaj:['KARAJ','Nuclear research.'],
+    kermanshah:['KERMANSHAH','Mobile Shahab-3 missiles.'],
+    bahrain:['🔵 5TH FLEET — BAHRAIN','Under Iranian missile attack. Shelter-in-place activated.'],
+    qatar:['🔵 AL-UDEID QATAR','Largest US base. Qatar intercepted Iranian missiles (verified).'],
+    kuwait:['🔵 KUWAIT','Camp Arifjan. Sirens and explosions reported.'],
+    uae:['🔵 ABU DHABI (UAE)','Iranian missile fragments. UAE intercepted second wave (ToI).'],
+    ford:['USS FORD (CSG)','Persian Gulf. Largest carrier. F/A-18 + F-35C.'],
+    lincoln:['USS LINCOLN','Arabian Sea. Second strike group.'],
+    idf:['🇮🇱 IDF — TEL AVIV','State of emergency. Arrow-3 active. ~80% interception.'],
+    hezbollah:['🟣 HEZBOLLAH','Lebanon. +150K projectiles. Rockets at northern Israel.'],
+    houthis:["🟣 HOUTHIS — SANA'A",'Yemen. Drones + missiles.'],
+    pmf:['🟣 PMF — BAGHDAD','Iraq. Attacks Al-Asad base.'],
+  },
+  es: {
+    tehran:['TEHERÁN','Explosiones cerca compuesto Khamenei. Khamenei evacuado (Reuters).'],
+    isfahan:['ISFAHAN','Instalaciones nucleares. Múltiples impactos confirmados.'],
+    natanz:['NATANZ','Planta enriquecimiento. Objetivo primario operación.'],
+    fordow:['FORDOW','Subterráneo montaña Qom. Bunker-busters utilizados.'],
+    qom:['QOM','IRGC e infraestructura.'],
+    karaj:['KARAJ','Investigación nuclear.'],
+    kermanshah:['KERMANSHAH','Misiles móviles Shahab-3.'],
+    bahrain:['🔵 5ª FLOTA — BAHRÉIN','Bajo ataque misiles iraníes. Shelter-in-place activado.'],
+    qatar:['🔵 AL-UDEID QATAR','Mayor base EEUU. Qatar interceptó misiles iraníes (verificado).'],
+    kuwait:['🔵 KUWAIT','Camp Arifjan. Sirenas y explosiones reportadas.'],
+    uae:['🔵 ABU DHABI (EAU)','Fragmentos misiles irán. UAE interceptó segunda oleada (ToI).'],
+    ford:['USS FORD (CSG)','Golfo Pérsico. Portaaviones más grande. F/A-18 + F-35C.'],
+    lincoln:['USS LINCOLN','Mar Arábigo. Segundo grupo de ataque.'],
+    idf:['🇮🇱 IDF — TEL AVIV','Estado emergencia. Arrow-3 activo. ~80% intercepción.'],
+    hezbollah:['🟣 HEZBOLÁ','Líbano. +150K proyectiles. Cohetes norte Israel.'],
+    houthis:["🟣 HUTÍES — SANA'A",'Yemen. Drones + misiles.'],
+    pmf:['🟣 PMF — BAGDAD','Iraq. Ataca base Al-Asad.'],
+  }
 };
 
 const RTL_LANGS = new Set(['ar','fa']);
@@ -1394,6 +2069,11 @@ function setLang(code) {
     const key = el.getAttribute('data-i18n-html');
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
+  // Apply placeholder translations
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
   // RTL toggle
   document.body.classList.toggle('rtl', RTL_LANGS.has(code));
   // Active button
@@ -1408,6 +2088,17 @@ function setLang(code) {
   // Update theme toggle label
   const tb = document.getElementById('themeToggle');
   if (tb) tb.textContent = isDark ? '☀ LIGHT' : '🌙 DARK';
+  // Update ticker
+  if (TICKER_I18N[code]) {
+    const tc = document.getElementById('tickerContent');
+    if (tc) tc.innerHTML = TICKER_I18N[code];
+  }
+  // Re-render events in current language
+  if (typeof renderEvs === 'function') renderEvs();
+  // Update map popups
+  if (typeof initMapMarkers === 'function') initMapMarkers();
+  // Update html lang attribute
+  document.documentElement.lang = code;
 }
 
 // Init with English on load
@@ -1446,7 +2137,8 @@ let mapVisible=true;
 function toggleMap(){
   mapVisible=!mapVisible;
   document.getElementById("mapWrap").classList.toggle("collapsed",!mapVisible);
-  document.getElementById("mapToggleBtn").textContent=mapVisible?"▲ OCULTAR":"▼ MOSTRAR";
+  const t=LANGS[currentLang]||LANGS.en;
+  document.getElementById("mapToggleBtn").textContent=mapVisible?(t.map_hide||'▲ HIDE'):(t.map_show||'▼ SHOW');
   if(mapVisible) setTimeout(()=>map.invalidateSize(),350);
 }
 
@@ -1484,30 +2176,36 @@ function mkNaval(lat,lng,label,detail){
     .addTo(map).bindPopup(`<b style="color:#00e5a0">⚓ ${label}</b><br><span style="font-size:11px">${detail}</span>`);
 }
 
-mkExpl(35.68,51.42,'TEHERÁN','Explosiones cerca compuesto Khamenei. Khamenei evacuado (Reuters).');
-mkExpl(32.65,51.68,'ISFAHAN','Instalaciones nucleares. Múltiples impactos confirmados.');
-mkExpl(33.73,51.34,'NATANZ','Planta enriquecimiento. Objetivo primario operación.');
-mkExpl(34.88,50.01,'FORDOW','Subterráneo montaña Qom. Bunker-busters utilizados.');
-mkExpl(34.64,50.88,'QOM','IRGC e infraestructura.');
-mkExpl(35.84,50.99,'KARAJ','Investigación nuclear.');
-mkExpl(34.31,47.06,'KERMANSHAH','Misiles móviles Shahab-3.');
-mkBase(26.1,50.6,'🔵 5ª FLOTA — BAHRÉIN','Bajo ataque misiles iraníes. Shelter-in-place activado.');
-mkBase(25.28,51.52,'🔵 AL-UDEID QATAR','Mayor base EEUU. Qatar interceptó misiles iraníes (verificado).');
-mkBase(29.37,47.97,'🔵 KUWAIT','Camp Arifjan. Sirenas y explosiones reportadas.');
-mkBase(24.49,54.37,'🔵 ABU DHABI (EAU)','Fragmentos misiles iran. UAE interceptó segunda oleada (ToI).');
-mkNaval(27.5,57,'USS FORD (CSG)','Golfo Pérsico. Portaaviones más grande. F/A-18 + F-35C.');
-mkNaval(24,63,'USS LINCOLN','Mar Arábigo. Segundo grupo de ataque.');
-mkBase(31.76,35.21,'🇮🇱 IDF — TEL AVIV','Estado emergencia. Arrow-3 activo. ~80% intercepción.','#f5a623');
-mkBase(33.88,35.5,'🟣 HEZBOLÁ','Lebanon. +150K proyectiles. Cohetes norte Israel.','#a259f7');
-mkBase(15.35,44.2,"🟣 HUTÍES — SANA'A",'Yemen. Drones + misiles.','#a259f7');
-mkBase(33.35,44.42,'🟣 PMF — BAGDAD','Iraq. Ataca base Al-Asad.','#a259f7');
+function getMapLabel(key){const m=MAP_DATA[currentLang]||MAP_DATA.en;return m[key]||MAP_DATA.en[key];}
+function initMapMarkers(){
+  // Clear existing markers (except tiles, polylines, and Hormuz label)
+  map.eachLayer(l=>{if(l instanceof L.Marker&&l!==hormuzMarker)map.removeLayer(l);});
+  const m=k=>getMapLabel(k);
+  mkExpl(35.68,51.42,m('tehran')[0],m('tehran')[1]);
+  mkExpl(32.65,51.68,m('isfahan')[0],m('isfahan')[1]);
+  mkExpl(33.73,51.34,m('natanz')[0],m('natanz')[1]);
+  mkExpl(34.88,50.01,m('fordow')[0],m('fordow')[1]);
+  mkExpl(34.64,50.88,m('qom')[0],m('qom')[1]);
+  mkExpl(35.84,50.99,m('karaj')[0],m('karaj')[1]);
+  mkExpl(34.31,47.06,m('kermanshah')[0],m('kermanshah')[1]);
+  mkBase(26.1,50.6,m('bahrain')[0],m('bahrain')[1]);
+  mkBase(25.28,51.52,m('qatar')[0],m('qatar')[1]);
+  mkBase(29.37,47.97,m('kuwait')[0],m('kuwait')[1]);
+  mkBase(24.49,54.37,m('uae')[0],m('uae')[1]);
+  mkNaval(27.5,57,m('ford')[0],m('ford')[1]);
+  mkNaval(24,63,m('lincoln')[0],m('lincoln')[1]);
+  mkBase(31.76,35.21,m('idf')[0],m('idf')[1],'#f5a623');
+  mkBase(33.88,35.5,m('hezbollah')[0],m('hezbollah')[1],'#a259f7');
+  mkBase(15.35,44.2,m('houthis')[0],m('houthis')[1],'#a259f7');
+  mkBase(33.35,44.42,m('pmf')[0],m('pmf')[1],'#a259f7');
+}
 
 const ormuzIco=L.divIcon({
   html:`<div style="background:rgba(240,20,45,.18);border:1.5px dashed #f0142d;padding:3px 8px;font-family:'Space Mono';font-size:9px;color:#f0142d;white-space:nowrap;font-weight:700;box-shadow:0 0 8px rgba(240,20,45,.3)">🔴 HORMUZ — CLOSED</div>`,
   className:'',iconSize:[160,20],iconAnchor:[80,10]
 });
-L.marker([26.5,56.5],{icon:ormuzIco}).addTo(map)
-  .bindPopup('<b style="color:#f0142d">⚠ STRAIT OF HORMUZ</b><br><span style="font-size:11px">20% of global oil. IRGC declared closed. 4 vessels hit. VLCC rates +94%.</span>');
+const hormuzMarker=L.marker([26.5,56.5],{icon:ormuzIco}).addTo(map);
+hormuzMarker.bindPopup('<b style="color:#f0142d">⚠ STRAIT OF HORMUZ</b><br><span style="font-size:11px">20% of global oil. IRGC declared closed. 4 vessels hit. VLCC rates +94%.</span>');
 
 // Strike lines: Israel → Tehran, Tehran → Tel Aviv
 L.polyline([[35.68,51.42],[31.76,35.21]],{color:'#f5a623',weight:1.5,dashArray:'6,4',opacity:.6}).addTo(map);
@@ -1515,54 +2213,43 @@ L.polyline([[35.68,51.42],[33.88,35.5]], {color:'#f0142d',weight:1.5,dashArray:'
 // Houthi threat arc
 L.polyline([[15.35,44.2],[31.76,35.21]],{color:'#a259f7',weight:1,dashArray:'3,5',opacity:.5}).addTo(map);
 
+// Init map markers after hormuzMarker is defined
+initMapMarkers();
+
 // ─── EVENTS LOG ───
-const evs=[
-  {t:'D+0 02:14',k:'atk',x:'[28 FEB] Israel lanza "Op. Roaring Lion" + EEUU "Op. Epic Fury" — primer strike Teherán. (Euronews)'},
-  {t:'D+0 02:28',k:'atk',x:'[28 FEB] Netanyahu: "Remover amenaza nuclear existencial." Khamenei eliminado — CIA lo ubicó en compound residencial.'},
-  {t:'D+0 02:31',k:'atk',x:'[28 FEB] Trump (Truth Social): "Bombs will be dropping everywhere… Major combat operations."'},
-  {t:'D+0 02:51',k:'rep',x:'[28 FEB] Irán "Op. True Promise IV". Internet al 4% (NetBlocks). Khamenei evacuado → confirmado muerto horas después.'},
-  {t:'D+0 04:00',k:'dip',x:'[28 FEB] E3 Macron+Merz+Starmer: Apoyan Israel, endosan strikes, piden negociaciones. (Responsible Statecraft)'},
-  {t:'D+0 04:20',k:'dip',x:'[28 FEB] Tim Kaine (CNN): "Dangerous, unnecessary, idiotic. Colossal mistake." Pide voto War Powers.'},
-  {t:'D+1 09:00',k:'atk',x:'[01 MAR] EEUU+Israel: 1,200+ municiones sobre 24 de 31 provincias iraníes. IRGC: atacó 27 bases USA en región.'},
-  {t:'D+1 11:00',k:'rep',x:'[01 MAR] QatarEnergy DETIENE producción GNL tras ataque iraní en Ras Laffan. Gas Europa +38% en un día.'},
-  {t:'D+1 14:00',k:'rep',x:'[01 MAR] IRGC declara Estrecho de Ormuz CERRADO. Amenaza incendiar cualquier buque. Tasa VLCC: $423K/día (+94%).'},
-  {t:'D+1 17:00',k:'int',x:'[01 MAR] Kuwait interceptó 178 misiles + 384 drones. 3 cazas F-15 USA derribados por error por Kuwait.'},
-  {t:'D+1 18:00',k:'atk',x:'[01 MAR] CENTCOM: "17 barcos iraníes destruidos + submarino más operativo con agujero en casco."'},
-  {t:'D+2 08:30',k:'atk',x:'[02 MAR] Israel hits IRGC Malek-Ashtar building Teherán (confirmado por Iran International). Operaciones especiales Mossad dentro de Irán.'},
-  {t:'D+2 10:00',k:'rep',x:'[02 MAR] Embajada USA Riyadh: 2 drones, incendio limitado, sin bajas. Embajadas Kuwait+Líbano+Saudi cerradas.'},
-  {t:'D+2 12:00',k:'dip',x:'[02 MAR] Rubio: "Los golpes más duros aún están por venir. Dos fuerzas aéreas más poderosas del mundo." Habla ante Congreso.'},
-  {t:'D+2 14:00',k:'int',x:'[02 MAR] Trump: guerra durará "~4 semanas", EEUU "sustancialmente adelantado" del cronograma. Ofrece escoltar tanqueros.'},
-  {t:'D+2 15:30',k:'rep',x:'[02 MAR] Hezbolá lanza misiles norte Israel "en venganza por muerte de Khamenei". Israel arremete contra Beirut.'},
-  {t:'D+2 16:00',k:'dip',x:'[02 MAR] Jamie Dimon (JPMorgan): "Esperar ciberataques y ataques terroristas. Los bancos pueden ser objetivos."'},
-  {t:'D+3 02:00',k:'atk',x:'[03 MAR] Israel golpea HQ de IRIB (emisora estatal iraní) en Teherán. Palacio Golestan (UNESCO) dañado.'},
-  {t:'D+3 06:00',k:'atk',x:'[03 MAR] 10ª ola de ataques israelíes. Simultáneos en Teherán y Beirut. Israel: pide evacuación 50+ aldeas Líbano.'},
-  {t:'D+3 08:00',k:'rep',x:'[03 MAR] Turquía/NATO: sistema defensivo destruye misil balístico iraní en Mediterráneo oriental. Objetivo no confirmado.'},
-  {t:'D+3 09:30',k:'dip',x:'[03 MAR] Rusia advierte: planta nuclear Bushehr bajo amenaza. "Explosiones escuchadas a kilómetros de su perímetro."'},
-  {t:'D+3 11:00',k:'int',x:'[03 MAR] Dow abre -900 pts. S&P cae -2.49% intraday antes de recuperar. Cierre: S&P -0.94%, Dow -437 pts.'},
-  {t:'D+3 14:00',k:'rep',x:'[03 MAR] IRGC anuncia "fuerzas terrestres entraron en operaciones" + operación naval contra barcos USA.'},
-  {t:'D+4 05:00',k:'atk',x:'[04 MAR] Fragata iraní IRIS Dena hundida en Océano Índico por submarino USA, 40mn al sur de Sri Lanka.'},
-  {t:'D+4 07:00',k:'atk',x:'[04 MAR] Muertos en Irán superan 1,045 (Tasnim). Al Jazeera confirma "10ª ola" de ataques israelíes sobre Teherán.'},
-  {t:'D+4 08:00',k:'rep',x:'[04 MAR] Parlamento iraní y Asamblea de Expertos (reunida para elegir nuevo líder) bombardeados por Israel.'},
-  {t:'D+4 09:00',k:'int',x:'[04 MAR] Trump: "suministro virtualmente ilimitado de municiones. Las guerras pueden librarse forever." (Truth Social)'},
-];
+const evs=[];
+function getEvs(){return EVS_I18N[currentLang]||EVS_I18N.en;}
+function getMoreEvs(){return MORE_EVS_I18N[currentLang]||MORE_EVS_I18N.en;}
+// Initialize with base events
+evs.push(...getEvs());
 const tags={atk:'t-atk',rep:'t-rep',dip:'t-dip',int:'t-int'};
 const tlbl={atk:'⚡ATK',rep:'🚀REP',dip:'🕊DIP',int:'🔍INT'};
+let _moreAdded=0; // track how many moreEvs have been added
 function renderEvs(){
+  const baseEvs=getEvs();
+  const moreList=getMoreEvs();
+  const allEvs=[...baseEvs,...moreList.slice(0,_moreAdded)];
   const el=document.getElementById('evlog');
-  el.innerHTML=[...evs].reverse().map(e=>`<div class="ev-row">
+  const search=(document.getElementById('evSearch')?.value||'').toLowerCase();
+  const filtered=search?allEvs.filter(e=>e.x.toLowerCase().includes(search)||e.t.toLowerCase().includes(search)):allEvs;
+  el.innerHTML=[...filtered].reverse().map(e=>`<div class="ev-row">
     <div class="ev-time">${e.t}</div>
     <div class="ev-tag ${tags[e.k]}">${tlbl[e.k]}</div>
     <div class="ev-txt">${e.x}</div>
   </div>`).join('');
-  document.getElementById('ev-count').textContent=evs.length+' EVT';
+  const badge=document.getElementById('ev-count');
+  badge.textContent=allEvs.length+' EVT';
 }
+function filterEvents(){renderEvs();}
 renderEvs();
-const moreEvs=[
-  {t:'D+5 live',k:'atk',x:'[04 MAR AHORA] Qom + ciudades adicionales bajo ataque. IRGC: 230 drones en operaciones. Planta Bushehr en zona de peligro.'},
-  {t:'D+5 live',k:'rep',x:'[04 MAR AHORA] Iran lanza misiles contra Israel, Tel Aviv + Jerusalén en alerta. MDA: "sistemas trabajando para interceptar."'},
-  {t:'D+5 live',k:'dip',x:'[04 MAR AHORA] Trump: no descarta tropas terrestres en Irán "si es necesario." S&P Global advierte sobre finanzas Israel.'},
-];
-let ei=0;setInterval(()=>{if(ei<moreEvs.length){evs.push(moreEvs[ei++]);renderEvs();}},35000);
+const moreTimer=setInterval(()=>{
+  const moreList=getMoreEvs();
+  if(_moreAdded<moreList.length){
+    _moreAdded++;renderEvs();
+    const badge=document.getElementById('ev-count');
+    badge.classList.remove('ev-pulse');void badge.offsetWidth;badge.classList.add('ev-pulse');
+  }else{clearInterval(moreTimer);}
+},35000);
 
 // ─── MARKET FLICKER D+5 (04 Mar 2026) verified data ───
 // Brent $84.18 · Gold $5,187 · DXY 98.54
@@ -1570,7 +2257,6 @@ setInterval(()=>{
   const n=v=>v+(Math.random()-.5)*v*.003;
   document.getElementById('brent').textContent='$'+(n(84.18)).toFixed(2);
   document.getElementById('gold').textContent='$'+(Math.floor(n(5187))).toLocaleString();
-  document.getElementById('dxy-top').textContent=(n(98.54)).toFixed(2);
 },6000);
 
 // ─── FX FLICKER ───
@@ -1581,7 +2267,7 @@ setInterval(()=>{
   document.getElementById('fx-gbpeur').textContent=(n(1.1401)).toFixed(4);
   document.getElementById('fx-jpy').textContent=(n(150.42)).toFixed(2);
   document.getElementById('fx-ils').textContent=(n(3.72)).toFixed(3);
-  const d=(n(97.61)).toFixed(3);
+  const d=(n(98.54)).toFixed(3);
   document.getElementById('dxy-num').textContent=d;
   document.getElementById('dxy-top').textContent=d;
   document.getElementById('dxy-fill').style.width=((d-90)/20*100).toFixed(0)+'%';
@@ -1654,7 +2340,7 @@ const nations=[
 ];
 
 const sclass={sup:'s-sup',opp:'s-opp',neu:'s-neu',amb:'s-amb',med:'s-med'};
-const slbl={sup:'✅ APOYA',opp:'❌ CONDENA',neu:'🕊 NEUTRAL',amb:'↔ AMBIGUO',med:'🤝 MEDIACIÓN'};
+const slbl={sup:'✅ SUPPORTS',opp:'❌ CONDEMNS',neu:'🕊 NEUTRAL',amb:'↔ AMBIGUOUS',med:'🤝 MEDIATION'};
 const scol={sup:'var(--green)',opp:'var(--red)',neu:'var(--amber)',amb:'var(--blue)',med:'var(--purple)'};
 
 function initWmap(){
@@ -1747,29 +2433,37 @@ MERCADOS (fuentes verificadas):
 - DXY: ~98.54 (+0.95% lunes, borró pérdidas del año) — dólar como refugio
 - Wells Fargo: mantiene objetivo S&P 7,500 fin 2026. Goldman: sectores cíclicos más afectados a corto plazo
 
-Responde en español. Analítico, preciso, usa datos reales. Prioriza implicaciones estratégicas.`;
+Respond in the user's language. Be analytical, precise, use real data. Prioritize strategic implications.`;
 
 async function callAI(msgs){
+  const key=document.getElementById('apiKey')?.value?.trim();
+  if(!key){return LANGS[currentLang]?.chat_no_key||'Please enter your Anthropic API key above to use the AI analyst.';}
   const r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':key,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
     body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,system:SYS,messages:msgs.slice(-10)})
   });
+  if(!r.ok){const e=await r.json().catch(()=>({}));return `Error ${r.status}: ${e.error?.message||r.statusText}`;}
   const d=await r.json();
-  return d.content?.[0]?.text||'Error de sistema.';
+  return d.content?.[0]?.text||'System error.';
 }
 
 function addMsg(txt,usr){
   const el=document.getElementById('chatMsgs');
   const d=document.createElement('div');
   d.className='bubble '+(usr?'bubble-usr':'bubble-ai');
-  d.innerHTML=`<div class="bubble-lbl">${usr?'◆ TÚ':'◆ ANALISTA IA'}</div>${txt}`;
+  d.innerHTML=`<div class="bubble-lbl">${usr?'◆ YOU':'◆ AI ANALYST'}</div>${txt}`;
   el.appendChild(d);el.scrollTop=el.scrollHeight;return d;
 }
 function addTyping(){
   const el=document.getElementById('chatMsgs');
   const d=document.createElement('div');d.className='typing';d.id='typ';
-  d.innerHTML='<span style="font-size:8px;font-family:Space Mono;color:var(--purple)">PROCESANDO</span><div class="td"></div><div class="td"></div><div class="td"></div>';
+  d.innerHTML='<span style="font-size:8px;font-family:Space Mono;color:var(--purple)">PROCESSING</span><div class="td"></div><div class="td"></div><div class="td"></div>';
   el.appendChild(d);el.scrollTop=el.scrollHeight;
 }
 
@@ -1797,8 +2491,105 @@ async function doSend(){
   document.getElementById('chatIn').focus();
 }
 function qsend(q){document.getElementById('chatIn').value=q;doSend();}
+
+// ─── INTEL ANALYSIS SECTION ───
+function toggleIntelSection(){
+  document.getElementById('intelSection').classList.toggle('open');
+}
+function toggleIntelCard(id){
+  document.getElementById(id).classList.toggle('expanded');
+}
+
+const ANALYSIS_PROMPTS={
+  pmesii:{
+    name:'PMESII-PT',
+    prompt:'Analyze the current Iran-USA-Israel conflict (D+5, 04 Mar 2026) using PMESII-PT framework.\nData: {DATA}\nReturn exactly 8 assessments, one per domain (Political, Military, Economic, Social, Infrastructure, Information, Physical, Time). Each assessment: 2-3 sentences max. Use only verified facts provided. Format as bullet points with domain name bold.'
+  },
+  redblue:{
+    name:'Red Team / Blue Team',
+    prompt:'Analyze the current Iran-USA-Israel conflict (D+5, 04 Mar 2026) as Red Team vs Blue Team.\nData: {DATA}\nBLUE = US+Israel, RED = Iran+Proxies. For each side provide: Objective, Capabilities, Vulnerabilities, Likely next moves. 2-3 sentences each. Use only verified facts.'
+  },
+  coa:{
+    name:'Course of Action',
+    prompt:'Analyze Courses of Action for 3 actors in the Iran-USA-Israel conflict (D+5, 04 Mar 2026).\nData: {DATA}\nFor US, Iran, and Israel: provide 3 COAs each with: label, probability %, advantage, risk. Be specific and data-driven.'
+  },
+  bop:{
+    name:'Balance of Power',
+    prompt:'Analyze the global Balance of Power / Bandwagoning dynamics in the Iran-USA-Israel conflict (D+5, 04 Mar 2026).\nData: {DATA}\n3 categories: Bandwagoning (pro-US/Israel), Balancing (pro-Iran/anti-US), Hedging/Mediation. List countries with their specific actions.'
+  },
+  scenarios:{
+    name:'Probabilistic Scenarios',
+    prompt:'Provide 4 probabilistic scenarios for the Iran-USA-Israel conflict (D+5, 04 Mar 2026).\nData: {DATA}\nScenarios: Quick Resolution, Sustained Air Campaign, Prolonged Regional War, Extreme Escalation. For each: probability %, triggers, timeline, market impact (Brent, Gold, equities).'
+  }
+};
+
+function gatherDashboardData(){
+  const stats=[];
+  document.querySelectorAll('.stat-cell').forEach(c=>{
+    const lbl=c.querySelector('.stat-lbl')?.textContent||'';
+    const val=c.querySelector('.stat-val')?.textContent||'';
+    if(lbl&&val) stats.push(lbl+': '+val);
+  });
+  const mkts=[];
+  document.querySelectorAll('.mkt-cell').forEach(c=>{
+    const lbl=c.querySelector('.mkt-lbl')?.textContent||'';
+    const val=c.querySelector('.mkt-val')?.textContent||'';
+    if(lbl&&val) mkts.push(lbl+' '+val);
+  });
+  const kahn=document.querySelector('.kahn-level-note')?.textContent||'Level 8';
+  return `Stats: ${stats.join(', ')}. Markets: ${mkts.join(', ')}. Kahn Scale: ${kahn}. Hormuz: CLOSED. D+5 04 Mar 2026.`;
+}
+
+async function refreshAnalysis(panelId){
+  const key=document.getElementById('apiKey')?.value?.trim();
+  const t=LANGS[currentLang]||LANGS.en;
+  if(!key){
+    alert(t.intel_refresh_nokey||'Enter your API key in the chat panel first.');
+    return;
+  }
+  const cfg=ANALYSIS_PROMPTS[panelId];
+  if(!cfg)return;
+  const bodyEl=document.getElementById('intel-'+panelId+'-body');
+  if(!bodyEl)return;
+  bodyEl.classList.add('intel-refreshing');
+  const data=gatherDashboardData();
+  const prompt=cfg.prompt.replace('{DATA}',data);
+  const langNote=currentLang!=='en'?'\nRespond in '+({es:'Spanish',fr:'French',pt:'Portuguese',ru:'Russian',ar:'Arabic',zh:'Chinese',fa:'Farsi'}[currentLang]||'English')+'.':'';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:800,
+        system:'You are a military intelligence analyst providing concise, data-driven analysis. Use only verified facts provided. Be direct and analytical.'+langNote,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||r.statusText);}
+    const d=await r.json();
+    const text=d.content?.[0]?.text||'Analysis unavailable.';
+    // Replace body content but keep timestamp
+    const tsEl=bodyEl.querySelector('.intel-timestamp');
+    bodyEl.innerHTML='<div style="font-size:9px;line-height:1.5;color:var(--t2);white-space:pre-wrap;">'+text.replace(/\n/g,'<br>')+'</div>';
+    const ts=document.createElement('div');
+    ts.className='intel-timestamp';
+    ts.textContent='Last refreshed: '+new Date().toUTCString().slice(17,25)+' UTC';
+    bodyEl.appendChild(ts);
+  }catch(e){
+    const ts=bodyEl.querySelector('.intel-timestamp');
+    if(ts) ts.textContent='Error: '+e.message;
+  }
+  bodyEl.classList.remove('intel-refreshing');
+}
 </script>
 <!-- FOOTER CREDIT -->
+<footer role="contentinfo">
 <div style="
   flex-shrink:0;
   background:var(--bg3);
@@ -1815,9 +2606,10 @@ function qsend(q){document.getElementById('chatIn').value=q;doSend();}
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <span style="font-family:'Space Mono';font-size:8px;color:var(--t2)">All data from verified public sources · Al Jazeera · CNBC · Reuters · CENTCOM · Wikipedia</span>
-    <span style="font-family:'Space Mono';font-size:8px;padding:2px 8px;border:1px solid var(--bdr);color:var(--t2);background:var(--bg2);">v10 · 04 MAR 2026</span>
+    <span style="font-family:'Space Mono';font-size:8px;padding:2px 8px;border:1px solid var(--bdr);color:var(--t2);background:var(--bg2);">v12 · 04 MAR 2026</span>
   </div>
 </div>
+</footer>
 
 </body>
 </html>
