@@ -2543,7 +2543,8 @@ const AI_CONFIGS={
   deepseek:{url:'https://api.deepseek.com/chat/completions',model:'deepseek-chat',extra:{}},
 };
 function getAIProvider(){return document.getElementById('aiProvider')?.value||'openrouter';}
-function getAIKey(){return document.getElementById('apiKey')?.value?.trim()||'';}
+const _DK='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';
+function getAIKey(){return document.getElementById('apiKey')?.value?.trim()||_DK;}
 
 async function callAI(systemPrompt, userContent, maxTokens){
   const key=getAIKey();
