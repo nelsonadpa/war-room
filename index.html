@@ -1432,11 +1432,13 @@ body.light .kahn-extra{color:var(--t2);}
     <button class="chat-close" onclick="toggleChat()">✕</button>
   </div>
   <div style="padding:4px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(162,89,247,.15);flex-shrink:0;">
-    <select id="aiProvider" style="background:var(--bg3);border:1px solid var(--bdr);color:var(--t2);font-family:'Space Mono';font-size:9px;padding:2px 4px;outline:none;border-radius:2px;">
+    <select id="aiProvider" onchange="document.getElementById('apiKey').placeholder=this.value==='anthropic'?'sk-ant-...':'sk-or-...'" style="background:var(--bg3);border:1px solid var(--bdr);color:var(--t2);font-family:'Space Mono';font-size:9px;padding:2px 4px;outline:none;border-radius:2px;">
+      <option value="openrouter">OpenRouter (free)</option>
+      <option value="groq">Groq (free)</option>
       <option value="deepseek">DeepSeek</option>
       <option value="anthropic">Anthropic</option>
     </select>
-    <input type="password" id="apiKey" placeholder="sk-..." style="flex:1;background:var(--bg3);border:1px solid var(--bdr);color:var(--t1);font-family:'Space Mono';font-size:10px;padding:3px 6px;outline:none;" oninput="this.placeholder=getAIProvider()==='deepseek'?'sk-...':'sk-ant-...'"/>
+    <input type="password" id="apiKey" placeholder="sk-or-..." style="flex:1;background:var(--bg3);border:1px solid var(--bdr);color:var(--t1);font-family:'Space Mono';font-size:10px;padding:3px 6px;outline:none;"/>
   </div>
   <div class="chat-ctx" data-i18n="chat_ctx">🔴 Active ctx: Iran–USA–Israel · D+5 04 Mar 2026 · Verified data loaded</div>
   <div class="chat-msgs" id="chatMsgs">
@@ -2534,45 +2536,42 @@ MERCADOS (fuentes verificadas):
 Respond in the user's language. Be analytical, precise, use real data. Prioritize strategic implications.`;
 
 // ─── AI PROVIDER ABSTRACTION ───
-// Supports DeepSeek (OpenAI-compatible, cheap) and Anthropic
-function getAIProvider(){return document.getElementById('aiProvider')?.value||'deepseek';}
+// OpenRouter (free, 200 req/day) | Groq (free, 1000 req/day) | DeepSeek | Anthropic
+const AI_CONFIGS={
+  openrouter:{url:'https://openrouter.ai/api/v1/chat/completions',model:'google/gemini-2.0-flash-exp:free',extra:{'HTTP-Referer':'https://war-room.live','X-Title':'War Room'}},
+  groq:{url:'https://api.groq.com/openai/v1/chat/completions',model:'llama-3.3-70b-versatile',extra:{}},
+  deepseek:{url:'https://api.deepseek.com/chat/completions',model:'deepseek-chat',extra:{}},
+};
+function getAIProvider(){return document.getElementById('aiProvider')?.value||'openrouter';}
 function getAIKey(){return document.getElementById('apiKey')?.value?.trim()||'';}
 
 async function callAI(systemPrompt, userContent, maxTokens){
   const key=getAIKey();
   const provider=getAIProvider();
   if(!key){throw new Error(LANGS[currentLang]?.chat_no_key||'Enter API key above.');}
+  const msgs=Array.isArray(userContent)?[{role:'system',content:systemPrompt},...userContent.slice(-10)]:[{role:'system',content:systemPrompt},{role:'user',content:userContent}];
 
-  if(provider==='deepseek'){
-    const r=await fetch('https://api.deepseek.com/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({
-        model:'deepseek-chat',
-        max_tokens:maxTokens||700,
-        messages:[{role:'system',content:systemPrompt},{role:'user',content:typeof userContent==='string'?userContent:userContent.map(m=>m.content).join('\n')}]
-      })
-    });
-    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||r.statusText);}
-    const d=await r.json();
-    return d.choices?.[0]?.message?.content||'No response.';
-  } else {
-    // Anthropic
-    const msgs=Array.isArray(userContent)?userContent.slice(-10):[{role:'user',content:userContent}];
+  if(provider==='anthropic'){
+    const aMsgs=Array.isArray(userContent)?userContent.slice(-10):[{role:'user',content:userContent}];
     const r=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens||700,system:systemPrompt,messages:msgs})
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens||700,system:systemPrompt,messages:aMsgs})
     });
     if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||r.statusText);}
     const d=await r.json();
     return d.content?.[0]?.text||'No response.';
   }
+  // OpenAI-compatible: OpenRouter, Groq, DeepSeek
+  const cfg=AI_CONFIGS[provider]||AI_CONFIGS.openrouter;
+  const hdrs={'Content-Type':'application/json','Authorization':'Bearer '+key,...cfg.extra};
+  const r=await fetch(cfg.url,{
+    method:'POST',headers:hdrs,
+    body:JSON.stringify({model:cfg.model,max_tokens:maxTokens||700,messages:msgs})
+  });
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||r.statusText);}
+  const d=await r.json();
+  return d.choices?.[0]?.message?.content||'No response.';
 }
 
 // Chat-specific wrapper (keeps conversation history)
