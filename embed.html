@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#040810;color:#e0e6ed;font-family:system-ui,-apple-system,sans-serif;overflow:hidden;}
+.widget{padding:12px;max-width:400px;}
+.hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:8px;}
+.hdr-title{font-size:14px;font-weight:900;letter-spacing:1px;color:#ef4444;}
+.hdr-badge{font-size:9px;background:#ef4444;color:#fff;padding:2px 6px;border-radius:2px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+.hdr-link{margin-left:auto;font-size:10px;color:#8899aa;text-decoration:none;}
+.hdr-link:hover{color:#ef4444;}
+.kahn{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px;background:#0b1525;border-radius:4px;border-left:3px solid #ef4444;}
+.kahn-lvl{font-size:24px;font-weight:900;font-family:monospace;color:#ef4444;}
+.kahn-txt{font-size:11px;color:#8899aa;line-height:1.3;}
+.kahn-name{font-size:12px;color:#e0e6ed;font-weight:700;}
+.mkts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.mkt{background:#0b1525;padding:6px 8px;border-radius:3px;text-align:center;}
+.mkt-lbl{font-size:9px;color:#8899aa;text-transform:uppercase;letter-spacing:.5px;}
+.mkt-val{font-size:14px;font-weight:700;font-family:monospace;color:#e0e6ed;}
+.mkt-chg{font-size:9px;}
+.up{color:#22c55e;}.dn{color:#ef4444;}
+.evts{font-size:11px;color:#8899aa;line-height:1.6;}
+.evt{padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.evt-time{color:#f59e0b;font-family:monospace;font-size:10px;margin-right:4px;}
+.evt-cat{font-size:9px;padding:1px 4px;border-radius:2px;margin-right:4px;}
+.cat-atk{background:#7f1d1d;color:#fca5a5;}.cat-dip{background:#1e3a5f;color:#93c5fd;}
+.cat-int{background:#3f3f46;color:#d4d4d8;}.cat-rep{background:#713f12;color:#fde68a;}
+.footer{text-align:center;margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,.05);}
+.footer a{color:#ef4444;font-size:10px;text-decoration:none;font-family:monospace;}
+</style>
+</head>
+<body>
+<div class="widget">
+  <div class="hdr">
+    <span class="hdr-title">WAR ROOM</span>
+    <span class="hdr-badge">LIVE</span>
+    <a class="hdr-link" href="https://war-room.live" target="_blank">war-room.live →</a>
+  </div>
+
+  <div class="kahn">
+    <div class="kahn-lvl">8</div>
+    <div>
+      <div class="kahn-name">Full Regional War</div>
+      <div class="kahn-txt">Kahn Escalation Scale · D+5 · 04 Mar 2026</div>
+    </div>
+  </div>
+
+  <div class="mkts">
+    <div class="mkt"><div class="mkt-lbl">Brent</div><div class="mkt-val" id="w-brent">$84.18</div><div class="mkt-chg up">+18.8%</div></div>
+    <div class="mkt"><div class="mkt-lbl">Gold</div><div class="mkt-val" id="w-gold">$5,187</div><div class="mkt-chg up">+4.2%</div></div>
+    <div class="mkt"><div class="mkt-lbl">VIX</div><div class="mkt-val" id="w-vix">+27%</div><div class="mkt-chg dn">spike</div></div>
+  </div>
+
+  <div class="evts" id="w-events">
+    <div class="evt"><span class="evt-time">D+5 08:00</span><span class="evt-cat cat-atk">ATK</span>10th wave: Natanz underground + Isfahan centrifuge halls</div>
+    <div class="evt"><span class="evt-time">D+4 22:15</span><span class="evt-cat cat-rep">REP</span>Iran: 178 missiles + 384 drones at Kuwait, UAE, Israel</div>
+    <div class="evt"><span class="evt-time">D+4 16:00</span><span class="evt-cat cat-dip">DIP</span>Trump: "approximately four weeks" timeline</div>
+  </div>
+
+  <div class="footer">
+    <a href="https://war-room.live" target="_blank">⬡ war-room.live — Open Full Dashboard</a>
+  </div>
+</div>
+
+<script>
+// Flicker for embed
+setInterval(()=>{
+  const n=v=>v+(Math.random()-.5)*v*.003;
+  document.getElementById('w-brent').textContent='$'+(n(84.18)).toFixed(2);
+  document.getElementById('w-gold').textContent='$'+(Math.floor(n(5187))).toLocaleString();
+},5000);
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAR ROOM — Real-Time Conflict Intelligence | war-room.live</title>
+<meta name="description" content="Free real-time intelligence dashboard. Verified events, live markets, AI analyst, 5 analytical frameworks, 8 languages. No login required.">
+<meta property="og:title" content="WAR ROOM — Real-Time Conflict Intelligence">
+<meta property="og:description" content="Bloomberg-grade intelligence for everyone. Free real-time dashboard tracking global conflicts with verified data, AI analysis, and live markets.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://war-room.live">
+<meta property="og:image" content="https://war-room.live/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://war-room.live/og-image.svg">
+<meta name="twitter:creator" content="@nelson_ad">
+<link rel="canonical" href="https://war-room.live/landing">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>">
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-XXXXXXXXXX');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#040810;--bg2:#080f1c;--bg3:#0b1525;--t1:#e0e6ed;--t2:#8899aa;--red:#ef4444;--green:#22c55e;--amber:#f59e0b;--blue:#3b82f6;--accent:#ef4444;}
+body{background:var(--bg);color:var(--t1);font-family:'Barlow Condensed',sans-serif;min-height:100vh;overflow-x:hidden;}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1rem;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(239,68,68,.08) 0%,transparent 60%);pointer-events:none;}
+.badge{font-family:'Space Mono',monospace;font-size:11px;color:var(--red);border:1px solid var(--red);padding:4px 12px;border-radius:2px;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;display:inline-block;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+h1{font-size:clamp(2.5rem,8vw,5rem);font-weight:900;letter-spacing:-1px;line-height:1.05;margin-bottom:1rem;}
+h1 span{color:var(--red);}
+.subtitle{font-size:clamp(1rem,3vw,1.4rem);color:var(--t2);max-width:600px;line-height:1.6;margin-bottom:2.5rem;font-weight:400;}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:700px;width:100%;margin-bottom:3rem;}
+.feat{background:var(--bg2);border:1px solid rgba(255,255,255,.06);padding:16px 12px;border-radius:4px;text-align:left;}
+.feat-icon{font-size:1.4rem;margin-bottom:6px;}
+.feat-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.feat-text{font-size:14px;color:var(--t2);line-height:1.4;}
+.cta-box{background:var(--bg2);border:1px solid rgba(239,68,68,.2);padding:2rem;border-radius:6px;max-width:500px;width:100%;margin-bottom:2rem;}
+.cta-title{font-family:'Space Mono',monospace;font-size:13px;color:var(--amber);text-transform:uppercase;letter-spacing:2px;margin-bottom:1rem;}
+.email-form{display:flex;gap:8px;}
+.email-form input{flex:1;background:var(--bg3);border:1px solid rgba(255,255,255,.1);color:var(--t1);padding:12px 16px;font-family:'Barlow Condensed',sans-serif;font-size:16px;border-radius:3px;outline:none;}
+.email-form input:focus{border-color:var(--red);}
+.email-form button{background:var(--red);color:#fff;border:none;padding:12px 24px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;border-radius:3px;white-space:nowrap;transition:background .2s;}
+.email-form button:hover{background:#dc2626;}
+.email-form button:disabled{background:#666;cursor:not-allowed;}
+.success-msg{color:var(--green);font-family:'Space Mono',monospace;font-size:12px;margin-top:8px;display:none;}
+.compare{font-size:13px;color:var(--t2);margin-top:.5rem;}
+.compare span{color:var(--green);font-weight:700;}
+.live-link{margin-top:1.5rem;}
+.live-link a{color:var(--red);font-family:'Space Mono',monospace;font-size:14px;text-decoration:none;border-bottom:1px solid var(--red);padding-bottom:2px;transition:color .2s;}
+.live-link a:hover{color:var(--amber);}
+.stats-strip{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;}
+.stat{text-align:center;}
+.stat-num{font-family:'Space Mono',monospace;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:var(--t1);}
+.stat-lbl{font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;}
+.footer{padding:2rem;text-align:center;font-size:12px;color:var(--t2);}
+.footer a{color:var(--t2);text-decoration:none;}
+@media(max-width:500px){
+  .email-form{flex-direction:column;}
+  .features{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="badge">LIVE — D+5 04 MAR 2026</div>
+  <h1>Intelligence<br>for <span>everyone.</span></h1>
+  <p class="subtitle">Real-time conflict dashboard with verified events, live markets, AI analyst, and 5 intelligence frameworks. Free. 8 languages. No login.</p>
+
+  <div class="stats-strip">
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-lbl">Sources</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-lbl">Languages</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-lbl">Frameworks</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-lbl">Cost</div></div>
+  </div>
+
+  <div class="features">
+    <div class="feat">
+      <div class="feat-icon">📊</div>
+      <div class="feat-label">Live Markets</div>
+      <div class="feat-text">Brent, Gold, VIX, DXY, VLCC rates — real-time flicker</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🤖</div>
+      <div class="feat-label">AI Analyst</div>
+      <div class="feat-text">Claude-powered intelligence chat with full conflict context</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🔍</div>
+      <div class="feat-label">5 Frameworks</div>
+      <div class="feat-text">PMESII-PT, Red/Blue Team, COA, Balance of Power, Scenarios</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">✅</div>
+      <div class="feat-label">Verified Data</div>
+      <div class="feat-text">Every fact sourced: CENTCOM, Reuters, LSEG, Al Jazeera</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🗺</div>
+      <div class="feat-label">Conflict Maps</div>
+      <div class="feat-text">Strike targets, naval positions, world leader stances</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🌍</div>
+      <div class="feat-label">8 Languages</div>
+      <div class="feat-text">EN, ES, FR, PT, RU, AR, ZH, FA — including RTL</div>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <div class="cta-title">Get notified on new conflicts & features</div>
+    <form class="email-form" id="waitlistForm" action="https://formspree.io/f/FORM_ID" method="POST">
+      <input type="email" name="email" placeholder="your@email.com" required>
+      <button type="submit">Join Waitlist</button>
+    </form>
+    <div class="success-msg" id="successMsg">You're in. We'll notify you when new theaters launch.</div>
+    <div class="compare">Bloomberg Terminal: $24,000/yr. Stratfor: $199/yr. <span>War Room: Free.</span></div>
+  </div>
+
+  <div class="live-link">
+    <a href="/">→ Open Live Dashboard Now</a><br>
+    <a href="/pricing" style="color:var(--t2);font-family:'Space Mono',monospace;font-size:12px;text-decoration:none;border-bottom:1px solid var(--t2);margin-top:8px;display:inline-block;">View Pricing Plans</a>
+  </div>
+</section>
+
+<footer class="footer">
+  BUILT BY <a href="https://x.com/nelson_ad" target="_blank">𝕏 @nelson_ad</a>
+</footer>
+
+<script>
+document.getElementById('waitlistForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = this;
+  const btn = form.querySelector('button');
+  const email = form.querySelector('input[name="email"]').value;
+  btn.disabled = true;
+  btn.textContent = 'SENDING...';
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({email: email})
+    });
+    if (res.ok) {
+      document.getElementById('successMsg').style.display = 'block';
+      btn.textContent = 'JOINED ✓';
+      gtag('event', 'waitlist_signup', {event_category: 'conversion', event_label: 'landing'});
+    } else {
+      btn.textContent = 'ERROR — TRY AGAIN';
+      btn.disabled = false;
+    }
+  } catch(err) {
+    btn.textContent = 'ERROR — TRY AGAIN';
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

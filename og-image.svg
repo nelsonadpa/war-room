@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#040810"/>
+  <rect x="0" y="0" width="1200" height="4" fill="#ef4444"/>
+  <rect x="0" y="626" width="1200" height="4" fill="#ef4444"/>
+  <!-- Title -->
+  <text x="600" y="200" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="80" font-weight="900" fill="#e0e6ed">WAR ROOM</text>
+  <!-- Subtitle -->
+  <text x="600" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#8899aa">Real-Time Conflict Intelligence Dashboard</text>
+  <!-- Red line -->
+  <rect x="450" y="295" width="300" height="2" fill="#ef4444"/>
+  <!-- Stats -->
+  <text x="200" y="380" text-anchor="middle" font-family="monospace" font-size="42" font-weight="700" fill="#e0e6ed">20+</text>
+  <text x="200" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#8899aa" text-transform="uppercase" letter-spacing="2">SOURCES</text>
+  <text x="400" y="380" text-anchor="middle" font-family="monospace" font-size="42" font-weight="700" fill="#e0e6ed">8</text>
+  <text x="400" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#8899aa">LANGUAGES</text>
+  <text x="600" y="380" text-anchor="middle" font-family="monospace" font-size="42" font-weight="700" fill="#e0e6ed">5</text>
+  <text x="600" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#8899aa">FRAMEWORKS</text>
+  <text x="800" y="380" text-anchor="middle" font-family="monospace" font-size="42" font-weight="700" fill="#22c55e">FREE</text>
+  <text x="800" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#8899aa">ALWAYS</text>
+  <text x="1000" y="380" text-anchor="middle" font-family="monospace" font-size="42" font-weight="700" fill="#ef4444">LIVE</text>
+  <text x="1000" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#8899aa">REAL-TIME</text>
+  <!-- Features -->
+  <text x="600" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#8899aa">Verified Events · Live Markets · AI Analyst · PMESII-PT · Kahn Scale</text>
+  <!-- URL -->
+  <text x="600" y="560" text-anchor="middle" font-family="monospace" font-size="24" fill="#ef4444">war-room.live</text>
+  <!-- Author -->
+  <text x="600" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#556677">Built by @nelson_ad</text>
+</svg>

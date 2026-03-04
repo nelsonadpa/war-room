@@ -13,20 +13,36 @@
 <meta property="og:description" content="Live war room: verified events, real-time markets (Brent $84.18, Gold $5,187, DXY 98.54), Kahn escalation Level 8, Hormuz closed, intelligence analysis, AI analyst. D+5 04 Mar 2026.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://war-room.live">
+<meta property="og:image" content="https://war-room.live/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="WAR ROOM">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="es_ES">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://war-room.live/og-image.svg">
 <meta name="twitter:title" content="WAR ROOM - Iran USA Israel Conflict 2026 | Live D+5">
 <meta name="twitter:description" content="Live dashboard: verified events, real-time markets, Kahn escalation Level 8, Hormuz closed, 6 intelligence frameworks, AI analyst. D+5 04 Mar 2026.">
 <meta name="twitter:creator" content="@nelson_ad">
 <meta name="twitter:site" content="@nelson_ad">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ef4444">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WAR ROOM">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"WAR ROOM","url":"https://war-room.live","description":"Live war room dashboard tracking Iran-USA-Israel conflict 2026 with verified data, real-time markets, 6 intelligence analysis frameworks, and AI analyst.","applicationCategory":"NewsApplication","operatingSystem":"Web","inLanguage":["en","es","fr","pt","ru","ar","zh","fa"],"author":{"@type":"Person","name":"Nelson Perez","url":"https://x.com/nelson_ad"},"dateModified":"2026-03-04","keywords":"Iran war 2026, geopolitical analysis, military intelligence, real-time markets, Kahn escalation"}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LiveBlogPosting","name":"Iran-USA-Israel Conflict Live Timeline","url":"https://war-room.live","description":"D+0 to D+5 verified event log of the Iran-USA-Israel conflict 2026","coverageStartTime":"2026-02-28T02:14:00Z","coverageEndTime":"2026-03-04T23:59:00Z","author":{"@type":"Person","name":"Nelson Perez"}}
+</script>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-XXXXXXXXXX');
+function trackEvent(action,category,label){gtag('event',action,{event_category:category,event_label:label});}
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -2086,6 +2102,7 @@ let currentLang = 'en';
 
 function setLang(code) {
   if (!LANGS[code]) return;
+  trackEvent('language_switch','engagement',code);
   currentLang = code;
   const t = LANGS[code];
 
@@ -2138,6 +2155,7 @@ document.addEventListener('DOMContentLoaded', () => setLang('en'));
 let isDark = true;
 function toggleTheme() {
   isDark = !isDark;
+  trackEvent('theme_toggle','engagement',isDark?'dark':'light');
   document.body.classList.toggle('light', !isDark);
   const btn = document.getElementById('themeToggle');
   btn.textContent = isDark ? '☀ LIGHT' : '🌙 DARK';
@@ -2166,6 +2184,7 @@ function toggleTheme() {
 let mapVisible=true;
 function toggleMap(){
   mapVisible=!mapVisible;
+  trackEvent('map_toggle','engagement',mapVisible?'show':'hide');
   document.getElementById("mapWrap").classList.toggle("collapsed",!mapVisible);
   const t=LANGS[currentLang]||LANGS.en;
   document.getElementById("mapToggleBtn").textContent=mapVisible?(t.map_hide||'▲ HIDE'):(t.map_show||'▼ SHOW');
@@ -2283,32 +2302,79 @@ const moreTimer=setInterval(()=>{
   }else{clearInterval(moreTimer);}
 },35000);
 
-// ─── MARKET FLICKER D+5 (04 Mar 2026) verified data ───
-// Brent $84.18 · Gold $5,187 · DXY 98.54
+// ─── MARKET DATA FEED ───
+// Tries real API first (Cloudflare Worker proxy), falls back to flicker simulation
+const MARKET_API='https://war-room-markets.YOUR_CF_SUBDOMAIN.workers.dev/api/markets';
+let marketFeedActive=false;
+const FLICKER_BASE={brent:84.18,gold:5187,dxy:98.54,eur:1.1815,gbp:1.3470,gbpeur:1.1401,jpy:150.42,ils:3.72};
+
+async function fetchRealMarkets(){
+  try{
+    const res=await fetch(MARKET_API,{signal:AbortSignal.timeout(5000)});
+    if(!res.ok) throw new Error(res.status);
+    const {data}=await res.json();
+    if(!data||!data.brent) throw new Error('empty');
+    marketFeedActive=true;
+    // Update market cells
+    const up=(id,val,prefix)=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+      const old=parseFloat(el.textContent.replace(/[^0-9.-]/g,''));
+      el.textContent=(prefix||'')+val;
+      if(val>old)el.style.color='var(--green)';
+      else if(val<old)el.style.color='var(--red)';
+      setTimeout(()=>{el.style.color='';},1500);
+    };
+    if(data.brent) up('brent',data.brent.price.toFixed(2),'$');
+    if(data.gold) up('gold',Math.floor(data.gold.price).toLocaleString(),'$');
+    if(data.dxy){
+      const d=data.dxy.price.toFixed(3);
+      up('dxy-num',d);up('dxy-top',d);
+      const fill=document.getElementById('dxy-fill');
+      if(fill) fill.style.width=((d-90)/20*100).toFixed(0)+'%';
+    }
+    if(data.eurusd) up('fx-eur',data.eurusd.price.toFixed(4));
+    if(data.gbpusd) up('fx-gbp',data.gbpusd.price.toFixed(4));
+    if(data.usdjpy) up('fx-jpy',data.usdjpy.price.toFixed(2));
+    trackEvent('market_feed','data','real');
+  }catch(e){
+    marketFeedActive=false;
+  }
+}
+
+// Try real feed on load, then poll every 60s
+fetchRealMarkets();
+setInterval(fetchRealMarkets,60000);
+
+// Flicker simulation — runs always as visual effect, uses real data as base when available
 setInterval(()=>{
   const n=v=>v+(Math.random()-.5)*v*.003;
-  document.getElementById('brent').textContent='$'+(n(84.18)).toFixed(2);
-  document.getElementById('gold').textContent='$'+(Math.floor(n(5187))).toLocaleString();
+  if(!marketFeedActive){
+    document.getElementById('brent').textContent='$'+(n(FLICKER_BASE.brent)).toFixed(2);
+    document.getElementById('gold').textContent='$'+(Math.floor(n(FLICKER_BASE.gold))).toLocaleString();
+  }
 },6000);
 
-// ─── FX FLICKER ───
 setInterval(()=>{
   const n=v=>v+(Math.random()-.5)*v*.0005;
-  document.getElementById('fx-eur').textContent=(n(1.1815)).toFixed(4);
-  document.getElementById('fx-gbp').textContent=(n(1.3470)).toFixed(4);
-  document.getElementById('fx-gbpeur').textContent=(n(1.1401)).toFixed(4);
-  document.getElementById('fx-jpy').textContent=(n(150.42)).toFixed(2);
-  document.getElementById('fx-ils').textContent=(n(3.72)).toFixed(3);
-  const d=(n(98.54)).toFixed(3);
-  document.getElementById('dxy-num').textContent=d;
-  document.getElementById('dxy-top').textContent=d;
-  document.getElementById('dxy-fill').style.width=((d-90)/20*100).toFixed(0)+'%';
+  if(!marketFeedActive){
+    document.getElementById('fx-eur').textContent=(n(FLICKER_BASE.eur)).toFixed(4);
+    document.getElementById('fx-gbp').textContent=(n(FLICKER_BASE.gbp)).toFixed(4);
+    document.getElementById('fx-gbpeur').textContent=(n(FLICKER_BASE.gbpeur)).toFixed(4);
+    document.getElementById('fx-jpy').textContent=(n(FLICKER_BASE.jpy)).toFixed(2);
+    document.getElementById('fx-ils').textContent=(n(FLICKER_BASE.ils)).toFixed(3);
+    const d=(n(FLICKER_BASE.dxy)).toFixed(3);
+    document.getElementById('dxy-num').textContent=d;
+    document.getElementById('dxy-top').textContent=d;
+    document.getElementById('dxy-fill').style.width=((d-90)/20*100).toFixed(0)+'%';
+  }
 },4000);
 
 // ─── WORLD PANEL ───
 let worldOpen=false,worldMapReady=false,wmap;
 function toggleWorld(){
   worldOpen=!worldOpen;
+  trackEvent('world_panel_toggle','engagement',worldOpen?'open':'close');
   document.getElementById('worldPanel').classList.toggle('open',worldOpen);
   if(worldOpen&&!worldMapReady){worldMapReady=true;setTimeout(initWmap,150);}
 }
@@ -2422,6 +2488,7 @@ function filterX(f){renderX(f);}
 let chatOpen=false;
 function toggleChat(){
   chatOpen=!chatOpen;
+  trackEvent('chat_toggle','engagement',chatOpen?'open':'close');
   document.getElementById('chatPanel').classList.toggle('open',chatOpen);
 }
 
@@ -2526,8 +2593,10 @@ function qsend(q){document.getElementById('chatIn').value=q;doSend();}
 // ─── INTEL ANALYSIS SECTION ───
 function toggleIntelSection(){
   document.getElementById('intelSection').classList.toggle('open');
+  trackEvent('intel_section_toggle','engagement','intel');
 }
 function toggleIntelCard(id){
+  trackEvent('intel_card_toggle','engagement',id);
   const card=document.getElementById(id);
   const body=card.querySelector('.intel-card-body');
   if(card.classList.contains('expanded')){
@@ -2541,6 +2610,7 @@ function toggleIntelCard(id){
   }
 }
 function sharePanel(btn){
+  trackEvent('share_panel','engagement',btn.closest('.intel-card')?.id||'unknown');
   const card=btn.closest('.intel-card');
   const title=card.querySelector('.intel-card-title')?.textContent||'';
   const body=card.querySelector('.intel-card-body')?.innerText||'';
@@ -2597,6 +2667,7 @@ function gatherDashboardData(){
 }
 
 async function refreshAnalysis(panelId){
+  trackEvent('ai_refresh','engagement',panelId);
   const key=document.getElementById('apiKey')?.value?.trim();
   const t=LANGS[currentLang]||LANGS.en;
   if(!key){
@@ -2661,6 +2732,30 @@ function renderAnalysisContent(bodyEl,text,timeStr){
     }catch(ex){}
   });
 })();
+
+// ─── SERVICE WORKER + PWA + NOTIFICATIONS ───
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').catch(()=>{});
+}
+let deferredInstall;
+window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredInstall=e;});
+
+// Notification permission — show banner after 30s if not already decided
+setTimeout(()=>{
+  if('Notification' in window && Notification.permission==='default'){
+    const bar=document.createElement('div');
+    bar.id='notifBar';
+    bar.style.cssText='position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:2px solid var(--red);padding:10px 16px;display:flex;align-items:center;gap:12px;z-index:9999;font-size:13px;';
+    bar.innerHTML='<span style="flex:1">🔔 Get alerts for escalation changes and breaking events</span><button id="notifAllow" style="background:var(--red);color:#fff;border:none;padding:6px 16px;cursor:pointer;font-weight:700;border-radius:3px;">ENABLE</button><button id="notifDismiss" style="background:none;color:var(--t2);border:1px solid var(--bdr);padding:6px 12px;cursor:pointer;border-radius:3px;">Later</button>';
+    document.body.appendChild(bar);
+    document.getElementById('notifAllow').onclick=async()=>{
+      const perm=await Notification.requestPermission();
+      trackEvent('notification_permission','engagement',perm);
+      bar.remove();
+    };
+    document.getElementById('notifDismiss').onclick=()=>{bar.remove();};
+  }
+},30000);
 </script>
 <!-- FOOTER CREDIT -->
 <footer role="contentinfo">

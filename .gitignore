@@ -2,3 +2,5 @@
 .claude/
 tasks/
 .vercel
+node_modules/
+workers/*/node_modules/
