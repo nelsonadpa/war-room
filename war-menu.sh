@@ -47,11 +47,15 @@ echo -e "${MAG}  15)${RST} View Twitter/X strategy"
 echo -e "${MAG}  16)${RST} View newsletter strategy"
 echo -e "${MAG}  17)${RST} View competitive analysis"
 echo ""
+echo -e "${WHT}  ANALYTICS${RST}"
+echo -e "${RED}  18)${RST} View GA4 analytics (browser)"
+echo -e "${RED}  19)${RST} Quick traffic check (last 7 days)"
+echo ""
 echo -e "${WHT}  ARCHITECTURE${RST}"
-echo -e "${CYN}  18)${RST} View API spec"
-echo -e "${CYN}  19)${RST} View roadmap"
-echo -e "${CYN}  20)${RST} Open Claude agent"
-echo -e "${CYN}  21)${RST} Vercel dashboard"
+echo -e "${CYN}  20)${RST} View API spec"
+echo -e "${CYN}  21)${RST} View roadmap"
+echo -e "${CYN}  22)${RST} Open Claude agent"
+echo -e "${CYN}  23)${RST} Vercel dashboard"
 echo -e "${CYN}   0)${RST} Exit"
 echo ""
 echo -e -n "${WHT}  Select: ${RST}"
@@ -89,10 +93,33 @@ case $choice in
   15) cat distribution/twitter-strategy.md | less ;;
   16) cat distribution/newsletter-strategy.md | less ;;
   17) cat distribution/competitive-analysis.md | less ;;
-  18) cat architecture/api-spec.md | less ;;
-  19) cat ~/.claude/projects/-Users-nelsonperez-Library-Mobile-Documents-com-apple-CloudDocs-War-monitor/memory/roadmap.md ;;
-  20) claude ;;
-  21) open "https://vercel.com/dashboard" ;;
+  18) open "https://analytics.google.com/analytics/web/#/p*/reports/dashboard?params=_u..nav%3Dmaui" 2>/dev/null
+     echo -e "${GRN}Opening GA4 dashboard...${RST}" ;;
+  19) echo -e "\n${WHT}  📊 WAR ROOM — TRAFFIC SNAPSHOT${RST}\n"
+     echo -e "${DIM}  GA4 Property: G-H7FQVKS66V${RST}"
+     echo -e "${DIM}  Vercel Analytics also available at option 23${RST}\n"
+     echo -e "  ${YLW}Pages deployed:${RST}"
+     echo -e "   • ${GRN}war-room.live${RST}          — Main dashboard"
+     echo -e "   • ${GRN}war-room.live/landing${RST}  — Waitlist landing"
+     echo -e "   • ${GRN}war-room.live/pricing${RST}  — Pricing page"
+     echo -e "   • ${GRN}war-room.live/conflicts/iran-usa-israel-2026${RST} — SEO"
+     echo -e "   • ${GRN}war-room.live/embed${RST}    — Widget"
+     echo ""
+     echo -e "  ${YLW}GA4 events tracked:${RST}"
+     echo -e "   language_switch · theme_toggle · map_toggle"
+     echo -e "   world_panel_toggle · chat_toggle · intel_section_toggle"
+     echo -e "   intel_card_toggle · share_panel · ai_refresh · waitlist_signup"
+     echo ""
+     echo -e "  ${CYN}Quick links:${RST}"
+     echo -e "   • GA4 Realtime: ${DIM}analytics.google.com (property G-H7FQVKS66V)${RST}"
+     echo -e "   • Vercel Analytics: ${DIM}vercel.com/dashboard → war-room → Analytics${RST}"
+     echo -e "   • Formspree subs: ${DIM}formspree.io/forms (xlgwqygo)${RST}"
+     echo ""
+     open "https://analytics.google.com/analytics/web/" 2>/dev/null ;;
+  20) cat architecture/api-spec.md | less ;;
+  21) cat ~/.claude/projects/-Users-nelsonperez-Library-Mobile-Documents-com-apple-CloudDocs-War-monitor/memory/roadmap.md ;;
+  22) claude ;;
+  23) open "https://vercel.com/dashboard" ;;
   0) echo -e "${DIM}Bye.${RST}"; exit 0 ;;
   *) echo -e "${RED}Invalid option${RST}"; exit 1 ;;
 esac

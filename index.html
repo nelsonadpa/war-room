@@ -1432,8 +1432,11 @@ body.light .kahn-extra{color:var(--t2);}
     <button class="chat-close" onclick="toggleChat()">✕</button>
   </div>
   <div style="padding:4px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(162,89,247,.15);flex-shrink:0;">
-    <label style="font-size:8px;font-family:'Space Mono';color:var(--t2);white-space:nowrap" data-i18n="api_key_label">API KEY</label>
-    <input type="password" id="apiKey" placeholder="sk-ant-..." style="flex:1;background:var(--bg3);border:1px solid var(--bdr);color:var(--t1);font-family:'Space Mono';font-size:10px;padding:3px 6px;outline:none;"/>
+    <select id="aiProvider" style="background:var(--bg3);border:1px solid var(--bdr);color:var(--t2);font-family:'Space Mono';font-size:9px;padding:2px 4px;outline:none;border-radius:2px;">
+      <option value="deepseek">DeepSeek</option>
+      <option value="anthropic">Anthropic</option>
+    </select>
+    <input type="password" id="apiKey" placeholder="sk-..." style="flex:1;background:var(--bg3);border:1px solid var(--bdr);color:var(--t1);font-family:'Space Mono';font-size:10px;padding:3px 6px;outline:none;" oninput="this.placeholder=getAIProvider()==='deepseek'?'sk-...':'sk-ant-...'"/>
   </div>
   <div class="chat-ctx" data-i18n="chat_ctx">🔴 Active ctx: Iran–USA–Israel · D+5 04 Mar 2026 · Verified data loaded</div>
   <div class="chat-msgs" id="chatMsgs">
@@ -2303,19 +2306,19 @@ const moreTimer=setInterval(()=>{
 },35000);
 
 // ─── MARKET DATA FEED ───
-// Tries real API first (Cloudflare Worker proxy), falls back to flicker simulation
-const MARKET_API='https://war-room-markets.YOUR_CF_SUBDOMAIN.workers.dev/api/markets';
+// Fetches from /api/markets (Vercel serverless function — free), falls back to flicker
+const MARKET_API='/api/markets';
 let marketFeedActive=false;
 const FLICKER_BASE={brent:84.18,gold:5187,dxy:98.54,eur:1.1815,gbp:1.3470,gbpeur:1.1401,jpy:150.42,ils:3.72};
 
 async function fetchRealMarkets(){
   try{
-    const res=await fetch(MARKET_API,{signal:AbortSignal.timeout(5000)});
+    const res=await fetch(MARKET_API,{signal:AbortSignal.timeout(8000)});
     if(!res.ok) throw new Error(res.status);
-    const {data}=await res.json();
-    if(!data||!data.brent) throw new Error('empty');
+    const json=await res.json();
+    if(!json.ok||!json.markets) throw new Error('empty');
+    const data=json.markets;
     marketFeedActive=true;
-    // Update market cells
     const up=(id,val,prefix)=>{
       const el=document.getElementById(id);
       if(!el)return;
@@ -2333,9 +2336,6 @@ async function fetchRealMarkets(){
       const fill=document.getElementById('dxy-fill');
       if(fill) fill.style.width=((d-90)/20*100).toFixed(0)+'%';
     }
-    if(data.eurusd) up('fx-eur',data.eurusd.price.toFixed(4));
-    if(data.gbpusd) up('fx-gbp',data.gbpusd.price.toFixed(4));
-    if(data.usdjpy) up('fx-jpy',data.usdjpy.price.toFixed(2));
     trackEvent('market_feed','data','real');
   }catch(e){
     marketFeedActive=false;
@@ -2533,22 +2533,53 @@ MERCADOS (fuentes verificadas):
 
 Respond in the user's language. Be analytical, precise, use real data. Prioritize strategic implications.`;
 
-async function callAI(msgs){
-  const key=document.getElementById('apiKey')?.value?.trim();
-  if(!key){return LANGS[currentLang]?.chat_no_key||'Please enter your Anthropic API key above to use the AI analyst.';}
-  const r=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key':key,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
-    },
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,system:SYS,messages:msgs.slice(-10)})
-  });
-  if(!r.ok){const e=await r.json().catch(()=>({}));return `Error ${r.status}: ${e.error?.message||r.statusText}`;}
-  const d=await r.json();
-  return d.content?.[0]?.text||'System error.';
+// ─── AI PROVIDER ABSTRACTION ───
+// Supports DeepSeek (OpenAI-compatible, cheap) and Anthropic
+function getAIProvider(){return document.getElementById('aiProvider')?.value||'deepseek';}
+function getAIKey(){return document.getElementById('apiKey')?.value?.trim()||'';}
+
+async function callAI(systemPrompt, userContent, maxTokens){
+  const key=getAIKey();
+  const provider=getAIProvider();
+  if(!key){throw new Error(LANGS[currentLang]?.chat_no_key||'Enter API key above.');}
+
+  if(provider==='deepseek'){
+    const r=await fetch('https://api.deepseek.com/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({
+        model:'deepseek-chat',
+        max_tokens:maxTokens||700,
+        messages:[{role:'system',content:systemPrompt},{role:'user',content:typeof userContent==='string'?userContent:userContent.map(m=>m.content).join('\n')}]
+      })
+    });
+    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||r.statusText);}
+    const d=await r.json();
+    return d.choices?.[0]?.message?.content||'No response.';
+  } else {
+    // Anthropic
+    const msgs=Array.isArray(userContent)?userContent.slice(-10):[{role:'user',content:userContent}];
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens||700,system:systemPrompt,messages:msgs})
+    });
+    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||r.statusText);}
+    const d=await r.json();
+    return d.content?.[0]?.text||'No response.';
+  }
+}
+
+// Chat-specific wrapper (keeps conversation history)
+async function callChatAI(msgs){
+  const key=getAIKey();
+  if(!key){return LANGS[currentLang]?.chat_no_key||'Enter your API key above to use the AI analyst.';}
+  try{return await callAI(SYS, msgs, 700);}catch(e){return 'Error: '+e.message;}
 }
 
 function addMsg(txt,usr){
@@ -2578,7 +2609,7 @@ async function doSend(){
     else msgs.push({role:'assistant',content:txt});
   });
   try{
-    const r=await callAI(msgs);
+    const r=await callChatAI(msgs);
     document.getElementById('typ')?.remove();
     addMsg(r,false);
   }catch(e){
@@ -2683,24 +2714,10 @@ async function refreshAnalysis(panelId){
   const prompt=cfg.prompt.replace('{DATA}',data);
   const langNote=currentLang!=='en'?'\nRespond in '+({es:'Spanish',fr:'French',pt:'Portuguese',ru:'Russian',ar:'Arabic',zh:'Chinese',fa:'Farsi'}[currentLang]||'English')+'.':'';
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:800,
-        system:'You are a military intelligence analyst providing concise, data-driven analysis. Use only verified facts provided. Be direct and analytical.'+langNote,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||r.statusText);}
-    const d=await r.json();
-    const text=d.content?.[0]?.text||'Analysis unavailable.';
+    const text=await callAI(
+      'You are a military intelligence analyst providing concise, data-driven analysis. Use only verified facts provided. Be direct and analytical.'+langNote,
+      prompt, 800
+    );
     const timeStr=new Date().toUTCString().slice(17,25)+' UTC';
     renderAnalysisContent(bodyEl,text,timeStr);
     // Cache in localStorage
