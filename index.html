@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>WAR ROOM · CONFLICTO IRÁN 2026</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:    #040810;
+  --bg2:   #080f1c;
+  --bg3:   #0b1525;
+  --red:   #f0142d;
+  --red2:  #7a0016;
+  --blue:  #1a9fff;
+  --green: #00e5a0;
+  --amber: #f5a623;
+  --purple:#a259f7;
+  --cyan:  #22d3ee;
+  --dim:   #141f33;
+  --t1:    #e8f0fe;
+  --t2:    #7a92b4;
+  --bdr:   #1a3050;
+  --gred:  0 0 18px rgba(240,20,45,0.35);
+  --gblue: 0 0 16px rgba(26,159,255,0.25);
+}
+
+/* ── LIGHT MODE ── */
+body.light {
+  --bg:    #f0f4fa;
+  --bg2:   #ffffff;
+  --bg3:   #e8eef8;
+  --red:   #cc0e22;
+  --red2:  #ffd5d9;
+  --blue:  #0a7fd4;
+  --green: #007a54;
+  --amber: #b85c00;
+  --purple:#6b34c8;
+  --cyan:  #0891b2;
+  --dim:   #d0daea;
+  --t1:    #0d1b2e;
+  --t2:    #4a6080;
+  --bdr:   #c0cedf;
+  --gred:  0 0 12px rgba(204,14,34,0.15);
+  --gblue: 0 0 10px rgba(10,127,212,0.15);
+}
+body.light::after { display: none; }  /* no scanlines in light */
+body.light .topbar {
+  background: linear-gradient(90deg, #e0e8f5 0%, #f0f4fa 60%, #e0e8f5 100%);
+}
+body.light .ticker-wrap {
+  background: rgba(204,14,34,0.04);
+  border-bottom-color: rgba(204,14,34,0.15);
+}
+body.light .ticker-inner { color: var(--t1); }
+body.light .kahn-explain { background: #fff8ee; }
+body.light .chat-panel { background: #f8fafd; border-color: var(--bdr); }
+body.light .chat-msgs { background: #f0f4fa; }
+body.light .bubble-ai { background: #e8eef8; color: var(--t1); }
+body.light .bubble-user { background: var(--red); }
+body.light .world-panel { background: #f0f4fa; }
+body.light .chat-in {
+  background: #ffffff; color: var(--t1);
+  border-color: var(--bdr);
+}
+body.light .chat-in::placeholder { color: var(--t2); }
+body.light .chat-send { background: var(--red); }
+body.light .qbtn {
+  background: var(--bg3); color: var(--t2);
+  border-color: var(--bdr);
+}
+body.light .qbtn:hover { background: var(--dim); color: var(--t1); }
+body.light .hl-btn { background: #ffffff; border-color: rgba(8,145,178,.3); }
+body.light .vcard:hover { background: #e8eef8; }
+body.light .map-mini-hdr { background: #e8eef8; }
+body.light .map-mini-hdr:hover { background: #d8e4f4; }
+body.light .logo-text .main { color: var(--red); }
+body.light #themeToggle {
+  background: rgba(10,127,212,.1);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;width:100%;overflow-x:hidden;}
+body{
+  background:var(--bg);
+  color:var(--t1);
+  font-family:'Barlow Condensed',sans-serif;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+/* scanline */
+body::after{content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 6px);
+  pointer-events:none;z-index:9999;
+}
+
+/* ── TOP BAR ── */
+.topbar{
+  background:linear-gradient(90deg,#040e1f 0%,#080f1c 60%,#040e1f 100%);
+  border-bottom:2px solid var(--red);
+  padding:6px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;flex-shrink:0;
+  box-shadow:var(--gred);
+  flex-wrap:wrap;
+}
+.tb-left{display:flex;align-items:center;gap:10px;}
+.logo-hex{width:38px;height:38px;background:var(--red);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  flex-shrink:0;animation:hex-pulse 2s ease-in-out infinite;}
+@keyframes hex-pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,20,45,.5)}50%{box-shadow:0 0 0 8px rgba(240,20,45,0)}}
+.logo-text .main{font-size:18px;font-weight:900;color:var(--red);letter-spacing:4px;line-height:1;}
+.logo-text .sub{font-size:9px;color:var(--t2);letter-spacing:2px;}
+.tb-center{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;}
+.pill{
+  background:rgba(240,20,45,0.1);border:1px solid var(--red);
+  color:var(--red);padding:3px 10px;font-family:'Space Mono';font-size:10px;
+  display:flex;align-items:center;gap:6px;
+  animation:blink-bdr 1.5s infinite;
+}
+@keyframes blink-bdr{0%,100%{border-color:var(--red)}50%{border-color:transparent}}
+.dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.tb-right{font-family:'Space Mono';font-size:10px;color:var(--t2);text-align:right;}
+.clock{font-size:18px;color:var(--blue);line-height:1;}
+
+/* ── TICKER ── */
+.ticker-wrap{
+  background:rgba(240,20,45,0.05);border-bottom:1px solid rgba(240,20,45,0.2);
+  padding:4px 0;overflow:hidden;white-space:nowrap;
+  display:flex;align-items:center;flex-shrink:0;
+}
+.ticker-lbl{background:var(--red);color:#fff;font-family:'Space Mono';
+  font-size:10px;padding:2px 10px;flex-shrink:0;letter-spacing:2px;}
+.ticker-inner{display:inline-block;animation:scroll 90s linear infinite;
+  font-family:'Space Mono';font-size:11px;color:var(--t1);margin-left:20px;}
+@keyframes scroll{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+.sep{color:var(--red);margin:0 16px;}
+.real-tag{color:var(--green);font-size:9px;vertical-align:super;}
+
+/* ── MAIN LAYOUT ── */
+.workspace{
+  display:flex;flex-direction:column;
+  flex:1;min-height:0;overflow:hidden;
+}
+
+/* ── MARKETS STRIP ── */
+.markets-strip{
+  display:flex;gap:1px;background:var(--bdr);
+  flex-shrink:0;overflow-x:auto;
+  scrollbar-width:thin;scrollbar-color:var(--bdr) var(--bg2);
+}
+.mkt-cell{
+  flex:0 0 auto;min-width:110px;max-width:140px;
+  background:var(--bg2);padding:6px 10px;
+  display:flex;flex-direction:column;gap:2px;
+  border-bottom:1px solid var(--bdr);
+}
+.mkt-lbl{font-size:9px;color:var(--t2);font-family:'Space Mono';letter-spacing:1px;}
+.mkt-val{font-size:16px;font-weight:700;font-family:'Space Mono';line-height:1.1;}
+.mkt-chg{font-size:9px;font-family:'Space Mono';}
+.up{color:var(--red);}.dn{color:var(--green);}.neut{color:var(--amber);}
+.mkt-src{font-size:8px;color:var(--t2);margin-top:1px;}
+
+/* ── 3-COLUMN MAIN GRID ── */
+.main-grid{
+  display:grid;
+  grid-template-columns:260px 1fr 260px;
+  gap:1px;background:var(--bdr);
+  flex:1;min-height:0;overflow:hidden;
+}
+.col-l,.col-r{
+  background:var(--bg2);
+  overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column;
+  scrollbar-width:thin;scrollbar-color:var(--bdr) var(--bg2);
+}
+.col-c{
+  display:flex;flex-direction:column;
+  background:var(--bg);
+  min-height:0;overflow:hidden;
+}
+
+/* ── SECTION PANEL (shared) ── */
+.sec-panel{border-bottom:1px solid var(--bdr);flex-shrink:0;}
+.sec-hdr2{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 10px;background:var(--bg3);
+  border-bottom:1px solid var(--bdr);
+}
+.sec-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;color:var(--t2);display:flex;align-items:center;gap:6px;
+}
+.sec-acc{width:3px;height:12px;border-radius:1px;}
+
+/* ── STATS GRID ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bdr);}
+.stat-cell{
+  background:var(--bg);padding:8px 10px;
+  display:flex;flex-direction:column;gap:3px;
+}
+.stat-lbl{font-size:8px;color:var(--t2);font-family:'Space Mono';letter-spacing:.5px;}
+.stat-val{font-family:'Space Mono';font-weight:700;line-height:1.1;}
+.stat-bar-wrap{height:2px;background:var(--dim);border-radius:2px;overflow:hidden;}
+.stat-bar-fill{height:100%;border-radius:2px;}
+
+/* ── KAHN SCALE ── */
+.kahn-panel{padding:10px;}
+.kahn-explain{
+  font-size:9px;color:var(--t2);font-family:'Space Mono';
+  line-height:1.5;padding:7px 8px;
+  background:var(--bg3);border-left:2px solid var(--amber);
+  margin-bottom:8px;
+}
+.kahn-bar{display:flex;height:20px;border-radius:2px;overflow:hidden;gap:1px;margin:6px 0;}
+.kahn-seg{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:700;cursor:pointer;
+  transition:opacity .15s;position:relative;
+}
+.kahn-seg.active{outline:2px solid #fff;outline-offset:-2px;z-index:1;}
+.kahn-seg.past{opacity:1;}
+.kahn-seg.future{opacity:.25;}
+.kahn-label{
+  display:none;position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);
+  background:var(--bg3);border:1px solid var(--bdr);
+  padding:4px 8px;font-size:8px;color:var(--t1);
+  font-family:'Space Mono';white-space:nowrap;z-index:100;
+  pointer-events:none;
+}
+.kahn-seg:hover .kahn-label{display:block;}
+.kahn-level-note{font-size:10px;color:var(--amber);font-family:'Space Mono';margin-top:4px;}
+.kahn-next{font-size:9px;color:var(--t2);font-family:'Space Mono';margin-top:3px;}
+.kahn-scenarios{
+  display:flex;flex-direction:column;gap:3px;
+  margin-top:8px;border-top:1px solid var(--bdr);padding-top:7px;
+}
+.kahn-sc{font-size:10px;font-family:'Space Mono';}
+
+/* ── FX PANEL ── */
+.fx-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 10px;border-bottom:1px solid rgba(26,48,80,.4);
+}
+.fx-pair{font-size:11px;color:var(--t2);font-family:'Space Mono';}
+.fx-val{font-size:13px;font-weight:700;font-family:'Space Mono';}
+.fx-chg{font-size:9px;font-family:'Space Mono';}
+.dxy-box{padding:8px 10px;background:var(--bg3);border-top:1px solid var(--bdr);}
+
+/* ── EVENTS (hero) ── */
+.events-hero{
+  flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;
+}
+.events-scroll{flex:1;overflow-y:auto;padding:4px 8px;
+  scrollbar-width:thin;scrollbar-color:var(--bdr) var(--bg);}
+.ev-row{
+  display:flex;gap:8px;align-items:flex-start;
+  padding:5px 0;border-bottom:1px solid rgba(26,48,80,.35);
+  font-size:10.5px;animation:fi .4s;
+}
+.ev-time{font-family:'Space Mono';font-size:8.5px;color:var(--t2);
+  white-space:nowrap;padding-top:2px;min-width:80px;}
+.ev-tag{font-family:'Space Mono';font-size:8px;font-weight:700;padding:2px 5px;
+  border-radius:2px;white-space:nowrap;flex-shrink:0;}
+.t-atk{background:rgba(240,20,45,.18);color:var(--red);}
+.t-rep{background:rgba(245,166,35,.18);color:var(--amber);}
+.t-dip{background:rgba(0,229,160,.12);color:var(--green);}
+.t-int{background:rgba(26,159,255,.12);color:var(--blue);}
+.ev-txt{line-height:1.4;color:var(--t1);}
+@keyframes fi{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+
+/* ── MINI MAP (collapsible) ── */
+.map-mini-wrap{
+  flex-shrink:0;
+  border-top:2px solid var(--bdr);
+  overflow:hidden;
+  transition:height .3s ease;
+  height:240px;
+}
+.map-mini-wrap.collapsed{height:0;}
+#map{width:100%;height:100%;}
+.map-mini-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 10px;background:var(--bg3);cursor:pointer;
+  border-top:1px solid var(--bdr);flex-shrink:0;
+  user-select:none;
+}
+.map-mini-hdr:hover{background:var(--dim);}
+.map-toggle-btn{
+  font-size:9px;color:var(--blue);font-family:'Space Mono';
+  cursor:pointer;padding:2px 8px;border:1px solid var(--blue);
+  background:transparent;
+}
+.map-legend2{
+  display:flex;flex-wrap:wrap;gap:8px;padding:5px 10px;
+  background:rgba(4,8,16,.88);border-bottom:1px solid var(--bdr);
+  flex-shrink:0;
+}
+.leg-row{display:flex;align-items:center;gap:4px;font-size:8px;color:var(--t2);}
+.leg-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* ── VIDEO CARDS ── */
+.vcard{
+  display:block;padding:8px 10px;border-bottom:1px solid var(--bdr);
+  text-decoration:none;transition:.15s;
+}
+.vcard:hover{background:var(--dim);}
+.vcard-title{font-size:11px;color:var(--t1);font-weight:700;margin-bottom:3px;}
+.vcard-src{font-size:9px;color:var(--t2);font-family:'Space Mono';}
+.vcard-badge{
+  font-size:8px;padding:1px 5px;border-radius:2px;
+  background:rgba(240,20,45,.2);color:var(--red);
+  font-family:'Space Mono';margin-left:6px;
+}
+
+/* ── HORMUZ STATUS ── */
+.hormuz-box{
+  padding:10px;margin:0;
+  background:rgba(240,20,45,.06);
+  border-bottom:1px solid var(--bdr);
+}
+.hormuz-status{
+  font-family:'Space Mono';font-size:18px;font-weight:700;
+  color:var(--red);letter-spacing:2px;
+  text-shadow:var(--gred);
+  display:flex;align-items:center;gap:8px;
+}
+.hormuz-detail{font-size:9px;color:var(--t2);font-family:'Space Mono';
+  margin-top:5px;line-height:1.5;}
+.hormuz-links{display:flex;gap:1px;margin-top:8px;}
+.hl-btn{
+  flex:1;background:var(--bg3);color:var(--cyan);
+  font-family:'Space Mono';font-size:9px;
+  padding:5px 6px;text-decoration:none;text-align:center;
+  border:1px solid rgba(34,211,238,.2);
+  transition:.15s;
+}
+.hl-btn:hover{background:rgba(34,211,238,.1);}
+
+/* ── MISC ── */
+.panel-ph{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 10px;background:var(--bg3);border-bottom:1px solid var(--bdr);
+}
+.badge{font-family:'Space Mono';font-size:8px;padding:2px 6px;border-radius:2px;}
+.bdr{background:rgba(240,20,45,.1);color:var(--red);border:1px solid rgba(240,20,45,.2);}
+.bdg{background:rgba(0,229,160,.1);color:var(--green);border:1px solid rgba(0,229,160,.2);}
+.bda{background:rgba(245,166,35,.1);color:var(--amber);}
+
+/* ── LANGUAGE SELECTOR ── */
+.lang-bar{display:flex;align-items:center;gap:3px;flex-shrink:0;flex-wrap:wrap;}
+.lang-btn{
+  background:transparent;border:1px solid var(--bdr);color:var(--t2);
+  font-family:'Space Mono';font-size:9px;padding:2px 7px;cursor:pointer;
+  transition:.15s;border-radius:1px;letter-spacing:.5px;
+}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue);}
+.lang-btn.active{background:rgba(26,159,255,.15);border-color:var(--blue);color:var(--blue);font-weight:700;}
+/* RTL for Arabic/Farsi */
+body.rtl{direction:rtl;}
+body.rtl .ev-row{flex-direction:row-reverse;}
+body.rtl .panel-ph{flex-direction:row-reverse;}
+body.rtl .tb-left{flex-direction:row-reverse;}
+body.rtl .tb-right{text-align:left;}
+body.rtl .kahn-explain{border-left:none;border-right:2px solid var(--amber);padding-left:0;padding-right:7px;}
+body.rtl .hormuz-links{flex-direction:row-reverse;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .main-grid{grid-template-columns:1fr;}
+  .col-l,.col-r{max-height:300px;}
+}
+@media(max-width:600px){
+  .mkt-cell{min-width:90px;}
+}
+  border-bottom:1px solid rgba(26,48,80,.4);font-size:11px;animation:fi .4s;}
+@keyframes fi{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.ev-time{font-family:'Space Mono';font-size:9px;color:var(--blue);flex-shrink:0;width:44px;margin-top:1px;}
+.ev-tag{font-size:9px;font-weight:700;padding:1px 5px;flex-shrink:0;letter-spacing:.5px;}
+.t-atk{background:rgba(240,20,45,.18);color:var(--red);}
+.t-rep{background:rgba(245,166,35,.18);color:var(--amber);}
+.t-dip{background:rgba(26,159,255,.15);color:var(--blue);}
+.t-int{background:rgba(0,229,160,.15);color:var(--green);}
+.ev-txt{flex:1;color:var(--t1);line-height:1.4;}
+
+.esc-pane{
+  border-left:1px solid var(--bdr);
+  background:var(--bg2);padding:10px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.sec-hdr{font-size:10px;color:var(--t2);font-family:'Space Mono';letter-spacing:1px;margin-bottom:2px;}
+.esc-bar{display:flex;height:14px;border-radius:1px;overflow:hidden;border:1px solid var(--bdr);}
+.esc-seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;}
+.esc-note{font-size:10px;color:var(--amber);font-family:'Space Mono';line-height:1.4;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  grid-column:2;grid-row:2/4;
+  display:flex;flex-direction:column;overflow:hidden;
+  min-height:0;
+}
+
+/* ── PANEL ── */
+.panel{background:var(--bg2);border-bottom:1px solid var(--bdr);flex-shrink:0;}
+.ph{background:var(--bg3);border-bottom:1px solid var(--bdr);padding:5px 10px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:'Barlow Condensed';font-size:11px;font-weight:700;letter-spacing:2px;}
+.ph-l{display:flex;align-items:center;gap:6px;}
+.accent{width:2px;height:12px;background:var(--red);}
+.accent.b{background:var(--blue);}
+.accent.g{background:var(--green);}
+.accent.a{background:var(--amber);}
+.accent.p{background:var(--purple);}
+.badge{font-family:'Space Mono';font-size:9px;padding:2px 6px;border-radius:1px;}
+.bdr{background:rgba(240,20,45,.15);color:var(--red);border:1px solid rgba(240,20,45,.3);}
+.bdb{background:rgba(26,159,255,.12);color:var(--blue);}
+.bdg{background:rgba(0,229,160,.12);color:var(--green);}
+.bda{background:rgba(245,166,35,.12);color:var(--amber);}
+.bdp{background:rgba(162,89,247,.12);color:var(--purple);}
+
+/* FX panel */
+.fx-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bdr);}
+.fx-cell{background:var(--bg2);padding:6px 8px;display:flex;justify-content:space-between;align-items:center;}
+.fx-pair{font-size:9px;color:var(--t2);font-family:'Space Mono';}
+.fx-val{font-size:14px;font-weight:700;font-family:'Space Mono';}
+.fx-pct{font-size:9px;font-family:'Space Mono';}
+.dxy-row{padding:5px 8px;background:var(--bg3);border-top:1px solid var(--bdr);}
+.dxy-bar-bg{height:4px;background:var(--dim);border-radius:2px;margin-top:4px;}
+.dxy-bar-fg{height:100%;background:linear-gradient(90deg,var(--blue),var(--amber));border-radius:2px;transition:width 1.5s;}
+.data-src{font-size:7px;color:var(--t2);font-family:'Space Mono';margin-top:3px;padding:3px 8px;background:var(--bg3);border-top:1px solid var(--bdr);}
+
+/* Videos */
+.videos-scroll{flex:1;overflow-y:auto;}
+.vlist{padding:5px;display:flex;flex-direction:column;gap:4px;}
+.vcard{background:var(--dim);border:1px solid var(--bdr);display:block;text-decoration:none;transition:border-color .2s;}
+.vcard:hover{border-color:var(--red);box-shadow:var(--gred);}
+.vthumb{position:relative;height:58px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.vsrc{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.75);color:var(--red);font-size:7px;font-family:'Space Mono';padding:1px 4px;z-index:2;}
+.vlive{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;font-size:7px;font-family:'Space Mono';padding:1px 4px;display:flex;align-items:center;gap:3px;z-index:2;}
+.vdur{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.8);color:var(--t1);font-size:7px;font-family:'Space Mono';padding:1px 4px;z-index:2;}
+.vplay{position:relative;width:24px;height:24px;background:rgba(240,20,45,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;z-index:2;transition:.2s;}
+.vcard:hover .vplay{background:var(--red);transform:scale(1.1);}
+.vmeta{padding:5px 7px;}
+.vtitle{font-size:10px;color:var(--t1);line-height:1.3;font-weight:600;}
+.vfooter{display:flex;justify-content:space-between;margin-top:2px;font-size:8px;color:var(--t2);font-family:'Space Mono';}
+
+/* ── WORLD PANEL (fullscreen overlay) ── */
+.world-fab{
+  position:fixed;bottom:88px;right:84px;
+  width:48px;height:48px;
+  background:linear-gradient(135deg,#1a9fff,#0d6efd);
+  border-radius:50%;border:2px solid rgba(26,159,255,.5);
+  box-shadow:0 0 20px rgba(26,159,255,.4);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:900;color:#fff;
+  z-index:1000;transition:.2s;
+  animation:fab2 3s ease-in-out infinite;
+}
+@keyframes fab2{0%,100%{box-shadow:0 0 20px rgba(26,159,255,.4)}50%{box-shadow:0 0 36px rgba(26,159,255,.7)}}
+.world-fab:hover{transform:scale(1.1);}
+.fab-badge2{position:absolute;top:-3px;right:-3px;background:#1a9fff;color:#fff;
+  font-size:8px;font-family:'Space Mono';width:16px;height:16px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;}
+
+.world-panel{
+  position:fixed;inset:0;background:rgba(4,8,16,.98);
+  z-index:2000;display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+.world-panel.open{transform:translateY(0);}
+.wp-hdr{
+  background:var(--bg3);border-bottom:2px solid var(--blue);
+  padding:8px 14px;display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;box-shadow:var(--gblue);
+}
+.wp-title{font-size:16px;font-weight:900;letter-spacing:3px;color:var(--blue);display:flex;align-items:center;gap:8px;}
+.wp-close{background:none;border:1px solid var(--bdr);color:var(--t2);cursor:pointer;
+  font-family:'Space Mono';font-size:10px;padding:5px 12px;transition:.2s;}
+.wp-close:hover{border-color:var(--red);color:var(--red);}
+.wp-body{display:flex;flex:1;overflow:hidden;min-height:0;}
+#worldmap{flex:1;}
+.x-panel{width:360px;border-left:1px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden;background:var(--bg2);}
+.x-hdr{background:var(--bg3);border-bottom:1px solid var(--bdr);padding:7px 12px;
+  font-size:11px;font-weight:700;letter-spacing:2px;display:flex;align-items:center;gap:7px;}
+.x-logo{font-size:16px;font-weight:900;color:var(--blue);}
+.x-filters{padding:5px 7px;display:flex;flex-wrap:wrap;gap:3px;border-bottom:1px solid var(--bdr);background:var(--bg3);flex-shrink:0;}
+.xfbtn{background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--t2);
+  padding:2px 8px;font-size:9px;font-family:'Space Mono';cursor:pointer;border-radius:20px;transition:.15s;}
+.xfbtn:hover{background:rgba(26,159,255,.15);color:var(--blue);border-color:var(--blue);}
+.x-feed{flex:1;overflow-y:auto;padding:6px;}
+.xpost{background:var(--dim);border:1px solid var(--bdr);border-radius:3px;padding:9px;margin-bottom:5px;animation:fi .4s;}
+.xpost:hover{border-color:var(--blue);}
+.xpost-hdr{display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;}
+.xavatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.xname{font-size:11px;font-weight:700;color:var(--t1);}
+.xhandle{font-size:9px;color:var(--t2);font-family:'Space Mono';}
+.xverif{color:var(--blue);font-size:10px;}
+.xstance{font-size:8px;font-weight:700;padding:1px 5px;letter-spacing:.5px;border-radius:2px;flex-shrink:0;margin-left:auto;}
+.s-sup{background:rgba(0,229,160,.12);color:var(--green);border:1px solid rgba(0,229,160,.25);}
+.s-opp{background:rgba(240,20,45,.12);color:var(--red);border:1px solid rgba(240,20,45,.25);}
+.s-neu{background:rgba(245,166,35,.12);color:var(--amber);border:1px solid rgba(245,166,35,.25);}
+.s-med{background:rgba(162,89,247,.12);color:var(--purple);border:1px solid rgba(162,89,247,.25);}
+.s-amb{background:rgba(26,159,255,.1);color:var(--blue);border:1px solid rgba(26,159,255,.2);}
+.xtext{font-size:11px;color:var(--t1);line-height:1.5;margin-bottom:6px;}
+.xtext .real-src{font-size:9px;color:var(--green);font-family:'Space Mono';display:block;margin-top:4px;}
+.xmeta{display:flex;justify-content:space-between;align-items:center;font-size:9px;color:var(--t2);font-family:'Space Mono';}
+.xreacts{display:flex;gap:10px;}
+.wp-legend{padding:6px 14px;background:var(--bg3);border-top:1px solid var(--bdr);
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px;flex-shrink:0;}
+.wl-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
+.wl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── CHAT ── */
+.chat-fab{
+  position:fixed;bottom:24px;right:22px;
+  width:48px;height:48px;background:var(--purple);border-radius:50%;
+  border:2px solid rgba(162,89,247,.5);box-shadow:0 0 20px rgba(162,89,247,.4);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:20px;z-index:1000;transition:.2s;
+  animation:fab3 3s ease-in-out infinite;
+}
+@keyframes fab3{0%,100%{box-shadow:0 0 20px rgba(162,89,247,.4)}50%{box-shadow:0 0 36px rgba(162,89,247,.7)}}
+.chat-fab:hover{transform:scale(1.1);}
+.fab-badge{position:absolute;top:-3px;right:-3px;background:var(--red);color:#fff;
+  font-size:8px;font-family:'Space Mono';width:16px;height:16px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;animation:blink 1.5s infinite;}
+.chat-panel{
+  position:fixed;bottom:84px;right:18px;
+  width:340px;height:480px;
+  background:var(--bg2);border:1px solid var(--purple);border-radius:3px;
+  box-shadow:0 0 32px rgba(162,89,247,.25);
+  z-index:1000;display:flex;flex-direction:column;
+  transform:scale(0) translateY(20px);transform-origin:bottom right;
+  opacity:0;transition:all .25s cubic-bezier(.34,1.56,.64,1);pointer-events:none;
+}
+.chat-panel.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
+.chat-hdr{background:var(--bg3);border-bottom:1px solid var(--purple);padding:8px 12px;
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.chat-title{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--purple);}
+.ai-dot{width:7px;height:7px;background:var(--purple);border-radius:50%;animation:blink 1.5s infinite;}
+.chat-close{background:none;border:none;color:var(--t2);cursor:pointer;font-size:14px;padding:2px 5px;transition:.15s;}
+.chat-close:hover{color:var(--red);}
+.chat-ctx{padding:4px 10px;background:rgba(162,89,247,.07);border-bottom:1px solid rgba(162,89,247,.15);
+  font-size:9px;color:var(--t2);font-family:'Space Mono';flex-shrink:0;}
+.chat-msgs{flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:8px;}
+.bubble{max-width:85%;padding:7px 10px;font-size:11px;line-height:1.5;animation:fi .3s;border-radius:2px;}
+.bubble-ai{background:rgba(162,89,247,.1);border:1px solid rgba(162,89,247,.2);align-self:flex-start;border-radius:2px 10px 10px 10px;}
+.bubble-usr{background:rgba(26,159,255,.1);border:1px solid rgba(26,159,255,.2);align-self:flex-end;border-radius:10px 10px 2px 10px;}
+.bubble-lbl{font-size:8px;font-family:'Space Mono';margin-bottom:3px;}
+.bubble-ai .bubble-lbl{color:var(--purple);}
+.bubble-usr .bubble-lbl{color:var(--blue);text-align:right;}
+.typing{display:flex;align-items:center;gap:5px;padding:6px 10px;
+  background:rgba(162,89,247,.08);border:1px solid rgba(162,89,247,.15);
+  align-self:flex-start;border-radius:2px 10px 10px 10px;
+  font-size:9px;color:var(--t2);font-family:'Space Mono';}
+.td{width:5px;height:5px;background:var(--purple);border-radius:50%;animation:typ 1.2s infinite;}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes typ{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.qbtns{padding:5px 8px;display:flex;flex-wrap:wrap;gap:3px;border-top:1px solid rgba(162,89,247,.12);flex-shrink:0;}
+.qbtn{background:rgba(162,89,247,.1);border:1px solid rgba(162,89,247,.25);color:var(--t2);
+  padding:2px 7px;border-radius:2px;font-size:9px;font-family:'Space Mono';cursor:pointer;transition:.15s;}
+.qbtn:hover{background:rgba(162,89,247,.2);color:var(--t1);}
+.chat-input-row{display:flex;border-top:1px solid rgba(162,89,247,.2);flex-shrink:0;}
+.chat-in{flex:1;background:var(--bg3);border:none;outline:none;color:var(--t1);
+  font-family:'Barlow Condensed';font-size:13px;padding:8px 10px;}
+.chat-in::placeholder{color:var(--t2);}
+.chat-send{background:var(--purple);border:none;color:#fff;padding:8px 13px;
+  cursor:pointer;font-family:'Space Mono';font-size:10px;transition:.15s;flex-shrink:0;}
+.chat-send:hover{background:#8b3cf7;}
+.chat-send:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── POPUP ── */
+.leaflet-popup-content-wrapper{
+  background:rgba(4,8,16,.96)!important;border:1px solid var(--bdr)!important;
+  border-radius:0!important;color:var(--t1)!important;font-family:'Barlow Condensed'!important;
+  box-shadow:var(--gred)!important;}
+.leaflet-popup-tip{background:rgba(4,8,16,.96)!important;}
+.leaflet-popup-content{margin:10px 14px!important;}
+.pu-title{font-weight:700;font-size:14px;color:var(--red);border-bottom:1px solid var(--bdr);padding-bottom:4px;margin-bottom:5px;}
+.pu-body{font-size:11px;color:var(--t2);line-height:1.5;}
+.pu-status{color:var(--amber);font-family:'Space Mono';font-size:10px;margin-top:4px;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .workspace{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto auto;
+  }
+  .markets-strip{grid-column:1;overflow-x:auto;}
+  .mkt-cell{min-width:100px;}
+  .map-col{grid-column:1;grid-row:2;}
+  .map-wrap{flex:0 0 220px;}
+  .bottom-left{grid-column:1;grid-row:3;max-height:160px;}
+  .sidebar{grid-column:1;grid-row:4;max-height:320px;}
+  .x-panel{width:100%;}
+  .wp-body{flex-direction:column;}
+  #worldmap{height:300px;flex:none;}
+  .chat-panel{width:calc(100vw - 24px);right:12px;bottom:80px;}
+  .world-fab{bottom:80px;right:72px;}
+}
+
+@media(max-width:600px){
+  .logo-text .main{font-size:14px;letter-spacing:2px;}
+  .logo-text .sub{display:none;}
+  .tb-right .date{display:none;}
+  .map-wrap{flex:0 0 180px;}
+  .bottom-left{grid-template-columns:1fr;max-height:none;}
+  .esc-pane{border-left:none;border-top:1px solid var(--bdr);}
+  .mkt-cell{min-width:80px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="tb-left">
+    <div class="logo-hex">⬡</div>
+    <div class="logo-text">
+      <div class="main">WAR ROOM</div>
+      <div class="sub" data-i18n="subtitle">IRAN–USA–ISRAEL CONFLICT 2026</div>
+    </div>
+  </div>
+  <div class="tb-center">
+    <div class="lang-bar" id="langBar">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('pt')">PT</button>
+      <button class="lang-btn" onclick="setLang('ru')">RU</button>
+      <button class="lang-btn" onclick="setLang('ar')">AR</button>
+      <button class="lang-btn" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn" onclick="setLang('fa')">فا</button>
+    </div>
+    <div class="pill"><div class="dot"></div><span data-i18n="live_pill">LIVE · D+5</span></div>
+    <div class="pill" style="border-color:var(--amber);color:var(--amber);animation:none;background:rgba(245,166,35,.08)">⚠ <span data-i18n="real_data">VERIFIED DATA</span></div>
+  </div>
+  <div class="tb-right">
+    <div class="clock" id="clock">--:--:--</div>
+    <div class="date" style="font-size:9px">04 MAR 2026 · UTC</div>
+    <button id="themeToggle" onclick="toggleTheme()" title="Toggle theme" style="
+      margin-top:4px;background:rgba(26,159,255,.12);border:1px solid var(--blue);
+      color:var(--blue);font-family:'Space Mono';font-size:9px;padding:3px 10px;
+      cursor:pointer;letter-spacing:1px;transition:.2s;
+    ">☀ LIGHT</button>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-lbl">◀ REAL</div>
+  <div class="ticker-inner">
+    🔴 <span class="real-tag">D+5 · 04 MAR 2026</span> MUERTOS EN IRAN: 1,045+ (Tasnim / Al Jazeera) · BAJAS USA: 6 KIA · BARCOS IRAN HUNDIDOS: 17+ (CENTCOM)
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL CNBC 03/03</span> BRENT: $84.18/bbl (+18.84% vs semana) · WTI: $77.00 · GAS NAT EUROPA: +38% en un día (mayor subida desde 2022)
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL LSEG 02/03</span> VLCC SUPERTANKERS: $423,000/día — RÉCORD HISTÓRICO (+94% en una sola jornada). Estrecho de Ormuz: tráfico efectivamente detenido
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL investing.com 04/03</span> ORO: $5,187 · cayó -4.8% el martes · "Cash became king" (Reuters) · rebotando hoy en Asia — rango hoy $5,084-$5,206
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL TradingEcon 03/03</span> DOW: -437 pts (48,468) · S&P: -0.94% · 10Y YIELD: 4.107% (desde 3.96%) — Fed: probabilidad recorte verano = CERO
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL CNN 04/03</span> Trump: "suministro virtualmente ilimitado de municiones. Wars can be fought forever." (Truth Social) · No descarta tropas terrestres
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL Wikipedia/CENTCOM 04/03</span> Fragata IRIS DENA hundida en Océano Índico por submarino USA, 40mn sur de Sri Lanka. 32 tripulantes rescatados
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL Al Jazeera 04/03</span> ISRAEL lanza DÉCIMA OLA de ataques: Teherán, Karaj, Isfahan, Qom. IRGC: "230 drones en operaciones de campo"
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL Rusia/Al Jazeera 04/03</span> Rusia advierte: Planta nuclear BUSHEHR bajo amenaza — "explosiones escuchadas a kilómetros del perímetro"
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL Turquía/NATO 03/03</span> Turquía: Sistema NATO destruyó misil balístico iraní en Mediterráneo oriental. Objetivo aún no confirmado
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL CNBC 03/03</span> QatarEnergy PARÓ producción GNL (Ras Laffan). 11,000+ vuelos cancelados · +1 MILLÓN de viajeros atrapados
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL NYT/CIA 03/03</span> INTELIGENCIA: CIA rastreó movimientos de Khamenei, supo que estaría en compound Teherán el sábado — timing del strike determinado por eso
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL Rubio/Capitol 03/03</span> Rubio: "Los GOLPES MÁS DUROS aún están por venir. Dos fuerzas aéreas más poderosas del mundo desmantelarán este régimen terrorista"
+    <span class="sep">◆</span>
+    <span class="real-tag">✔REAL Jamie Dimon CNBC 02/03</span> CEO JPMorgan: "Esperamos ciberataques y ataques terroristas. Los bancos pueden ser objetivos. Pero el mundo occidental debe permanecer libre"
+  </div>
+</div>
+
+<!-- MAIN WORKSPACE -->
+<!-- MAIN WORKSPACE -->
+<div class="workspace">
+
+  <!-- MARKETS STRIP — DATOS REALES 04 MAR 2026 D+5 -->
+  <div class="markets-strip">
+    <div class="mkt-cell">
+      <div class="mkt-lbl">BRENT 🛢 🔺🔺</div>
+      <div class="mkt-val up" id="brent">$84.18</div>
+      <div class="mkt-chg up" data-i18n="mkt_brent_chg">▲ +18.84% vs week</div>
+      <div class="mkt-src">commodity.com</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">WTI 🛢</div>
+      <div class="mkt-val up">$77.00</div>
+      <div class="mkt-chg up" data-i18n="mkt_wti_chg">▲ +16.84% vs week</div>
+      <div class="mkt-src">commodity.com</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">GOLD 🥇</div>
+      <div class="mkt-val neut" id="gold">$5,187</div>
+      <div class="mkt-chg dn" data-i18n="mkt_gold_chg">▼ -4.8% Tuesday</div>
+      <div class="mkt-src">investing.com</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">S&P 500 📊</div>
+      <div class="mkt-val dn">~6,817</div>
+      <div class="mkt-chg dn" data-i18n="mkt_sp_chg">▼ -0.94% close</div>
+      <div class="mkt-src">TradingEcon 03/03</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">DOW JONES</div>
+      <div class="mkt-val dn">48,468</div>
+      <div class="mkt-chg dn">▼ -437 pts</div>
+      <div class="mkt-src" data-i18n="mkt_close">close 03/03</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">10Y YIELD 📈</div>
+      <div class="mkt-val up">4.107%</div>
+      <div class="mkt-chg up" data-i18n="mkt_yield_chg">▲ from 3.96%</div>
+      <div class="mkt-src" data-i18n="mkt_yield_src">war inflation</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">VIX 😱</div>
+      <div class="mkt-val up" id="vix">+27%</div>
+      <div class="mkt-chg up" data-i18n="mkt_vix_chg">↑ intraday · closed +8%</div>
+      <div class="mkt-src">CNN Business 02/03</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">DXY 💵 📈</div>
+      <div class="mkt-val up" id="dxy-top">98.54</div>
+      <div class="mkt-chg up" data-i18n="mkt_dxy_chg">▲ +0.95% (haven)</div>
+      <div class="mkt-src" data-i18n="mkt_dxy_src">erases YTD losses</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">VLCC TANKER 🛳</div>
+      <div class="mkt-val up">$423K/d</div>
+      <div class="mkt-chg up" data-i18n="mkt_vlcc_chg">▲ +94% one day RECORD</div>
+      <div class="mkt-src">LSEG · Hormuz closed</div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lbl">EU NAT GAS 🔥</div>
+      <div class="mkt-val up">+38%</div>
+      <div class="mkt-chg up" data-i18n="mkt_gas_chg">largest since 2022</div>
+      <div class="mkt-src">CNN Business 02/03</div>
+    </div>
+  </div>
+
+  <!-- 3-COLUMN MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- ═══ COLUMNA IZQUIERDA — SITUACIÓN ═══ -->
+    <div class="col-l">
+
+      <!-- STATS OPERACIONALES -->
+      <div class="sec-panel">
+        <div class="panel-ph">
+          <div class="sec-title"><div class="sec-acc" style="background:var(--red)"></div><span data-i18n="ops_title">OPERATIONAL STATUS D+5</span></div>
+          <span class="badge bdr">04 MAR</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-cell">
+            <div class="stat-lbl" data-i18n="stat_iran_dead">☠ IRAN DEAD</div>
+            <div class="stat-val" style="font-size:20px;color:var(--red)">1,045+</div>
+            <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:90%;background:var(--red)"></div></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-lbl" data-i18n="stat_us_kia">🇺🇸 KIA USA</div>
+            <div class="stat-val" style="font-size:20px;color:var(--amber)">6</div>
+            <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:30%;background:var(--amber)"></div></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-lbl" data-i18n="stat_ships">⚓ SHIPS SUNK</div>
+            <div class="stat-val" style="font-size:20px;color:var(--blue)">17+</div>
+            <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:75%;background:var(--blue)"></div></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-lbl" data-i18n="stat_flights">✈ FLIGHTS CANCELLED</div>
+            <div class="stat-val" style="font-size:15px;color:var(--amber)">11,000+</div>
+            <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:95%;background:var(--amber)"></div></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-lbl" data-i18n="stat_wave">💥 ATTACK WAVE</div>
+            <div class="stat-val" style="font-size:20px;color:var(--cyan)">10th</div>
+            <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:100%;background:var(--cyan)"></div></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-lbl" data-i18n="stat_israel_dead">🇮🇱 ISRAEL DEAD</div>
+            <div class="stat-val" style="font-size:20px;color:var(--green)">11</div>
+            <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:10%;background:var(--green)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESTRECHO DE ORMUZ STATUS -->
+      <div class="sec-panel hormuz-box">
+        <div class="panel-ph" style="padding:6px 10px 4px">
+          <div class="sec-title"><div class="sec-acc" style="background:var(--cyan)"></div>⚓ <span data-i18n="hormuz_title">STRAIT OF HORMUZ</span></div>
+        </div>
+        <div style="padding:8px 10px 4px">
+          <div class="hormuz-status"><span style="animation:blink-bdr 1s infinite;border:1px solid var(--red);padding:1px 6px;font-size:11px">●</span> <span data-i18n="hormuz_closed">CLOSED</span></div>
+          <div class="hormuz-detail">
+            <span data-i18n="hormuz_detail">20% of world oil · 4 ships hit<br>IRGC: "We will set fire to any vessel"<br>Forecast: $100–$120/bbl if prolonged</span>
+          </div>
+          <div class="hormuz-links">
+            <a href="https://www.vesselfinder.com/?lat=26.55&lng=56.25&zoom=8" target="_blank" class="hl-btn">🗺 VesselFinder →</a>
+            <a href="https://www.marinetraffic.com/en/ais/home/centerx:56.25/centery:26.55/zoom:8" target="_blank" class="hl-btn">🚢 MarineTraffic →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESCALA KAHN -->
+      <div class="sec-panel">
+        <div class="panel-ph">
+          <div class="sec-title"><div class="sec-acc" style="background:var(--amber)"></div><span data-i18n="kahn_title">KAHN ESCALATION SCALE</span></div>
+          <span class="badge bda" style="background:rgba(245,166,35,.12);color:var(--amber);border:1px solid rgba(245,166,35,.3)" data-i18n="kahn_level_badge">LVL. 8</span>
+        </div>
+        <div class="kahn-panel">
+          <div class="kahn-explain" data-i18n-html="kahn_explain">
+            <strong style="color:var(--amber)">What is it?</strong> Herman Kahn (1965) defined a 44-step ladder of military escalation — from diplomatic tension to nuclear war. We use 10 summarized levels here. Reaching level 9 would mean threats or use of non-conventional weapons.
+          </div>
+          <div class="kahn-bar">
+            <div class="kahn-seg past" style="background:#22c55e;color:#000">1<div class="kahn-label" data-i18n="kahn_l1">Diplomatic tension</div></div>
+            <div class="kahn-seg past" style="background:#4ade80;color:#000">2<div class="kahn-label" data-i18n="kahn_l2">Political crisis</div></div>
+            <div class="kahn-seg past" style="background:#a3e635;color:#000">3<div class="kahn-label" data-i18n="kahn_l3">Sanctions/coercion</div></div>
+            <div class="kahn-seg past" style="background:#facc15;color:#000">4<div class="kahn-label" data-i18n="kahn_l4">Military ultimatum</div></div>
+            <div class="kahn-seg past" style="background:#fb923c;color:#000">5<div class="kahn-label" data-i18n="kahn_l5">Proxy war</div></div>
+            <div class="kahn-seg past" style="background:#f97316;color:#000">6<div class="kahn-label" data-i18n="kahn_l6">Conventional war</div></div>
+            <div class="kahn-seg past" style="background:#ef4444;color:#fff">7<div class="kahn-label" data-i18n="kahn_l7">Hormuz closed</div></div>
+            <div class="kahn-seg active" style="background:#dc2626;color:#fff">8<div class="kahn-label" data-i18n="kahn_l8">Full regional war ←</div></div>
+            <div class="kahn-seg future" style="background:#991b1b;color:#fff">9<div class="kahn-label" data-i18n="kahn_l9">Non-conv. weapons</div></div>
+            <div class="kahn-seg future" style="background:#7f1d1d;color:#fff">10<div class="kahn-label" data-i18n="kahn_l10">Nuclear</div></div>
+          </div>
+          <div class="kahn-level-note" data-i18n="kahn_current">▶ LVL. 8 — Full regional war active</div>
+          <div class="kahn-next" data-i18n="kahn_next">Lebanon open · Beirut bombed · Bushehr threatened<br>NATO intervening · Iranian parliament struck</div>
+          <div class="kahn-scenarios">
+            <div class="kahn-sc" style="color:var(--green)" data-i18n="scenario_1">🟢 Deal in 4 weeks: 15%</div>
+            <div class="kahn-sc" style="color:var(--amber)" data-i18n="scenario_2">🟡 Prolonged war: 50%</div>
+            <div class="kahn-sc" style="color:var(--red)" data-i18n="scenario_3">🔴 Regional escalation: 35%</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-l -->
+
+    <!-- ═══ COLUMNA CENTRAL — EVENTOS (HÉROE) ═══ -->
+    <div class="col-c">
+
+      <!-- Events header -->
+      <div class="panel-ph" style="flex-shrink:0;border-bottom:1px solid var(--bdr)">
+        <div class="sec-title"><div class="sec-acc" style="background:var(--green)"></div>📋 <span data-i18n="events_title">EVENT LOG — D+0 TO D+5</span></div>
+        <span class="badge bdg" id="ev-count">27 EVT</span>
+      </div>
+
+      <!-- Events scroll - hero -->
+      <div class="events-hero">
+        <div class="events-scroll" id="evlog"></div>
+      </div>
+
+      <!-- Map toggle header -->
+      <div class="map-mini-hdr" id="mapToggle" onclick="toggleMap()">
+        <div class="sec-title"><div class="sec-acc" style="background:var(--blue)"></div>🗺 <span data-i18n="map_title">THEATER OF OPERATIONS — Middle East</span></div>
+        <button class="map-toggle-btn" id="mapToggleBtn" data-i18n="map_hide">▲ HIDE</button>
+      </div>
+
+      <!-- Mini Map -->
+      <div class="map-mini-wrap" id="mapWrap">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;padding:4px 10px;background:rgba(4,8,16,.9);flex-shrink:0;">
+          <div class="leg-row"><div class="leg-dot" style="background:var(--red)"></div><span data-i18n="leg_targets">Targets struck</span></div>
+          <div class="leg-row"><div class="leg-dot" style="background:var(--amber)"></div><span data-i18n="leg_iran">Iranian retaliation</span></div>
+          <div class="leg-row"><div class="leg-dot" style="background:var(--blue)"></div><span data-i18n="leg_us">US bases</span></div>
+          <div class="leg-row"><div class="leg-dot" style="background:var(--green)"></div><span data-i18n="leg_naval">Naval forces</span></div>
+          <div class="leg-row"><div class="leg-dot" style="background:var(--purple)"></div><span data-i18n="leg_proxies">Iran proxies</span></div>
+        </div>
+        <div id="map" style="height:210px;width:100%"></div>
+      </div>
+
+    </div><!-- /col-c -->
+
+    <!-- ═══ COLUMNA DERECHA — ANÁLISIS ═══ -->
+    <div class="col-r">
+
+      <!-- FX RATES -->
+      <div class="sec-panel">
+        <div class="panel-ph">
+          <div class="sec-title"><div class="sec-acc" style="background:var(--cyan)"></div>💱 <span data-i18n="fx_title">FX — WAR EFFECT</span></div>
+          <span class="badge" style="background:rgba(34,211,238,.1);color:var(--cyan);border:1px solid rgba(34,211,238,.2)" data-i18n="live_badge">LIVE</span>
+        </div>
+        <div class="fx-row">
+          <div class="fx-pair">EUR/USD</div>
+          <div>
+            <div class="fx-val dn" id="fx-eur">1.1815</div>
+            <div class="fx-chg dn" data-i18n="fx_eur_chg">▼ -1.2% haven</div>
+          </div>
+        </div>
+        <div class="fx-row">
+          <div class="fx-pair">USD/JPY</div>
+          <div>
+            <div class="fx-val up" id="fx-jpy">150.42</div>
+            <div class="fx-chg dn" data-i18n="fx_jpy_chg">↑ Yen safe haven</div>
+          </div>
+        </div>
+        <div class="fx-row">
+          <div class="fx-pair">GBP/USD</div>
+          <div>
+            <div class="fx-val dn" id="fx-gbp">1.3470</div>
+            <div class="fx-chg dn" data-i18n="fx_gbp_chg">▼ GBP pressure</div>
+          </div>
+        </div>
+        <div class="fx-row">
+          <div class="fx-pair">USD/ILS 🇮🇱</div>
+          <div>
+            <div class="fx-val up" id="fx-ils">3.72</div>
+            <div class="fx-chg up" data-i18n="fx_ils_chg">▲ shekel pressure</div>
+          </div>
+        </div>
+        <div class="fx-row">
+          <div class="fx-pair">GBP/EUR</div>
+          <div>
+            <div class="fx-val" style="font-size:13px;font-family:'Space Mono'" id="fx-gbpeur">1.1401</div>
+            <div class="fx-chg dn" style="font-size:9px;font-family:'Space Mono'">▼ -0.26%</div>
+          </div>
+        </div>
+        <div class="dxy-box">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span style="font-size:9px;color:var(--t2);font-family:'Space Mono'" data-i18n="dxy_label">DXY (Dollar Index)</span>
+            <span style="font-size:13px;font-weight:700;font-family:'Space Mono';color:var(--up)" id="dxy-num">98.54</span>
+          </div>
+          <div style="height:4px;background:var(--dim);border-radius:2px;overflow:hidden">
+            <div id="dxy-fill" style="height:100%;background:linear-gradient(90deg,var(--blue),var(--amber));border-radius:2px;width:42%;transition:width 1.5s"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:2px">
+            <span style="font-size:8px;color:var(--t2);font-family:'Space Mono'">90</span>
+            <span style="font-size:8px;color:var(--amber);font-family:'Space Mono'" data-i18n="dxy_note">↑ erases YTD losses</span>
+            <span style="font-size:8px;color:var(--t2);font-family:'Space Mono'">110</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COBERTURA EN VIVO -->
+      <div class="sec-panel">
+        <div class="panel-ph">
+          <div class="sec-title"><div class="sec-acc" style="background:var(--red)"></div>📡 <span data-i18n="coverage_title">LIVE COVERAGE</span></div>
+          <span class="badge bdr" style="animation:blink-bdr 1.5s infinite">● LIVE</span>
+        </div>
+        <a href="https://www.aljazeera.com/news/liveblog/2026/3/4/iran-live-news-us-embassy-in-dubai-hit-israel-pounds-tehran-beirut" target="_blank" class="vcard">
+          <div class="vcard-title">🔴 Al Jazeera — D+5 LIVE<span class="vcard-badge">LIVE</span></div>
+          <div class="vcard-src" data-i18n="src_aljazeera">iran-live-news · minute-by-minute updates</div>
+        </a>
+        <a href="https://www.cnbc.com/2026/03/03/us-iran-war-live-updates.html" target="_blank" class="vcard">
+          <div class="vcard-title">📊 CNBC Markets + War<span class="vcard-badge">LIVE</span></div>
+          <div class="vcard-src">oil · gold · stocks · Hormuz updates</div>
+        </a>
+        <a href="https://www.timesofisrael.com/liveblog-march-3-2026/" target="_blank" class="vcard">
+          <div class="vcard-title">🇮🇱 Times of Israel — Liveblog</div>
+          <div class="vcard-src" data-i18n="src_toi">IDF ops · Netanyahu · interceptions</div>
+        </a>
+        <a href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank" class="vcard">
+          <div class="vcard-title">📖 Wikipedia — 2026 Conflict</div>
+          <div class="vcard-src" data-i18n="src_wiki">Full verified timeline · IRIS Dena</div>
+        </a>
+        <a href="https://www.washingtonpost.com/world/2026/03/03/us-iran-israel-military-strikes-trump-live-updates/" target="_blank" class="vcard">
+          <div class="vcard-title">🗞 Washington Post — Updates</div>
+          <div class="vcard-src" data-i18n="src_wapo">6 KIA identified · 3 embassies closed</div>
+        </a>
+        <a href="https://edition.cnn.com/world/live-news/israel-iran-attack-02-28-26-hnk-intl" target="_blank" class="vcard">
+          <div class="vcard-title">📺 CNN — Full Coverage</div>
+          <div class="vcard-src" data-i18n="src_cnn">D+0 to D+5 · geopolitical analysis</div>
+        </a>
+      </div>
+
+      <!-- INTEL CLAVE -->
+      <div class="sec-panel">
+        <div class="panel-ph">
+          <div class="sec-title"><div class="sec-acc" style="background:var(--purple)"></div>🔐 <span data-i18n="intel_title">KEY INTELLIGENCE</span></div>
+        </div>
+        <div style="padding:8px 10px;font-size:10px;line-height:1.6;color:var(--t2);font-family:'Space Mono';display:flex;flex-direction:column;gap:6px;">
+          <div style="border-left:2px solid var(--red);padding-left:7px;color:var(--t1)">
+            <span style="color:var(--red);font-size:9px">CIA</span><br>
+            <span data-i18n="intel_cia">Tracked Khamenei's movements — strike timing determined by this intelligence (NYT)</span>
+          </div>
+          <div style="border-left:2px solid var(--amber);padding-left:7px">
+            <span style="color:var(--amber);font-size:9px">PENTAGON</span><br>
+            <span data-i18n="intel_pentagon">Admitted to Congress: Iran was NOT planning to attack US unless Israel struck first</span>
+          </div>
+          <div style="border-left:2px solid var(--purple);padding-left:7px">
+            <span style="color:var(--purple);font-size:9px">MOSSAD</span><br>
+            <span data-i18n="intel_mossad">Ground operation confirmed inside Iran (Al Arabiya, Mar 2)</span>
+          </div>
+          <div style="border-left:2px solid var(--cyan);padding-left:7px">
+            <span style="color:var(--cyan);font-size:9px">BUSHEHR</span><br>
+            <span data-i18n="intel_bushehr">Russia warns: nuclear plant at risk — explosions heard km from perimeter</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-r -->
+
+  </div><!-- /main-grid -->
+
+</div><!-- /workspace -->
+</div><!-- /workspace -->
+
+<!-- GLOBE FAB -->
+<div class="world-fab" onclick="toggleWorld()" title="Posiciones globales en X">
+  𝕏
+  <div class="fab-badge2">🌍</div>
+</div>
+
+<!-- WORLD PANEL -->
+<div class="world-panel" id="worldPanel">
+  <div class="wp-hdr">
+    <div class="wp-title">𝕏 POSICIONES GLOBALES EN X — DECLARACIONES REALES VERIFICADAS</div>
+    <button class="wp-close" onclick="toggleWorld()">✕ CERRAR</button>
+  </div>
+  <div class="wp-body">
+    <div id="worldmap"></div>
+    <div class="x-panel">
+      <div class="x-hdr"><span class="x-logo">𝕏</span> REACCIONES VERIFICADAS — 28 FEB 2026 <span class="badge bdb" style="margin-left:auto">REAL</span></div>
+      <div class="x-filters">
+        <button class="xfbtn" onclick="filterX('all')">TODO</button>
+        <button class="xfbtn" onclick="filterX('sup')">✅ APOYA</button>
+        <button class="xfbtn" onclick="filterX('opp')">❌ CONDENA</button>
+        <button class="xfbtn" onclick="filterX('neu')">🕊 NEUTRAL</button>
+        <button class="xfbtn" onclick="filterX('amb')">↔ AMBIGUO</button>
+        <button class="xfbtn" onclick="filterX('med')">🤝 MEDIACIÓN</button>
+      </div>
+      <div class="x-feed" id="xfeed"></div>
+    </div>
+  </div>
+  <div class="wp-legend">
+    <div class="wl-item"><div class="wl-dot" style="background:var(--green)"></div>Apoya EE.UU./Israel</div>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--red)"></div>Condena / Pro-Irán</div>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--amber)"></div>Neutral / Restraint</div>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--blue)"></div>Ambigüedad estratégica</div>
+    <div class="wl-item"><div class="wl-dot" style="background:var(--purple)"></div>Ofrece mediación</div>
+    <span style="margin-left:auto;font-size:9px;color:var(--t2);font-family:'Space Mono'">✔ Fuentes: CNN · Jerusalem Post · Responsible Statecraft · Euronews · El Español</span>
+  </div>
+</div>
+
+<!-- CHAT FAB -->
+<div class="chat-fab" onclick="toggleChat()">
+  🤖<div class="fab-badge">AI</div>
+</div>
+
+<!-- CHAT PANEL -->
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-hdr">
+    <div class="chat-title"><div class="ai-dot"></div>ANALISTA IA — WAR ROOM</div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-ctx">🔴 Ctx activo: Irán–EE.UU.–Israel · 28 Feb/01 Mar 2026 · Datos reales cargados</div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="bubble bubble-ai">
+      <div class="bubble-lbl">◆ ANALISTA IA</div>
+      Sistema activo con datos reales verificados. Brent $72.87, DXY 97.61, Gold $5,247. Puedo analizar escalada, impacto FX, posiciones nacionales, proyecciones al 31 Mar. ¿Qué deseas consultar?
+    </div>
+  </div>
+  <div class="qbtns">
+    <button class="qbtn" onclick="qsend('¿Por qué el DXY está en 97 y no sube más si hay guerra?')">DXY & guerra</button>
+    <button class="qbtn" onclick="qsend('¿Por qué el Brent no subió más?')">Brent $73</button>
+    <button class="qbtn" onclick="qsend('Probabilidad de cierre del Estrecho de Ormuz')">Ormuz 62%</button>
+    <button class="qbtn" onclick="qsend('¿Qué harán los mercados el lunes?')">Lunes abre</button>
+    <button class="qbtn" onclick="qsend('Postura de China: ¿neutral o pro-Irán?')">China</button>
+    <button class="qbtn" onclick="qsend('Proyección escenario más probable al 31 de marzo')">Mar 31</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-in" id="chatIn" placeholder="Pregunta estratégica o de mercados…" onkeydown="if(event.key==='Enter')doSend()"/>
+    <button class="chat-send" id="sendBtn" onclick="doSend()">ENVIAR</button>
+  </div>
+</div>
+
+<script>
+// ─── I18N — TRANSLATIONS ───
+const LANGS = {
+  en: {
+    subtitle:'IRAN–USA–ISRAEL CONFLICT 2026',
+    live_pill:'LIVE · D+5', real_data:'VERIFIED DATA',
+    ops_title:'OPERATIONAL STATUS D+5',
+    stat_iran_dead:'☠ IRAN DEAD', stat_us_kia:'🇺🇸 KIA USA',
+    stat_ships:'⚓ SHIPS SUNK', stat_flights:'✈ FLIGHTS CANCELLED',
+    stat_wave:'💥 ATTACK WAVE', stat_israel_dead:'🇮🇱 ISRAEL DEAD',
+    hormuz_title:'STRAIT OF HORMUZ', hormuz_closed:'CLOSED',
+    hormuz_detail:'20% of world oil · 4 ships hit<br>IRGC: "We will set fire to any vessel"<br>Forecast: $100–$120/bbl if prolonged',
+    kahn_title:'KAHN ESCALATION SCALE', kahn_level_badge:'LVL. 8',
+    kahn_explain:'<strong style="color:var(--amber)">What is it?</strong> Herman Kahn (1965) defined a 44-step ladder of military escalation — from diplomatic tension to nuclear war. We use 10 summarized levels. Reaching level 9 means threats or use of non-conventional weapons.',
+    kahn_l1:'Diplomatic tension', kahn_l2:'Political crisis', kahn_l3:'Sanctions/coercion',
+    kahn_l4:'Military ultimatum', kahn_l5:'Proxy war', kahn_l6:'Conventional war',
+    kahn_l7:'Hormuz closed', kahn_l8:'Full regional war ←', kahn_l9:'Non-conv. weapons', kahn_l10:'Nuclear',
+    kahn_current:'▶ LVL. 8 — Full regional war active',
+    kahn_next:'Lebanon open · Beirut bombed · Bushehr threatened<br>NATO intervening · Iranian parliament struck',
+    scenario_1:'🟢 Deal in 4 weeks: 15%', scenario_2:'🟡 Prolonged war: 50%', scenario_3:'🔴 Regional escalation: 35%',
+    events_title:'EVENT LOG — D+0 TO D+5',
+    map_title:'THEATER OF OPERATIONS — Middle East', map_hide:'▲ HIDE', map_show:'▼ SHOW',
+    leg_targets:'Targets struck', leg_iran:'Iranian retaliation', leg_us:'US bases', leg_naval:'Naval forces', leg_proxies:'Iran proxies',
+    fx_title:'FX — WAR EFFECT', live_badge:'LIVE',
+    fx_eur_chg:'▼ -1.2% haven flight', fx_jpy_chg:'↑ Yen safe haven', fx_gbp_chg:'▼ GBP pressure', fx_ils_chg:'▲ shekel pressure',
+    dxy_label:'DXY (Dollar Index)', dxy_note:'↑ erases YTD losses',
+    coverage_title:'LIVE COVERAGE', intel_title:'KEY INTELLIGENCE',
+    intel_cia:'Tracked Khamenei\'s movements — strike timing determined by this (NYT)',
+    intel_pentagon:'Admitted to Congress: Iran was NOT planning to attack US unless Israel struck first',
+    intel_mossad:'Ground operation confirmed inside Iran (Al Arabiya, Mar 2)',
+    intel_bushehr:'Russia warns: nuclear plant at risk — explosions heard km from perimeter',
+    src_aljazeera:'iran-live-news · minute-by-minute updates', src_toi:'IDF ops · Netanyahu · interceptions',
+    src_wiki:'Full verified timeline · IRIS Dena sinking', src_wapo:'6 KIA identified · 3 embassies closed',
+    src_cnn:'D+0 to D+5 · geopolitical analysis',
+    mkt_brent_chg:'▲ +18.84% vs week', mkt_wti_chg:'▲ +16.84% vs week', mkt_gold_chg:'▼ -4.8% Tuesday',
+    mkt_sp_chg:'▼ -0.94% close', mkt_close:'close 03/03', mkt_yield_chg:'▲ from 3.96%', mkt_yield_src:'war inflation',
+    mkt_vix_chg:'↑ intraday · closed +8%', mkt_dxy_chg:'▲ +0.95% (haven)', mkt_dxy_src:'erases YTD losses',
+    mkt_vlcc_chg:'▲ +94% one day RECORD', mkt_gas_chg:'largest since 2022',
+  },
+  es: {
+    subtitle:'CONFLICTO IRÁN–EE.UU.–ISRAEL 2026',
+    live_pill:'EN VIVO · D+5', real_data:'DATOS REALES',
+    ops_title:'ESTADO OPERACIONAL D+5',
+    stat_iran_dead:'☠ MUERTOS IRÁN', stat_us_kia:'🇺🇸 KIA EE.UU.',
+    stat_ships:'⚓ BARCOS HUNDIDOS', stat_flights:'✈ VUELOS CANCEL.',
+    stat_wave:'💥 OLA DE ATAQUES', stat_israel_dead:'🇮🇱 MUERTOS ISRAEL',
+    hormuz_title:'ESTRECHO DE ORMUZ', hormuz_closed:'CERRADO',
+    hormuz_detail:'20% petróleo mundial · 4 barcos golpeados<br>IRGC: "Incendiaremos cualquier buque"<br>Pronóstico: $100–$120/bbl si se prolonga',
+    kahn_title:'ESCALADA KAHN', kahn_level_badge:'NIV. 8',
+    kahn_explain:'<strong style="color:var(--amber)">¿Qué es?</strong> Herman Kahn (1965) definió una escalera de 44 pasos de escalada bélica — desde tensión diplomática hasta guerra nuclear. Usamos 10 niveles resumidos. El nivel 9 implicaría amenazas o uso de armas no-convencionales.',
+    kahn_l1:'Tensión diplomática', kahn_l2:'Crisis política', kahn_l3:'Sanciones/coerción',
+    kahn_l4:'Ultimátum militar', kahn_l5:'Guerra proxy', kahn_l6:'Guerra convencional',
+    kahn_l7:'Ormuz cerrado', kahn_l8:'Guerra regional total ←', kahn_l9:'Armas no-conv.', kahn_l10:'Nuclear',
+    kahn_current:'▶ NIV. 8 — Guerra regional total activa',
+    kahn_next:'Líbano activo · Beirut bombardeado · Bushehr amenazado<br>NATO interviniendo · Parlamento iraní atacado',
+    scenario_1:'🟢 Acuerdo 4 sem: 15%', scenario_2:'🟡 Guerra larga: 50%', scenario_3:'🔴 Escalada regional: 35%',
+    events_title:'REGISTRO DE EVENTOS — D+0 AL D+5',
+    map_title:'TEATRO DE OPERACIONES — Oriente Medio', map_hide:'▲ OCULTAR', map_show:'▼ MOSTRAR',
+    leg_targets:'Objetivos atacados', leg_iran:'Represalias iraníes', leg_us:'Bases EE.UU.', leg_naval:'Fuerzas navales', leg_proxies:'Proxies Irán',
+    fx_title:'FX — EFECTO GUERRA', live_badge:'VIVO',
+    fx_eur_chg:'▼ -1.2% refugio', fx_jpy_chg:'↑ Yen refugio seguro', fx_gbp_chg:'▼ presión libra', fx_ils_chg:'▲ presión shekel',
+    dxy_label:'DXY (Índice Dólar)', dxy_note:'↑ borra pérdidas del año',
+    coverage_title:'COBERTURA EN VIVO', intel_title:'INTEL DESTACADO',
+    intel_cia:'Rastreó movimientos de Khamenei — timing del strike determinado por eso (NYT)',
+    intel_pentagon:'Confesó al Congreso: Irán NO planeaba atacar EE.UU. a menos que Israel atacara primero',
+    intel_mossad:'Operación terrestre confirmada dentro de Irán (Al Arabiya, 2 Mar)',
+    intel_bushehr:'Rusia alerta: planta nuclear en riesgo — explosiones a km del perímetro',
+    src_aljazeera:'iran-live-news · actualización minuto a minuto', src_toi:'Ops IDF · Netanyahu · interceptaciones',
+    src_wiki:'Cronología completa verificada · hundimiento IRIS Dena', src_wapo:'6 KIA identificados · 3 embajadas cerradas',
+    src_cnn:'D+0 al D+5 · análisis geopolítico',
+    mkt_brent_chg:'▲ +18.84% vs sem', mkt_wti_chg:'▲ +16.84% vs sem', mkt_gold_chg:'▼ -4.8% martes',
+    mkt_sp_chg:'▼ -0.94% cierre', mkt_close:'cierre 03/03', mkt_yield_chg:'▲ desde 3.96%', mkt_yield_src:'inflación guerra',
+    mkt_vix_chg:'↑ intraday · cerró +8%', mkt_dxy_chg:'▲ +0.95% (haven)', mkt_dxy_src:'borra pérdidas año',
+    mkt_vlcc_chg:'▲ +94% un día RÉCORD', mkt_gas_chg:'mayor desde 2022',
+  },
+  fr: {
+    subtitle:'CONFLIT IRAN–ÉTATS-UNIS–ISRAËL 2026',
+    live_pill:'EN DIRECT · J+5', real_data:'DONNÉES RÉELLES',
+    ops_title:'STATUT OPÉRATIONNEL J+5',
+    stat_iran_dead:'☠ MORTS IRAN', stat_us_kia:'🇺🇸 KIA É.-U.',
+    stat_ships:'⚓ NAVIRES COULÉS', stat_flights:'✈ VOLS ANNULÉS',
+    stat_wave:'💥 VAGUE D\'ATTAQUES', stat_israel_dead:'🇮🇱 MORTS ISRAËL',
+    hormuz_title:'DÉTROIT D\'ORMUZ', hormuz_closed:'FERMÉ',
+    hormuz_detail:'20% du pétrole mondial · 4 navires touchés<br>CGRI : "Nous incendierons tout navire"<br>Prévision : 100–120$/bbl si prolongé',
+    kahn_title:'ÉCHELLE D\'ESCALADE KAHN', kahn_level_badge:'NIV. 8',
+    kahn_explain:'<strong style="color:var(--amber)">Qu\'est-ce ?</strong> Herman Kahn (1965) a défini une échelle de 44 degrés d\'escalade militaire — de la tension diplomatique à la guerre nucléaire. Nous utilisons 10 niveaux résumés. Le niveau 9 signifierait menaces ou usage d\'armes non-conventionnelles.',
+    kahn_l1:'Tension diplomatique', kahn_l2:'Crise politique', kahn_l3:'Sanctions/coercition',
+    kahn_l4:'Ultimatum militaire', kahn_l5:'Guerre proxy', kahn_l6:'Guerre conventionnelle',
+    kahn_l7:'Ormuz fermé', kahn_l8:'Guerre régionale totale ←', kahn_l9:'Armes non-conv.', kahn_l10:'Nucléaire',
+    kahn_current:'▶ NIV. 8 — Guerre régionale totale active',
+    kahn_next:'Liban actif · Beyrouth bombardé · Bushehr menacé<br>OTAN intervenant · Parlement iranien frappé',
+    scenario_1:'🟢 Accord 4 sem : 15%', scenario_2:'🟡 Guerre longue : 50%', scenario_3:'🔴 Escalade régionale : 35%',
+    events_title:'JOURNAL D\'ÉVÉNEMENTS — J+0 À J+5',
+    map_title:'THÉÂTRE D\'OPÉRATIONS — Moyen-Orient', map_hide:'▲ MASQUER', map_show:'▼ AFFICHER',
+    leg_targets:'Cibles frappées', leg_iran:'Représailles iraniennes', leg_us:'Bases É.-U.', leg_naval:'Forces navales', leg_proxies:'Proxies Iran',
+    fx_title:'FX — EFFET GUERRE', live_badge:'DIRECT',
+    fx_eur_chg:'▼ -1.2% valeur refuge', fx_jpy_chg:'↑ Yen valeur refuge', fx_gbp_chg:'▼ pression livre', fx_ils_chg:'▲ pression shekel',
+    dxy_label:'DXY (Indice Dollar)', dxy_note:'↑ efface pertes annuelles',
+    coverage_title:'COUVERTURE EN DIRECT', intel_title:'RENSEIGNEMENT CLÉ',
+    intel_cia:'A suivi les déplacements de Khamenei — timing de la frappe déterminé par cela (NYT)',
+    intel_pentagon:'Admis au Congrès : l\'Iran NE prévoyait PAS d\'attaquer les É.-U. sauf si Israël frappait en premier',
+    intel_mossad:'Opération terrestre confirmée en Iran (Al Arabiya, 2 mars)',
+    intel_bushehr:'La Russie avertit : centrale nucléaire à risque — explosions entendues à km du périmètre',
+    src_aljazeera:'iran-live-news · mises à jour minute par minute', src_toi:'Ops FDI · Netanyahu · interceptations',
+    src_wiki:'Chronologie complète vérifiée · naufrage IRIS Dena', src_wapo:'6 KIA identifiés · 3 ambassades fermées',
+    src_cnn:'J+0 à J+5 · analyse géopolitique',
+    mkt_brent_chg:'▲ +18,84% vs sem', mkt_wti_chg:'▲ +16,84% vs sem', mkt_gold_chg:'▼ -4,8% mardi',
+    mkt_sp_chg:'▼ -0,94% clôture', mkt_close:'clôture 03/03', mkt_yield_chg:'▲ depuis 3,96%', mkt_yield_src:'inflation de guerre',
+    mkt_vix_chg:'↑ intraday · clôturé +8%', mkt_dxy_chg:'▲ +0,95% (refuge)', mkt_dxy_src:'efface pertes YTD',
+    mkt_vlcc_chg:'▲ +94% un jour RECORD', mkt_gas_chg:'plus haut depuis 2022',
+  },
+  pt: {
+    subtitle:'CONFLITO IRÃ–EUA–ISRAEL 2026',
+    live_pill:'AO VIVO · D+5', real_data:'DADOS REAIS',
+    ops_title:'STATUS OPERACIONAL D+5',
+    stat_iran_dead:'☠ MORTOS IRÃ', stat_us_kia:'🇺🇸 KIA EUA',
+    stat_ships:'⚓ NAVIOS AFUNDADOS', stat_flights:'✈ VOOS CANCELADOS',
+    stat_wave:'💥 ONDA DE ATAQUES', stat_israel_dead:'🇮🇱 MORTOS ISRAEL',
+    hormuz_title:'ESTREITO DE ORMUZ', hormuz_closed:'FECHADO',
+    hormuz_detail:'20% do petróleo mundial · 4 navios atingidos<br>CGRI: "Incendiaremos qualquer embarcação"<br>Projeção: $100–$120/bbl se prolongado',
+    kahn_title:'ESCALA DE ESCALADA KAHN', kahn_level_badge:'NÍV. 8',
+    kahn_explain:'<strong style="color:var(--amber)">O que é?</strong> Herman Kahn (1965) definiu uma escada de 44 degraus de escalada militar — da tensão diplomática à guerra nuclear. Usamos 10 níveis resumidos. O nível 9 significaria ameaças ou uso de armas não-convencionais.',
+    kahn_l1:'Tensão diplomática', kahn_l2:'Crise política', kahn_l3:'Sanções/coerção',
+    kahn_l4:'Ultimato militar', kahn_l5:'Guerra proxy', kahn_l6:'Guerra convencional',
+    kahn_l7:'Ormuz fechado', kahn_l8:'Guerra regional total ←', kahn_l9:'Armas não-conv.', kahn_l10:'Nuclear',
+    kahn_current:'▶ NÍV. 8 — Guerra regional total ativa',
+    kahn_next:'Líbano ativo · Beirute bombardeado · Bushehr ameaçado<br>OTAN intervindo · Parlamento iraniano atacado',
+    scenario_1:'🟢 Acordo 4 sem: 15%', scenario_2:'🟡 Guerra longa: 50%', scenario_3:'🔴 Escalada regional: 35%',
+    events_title:'REGISTRO DE EVENTOS — D+0 AO D+5',
+    map_title:'TEATRO DE OPERAÇÕES — Oriente Médio', map_hide:'▲ OCULTAR', map_show:'▼ MOSTRAR',
+    leg_targets:'Alvos atacados', leg_iran:'Retaliações iranianas', leg_us:'Bases EUA', leg_naval:'Forças navais', leg_proxies:'Proxies Irã',
+    fx_title:'FX — EFEITO GUERRA', live_badge:'VIVO',
+    fx_eur_chg:'▼ -1,2% refúgio', fx_jpy_chg:'↑ Yen porto seguro', fx_gbp_chg:'▼ pressão libra', fx_ils_chg:'▲ pressão shekel',
+    dxy_label:'DXY (Índice Dólar)', dxy_note:'↑ apaga perdas anuais',
+    coverage_title:'COBERTURA AO VIVO', intel_title:'INTEL DESTACADA',
+    intel_cia:'Rastreou movimentos de Khamenei — timing do ataque determinado por isso (NYT)',
+    intel_pentagon:'Confessou ao Congresso: Irã NÃO planejava atacar EUA a não ser que Israel atacasse primeiro',
+    intel_mossad:'Operação terrestre confirmada dentro do Irã (Al Arabiya, 2 Mar)',
+    intel_bushehr:'Rússia alerta: usina nuclear em risco — explosões ouvidas a km do perímetro',
+    src_aljazeera:'iran-live-news · atualizações minuto a minuto', src_toi:'Ops FDI · Netanyahu · interceptações',
+    src_wiki:'Cronologia completa verificada · afundamento IRIS Dena', src_wapo:'6 KIA identificados · 3 embaixadas fechadas',
+    src_cnn:'D+0 ao D+5 · análise geopolítica',
+    mkt_brent_chg:'▲ +18,84% vs sem', mkt_wti_chg:'▲ +16,84% vs sem', mkt_gold_chg:'▼ -4,8% terça',
+    mkt_sp_chg:'▼ -0,94% fechamento', mkt_close:'fechamento 03/03', mkt_yield_chg:'▲ de 3,96%', mkt_yield_src:'inflação de guerra',
+    mkt_vix_chg:'↑ intraday · fechou +8%', mkt_dxy_chg:'▲ +0,95% (refúgio)', mkt_dxy_src:'apaga perdas YTD',
+    mkt_vlcc_chg:'▲ +94% um dia RECORDE', mkt_gas_chg:'maior desde 2022',
+  },
+  ru: {
+    subtitle:'КОНФЛИКТ ИРАН–США–ИЗРАИЛЬ 2026',
+    live_pill:'ПРЯМОЙ ЭФИР · Д+5', real_data:'РЕАЛЬНЫЕ ДАННЫЕ',
+    ops_title:'ОПЕРАТИВНЫЙ СТАТУС Д+5',
+    stat_iran_dead:'☠ ПОГИБШИХ ИРАН', stat_us_kia:'🇺🇸 ПОТЕРИ США',
+    stat_ships:'⚓ КОРАБЛЕЙ ПОТОПЛЕНО', stat_flights:'✈ РЕЙСОВ ОТМЕНЕНО',
+    stat_wave:'💥 ВОЛНА УДАРОВ', stat_israel_dead:'🇮🇱 ПОГИБШИХ ИЗРАИЛЬ',
+    hormuz_title:'ОРМУЗСКИЙ ПРОЛИВ', hormuz_closed:'ЗАКРЫТ',
+    hormuz_detail:'20% мировой нефти · 4 корабля поражены<br>КСИР: «Подожжём любое судно»<br>Прогноз: $100–120/барр. при затяжном конфликте',
+    kahn_title:'ШКАЛА ЭСКАЛАЦИИ КАНА', kahn_level_badge:'УР. 8',
+    kahn_explain:'<strong style="color:var(--amber)">Что это?</strong> Герман Кан (1965) описал 44-ступенчатую лестницу военной эскалации — от дипломатической напряжённости до ядерной войны. Здесь используем 10 укрупнённых уровней. Уровень 9 — угрозы или применение нетрадиционного оружия.',
+    kahn_l1:'Дипл. напряжённость', kahn_l2:'Полит. кризис', kahn_l3:'Санкции/принуждение',
+    kahn_l4:'Военный ультиматум', kahn_l5:'Прокси-война', kahn_l6:'Обычная война',
+    kahn_l7:'Ормуз закрыт', kahn_l8:'Полная регион. война ←', kahn_l9:'Нетрадиц. оружие', kahn_l10:'Ядерный',
+    kahn_current:'▶ УР. 8 — Полная региональная война активна',
+    kahn_next:'Ливан открыт · Бейрут бомбят · Бушер под угрозой<br>НАТО вмешивается · Парламент Ирана атакован',
+    scenario_1:'🟢 Договорённость 4 нед.: 15%', scenario_2:'🟡 Затяжная война: 50%', scenario_3:'🔴 Регион. эскалация: 35%',
+    events_title:'ЖУРНАЛ СОБЫТИЙ — Д+0 ПО Д+5',
+    map_title:'ТЕАТР ВОЕННЫХ ДЕЙСТВИЙ — Ближний Восток', map_hide:'▲ СКРЫТЬ', map_show:'▼ ПОКАЗАТЬ',
+    leg_targets:'Атакованные цели', leg_iran:'Ответные удары Ирана', leg_us:'Базы США', leg_naval:'Морские силы', leg_proxies:'Прокси Ирана',
+    fx_title:'ВАЛЮТЫ — ВОЕННЫЙ ЭФФЕКТ', live_badge:'ПРЯМОЙ',
+    fx_eur_chg:'▼ -1,2% защитный актив', fx_jpy_chg:'↑ Иена — защитный актив', fx_gbp_chg:'▼ давление на фунт', fx_ils_chg:'▲ давление на шекель',
+    dxy_label:'DXY (Индекс Доллара)', dxy_note:'↑ стирает потери с начала года',
+    coverage_title:'ПРЯМОЕ ОСВЕЩЕНИЕ', intel_title:'КЛЮЧЕВАЯ РАЗВЕДКА',
+    intel_cia:'Отследила передвижения Хаменеи — время удара определено этим (NYT)',
+    intel_pentagon:'Признал Конгрессу: Иран НЕ планировал атаковать США, если Израиль не ударит первым',
+    intel_mossad:'Наземная операция подтверждена внутри Ирана (Al Arabiya, 2 марта)',
+    intel_bushehr:'Россия предупреждает: АЭС под угрозой — взрывы слышны в км от периметра',
+    src_aljazeera:'iran-live-news · ежеминутные обновления', src_toi:'Операции ЦАХАЛа · Нетаньяху · перехваты',
+    src_wiki:'Полная проверенная хронология · потопление IRIS Dena', src_wapo:'6 KIA опознаны · 3 посольства закрыты',
+    src_cnn:'Д+0 по Д+5 · геополитический анализ',
+    mkt_brent_chg:'▲ +18,84% за нед.', mkt_wti_chg:'▲ +16,84% за нед.', mkt_gold_chg:'▼ -4,8% во вт.',
+    mkt_sp_chg:'▼ -0,94% закрытие', mkt_close:'закрытие 03/03', mkt_yield_chg:'▲ с 3,96%', mkt_yield_src:'военная инфляция',
+    mkt_vix_chg:'↑ внутри дня · закрыл +8%', mkt_dxy_chg:'▲ +0,95% (убежище)', mkt_dxy_src:'стирает потери YTD',
+    mkt_vlcc_chg:'▲ +94% за день РЕКОРД', mkt_gas_chg:'максимум с 2022',
+  },
+  ar: {
+    subtitle:'صراع إيران–أمريكا–إسرائيل 2026',
+    live_pill:'مباشر · ي+5', real_data:'بيانات موثّقة',
+    ops_title:'الحالة العملياتية ي+5',
+    stat_iran_dead:'☠ ضحايا إيران', stat_us_kia:'🇺🇸 قتلى أمريكا',
+    stat_ships:'⚓ سفن غارقة', stat_flights:'✈ رحلات ملغاة',
+    stat_wave:'💥 موجة هجمات', stat_israel_dead:'🇮🇱 ضحايا إسرائيل',
+    hormuz_title:'مضيق هرمز', hormuz_closed:'مُغلق',
+    hormuz_detail:'20% من نفط العالم · 4 سفن مُصابة<br>الحرس الثوري: "سنُحرق أي سفينة"<br>التوقعات: $100–120/برميل في حال الاستمرار',
+    kahn_title:'سلّم التصعيد كان', kahn_level_badge:'مست. 8',
+    kahn_explain:'<strong style="color:var(--amber)">ما هو؟</strong> هيرمان كان (1965) حدّد سلّماً من 44 درجة للتصعيد العسكري — من التوتر الدبلوماسي إلى الحرب النووية. نستخدم هنا 10 مستويات مختصرة. الوصول للمستوى 9 يعني التهديد باستخدام أسلحة غير تقليدية.',
+    kahn_l1:'توتر دبلوماسي', kahn_l2:'أزمة سياسية', kahn_l3:'عقوبات/إكراه',
+    kahn_l4:'إنذار عسكري', kahn_l5:'حرب بالوكالة', kahn_l6:'حرب تقليدية',
+    kahn_l7:'إغلاق هرمز', kahn_l8:'حرب إقليمية شاملة ←', kahn_l9:'أسلحة غير تقليدية', kahn_l10:'نووي',
+    kahn_current:'▶ مست. 8 — حرب إقليمية شاملة نشطة',
+    kahn_next:'لبنان مفتوح · بيروت تُقصف · بوشهر مهدَّد<br>الناتو يتدخّل · البرلمان الإيراني استُهدف',
+    scenario_1:'🟢 اتفاق خلال 4 أسابيع: 15%', scenario_2:'🟡 حرب مطوّلة: 50%', scenario_3:'🔴 تصعيد إقليمي: 35%',
+    events_title:'سجل الأحداث — ي+0 إلى ي+5',
+    map_title:'مسرح العمليات — الشرق الأوسط', map_hide:'▲ إخفاء', map_show:'▼ إظهار',
+    leg_targets:'أهداف مُضربة', leg_iran:'ردّ إيران', leg_us:'قواعد أمريكية', leg_naval:'قوات بحرية', leg_proxies:'وكلاء إيران',
+    fx_title:'العملات — أثر الحرب', live_badge:'مباشر',
+    fx_eur_chg:'▼ -1.2% ملاذ آمن', fx_jpy_chg:'↑ ين ملاذ آمن', fx_gbp_chg:'▼ ضغط على الجنيه', fx_ils_chg:'▲ ضغط على الشيكل',
+    dxy_label:'DXY (مؤشر الدولار)', dxy_note:'↑ يمحو خسائر العام',
+    coverage_title:'تغطية مباشرة', intel_title:'معلومات استخباراتية',
+    intel_cia:'تتبّعت تحركات خامنئي — توقيت الضربة حُدِّد بناءً على ذلك (NYT)',
+    intel_pentagon:'اعترف للكونغرس: إيران لم تكن تخطط لمهاجمة أمريكا ما لم تضرب إسرائيل أولاً',
+    intel_mossad:'عملية برية مؤكدة داخل إيران (العربية، 2 مارس)',
+    intel_bushehr:'روسيا تحذر: المحطة النووية في خطر — انفجارات سُمعت على بُعد كيلومترات',
+    src_aljazeera:'iran-live-news · تحديثات لحظة بلحظة', src_toi:'عمليات الجيش الإسرائيلي · نتنياهو · اعتراضات',
+    src_wiki:'تسلسل زمني كامل موثّق · غرق IRIS دينا', src_wapo:'6 قتلى مُحدَّدون · 3 سفارات مُغلقة',
+    src_cnn:'ي+0 إلى ي+5 · تحليل جيوسياسي',
+    mkt_brent_chg:'▲ +18.84% أسبوعياً', mkt_wti_chg:'▲ +16.84% أسبوعياً', mkt_gold_chg:'▼ -4.8% الثلاثاء',
+    mkt_sp_chg:'▼ -0.94% إغلاق', mkt_close:'إغلاق 03/03', mkt_yield_chg:'▲ من 3.96%', mkt_yield_src:'تضخم الحرب',
+    mkt_vix_chg:'↑ خلال اليوم · أغلق +8%', mkt_dxy_chg:'▲ +0.95% (ملاذ)', mkt_dxy_src:'يمحو خسائر YTD',
+    mkt_vlcc_chg:'▲ +94% يوم واحد قياسي', mkt_gas_chg:'الأعلى منذ 2022',
+  },
+  zh: {
+    subtitle:'伊朗–美国–以色列冲突 2026',
+    live_pill:'直播 · D+5', real_data:'实时数据',
+    ops_title:'作战状态 D+5',
+    stat_iran_dead:'☠ 伊朗死亡', stat_us_kia:'🇺🇸 美军阵亡',
+    stat_ships:'⚓ 沉没船只', stat_flights:'✈ 取消航班',
+    stat_wave:'💥 攻击浪次', stat_israel_dead:'🇮🇱 以色列死亡',
+    hormuz_title:'霍尔木兹海峡', hormuz_closed:'已封锁',
+    hormuz_detail:'全球20%石油 · 4艘船只受损<br>伊斯兰革命卫队："将焚烧任何过往船只"<br>预测：若延续$100–120/桶',
+    kahn_title:'卡恩升级阶梯', kahn_level_badge:'级别 8',
+    kahn_explain:'<strong style="color:var(--amber)">什么是卡恩阶梯？</strong> 赫尔曼·卡恩（1965）定义了44级军事升级阶梯——从外交紧张到核战争。本仪表盘使用10个概括级别。达到第9级意味着威胁或使用非常规武器。',
+    kahn_l1:'外交紧张', kahn_l2:'政治危机', kahn_l3:'制裁/胁迫',
+    kahn_l4:'军事最后通牒', kahn_l5:'代理人战争', kahn_l6:'常规战争',
+    kahn_l7:'霍尔木兹封锁', kahn_l8:'全面地区战争 ←', kahn_l9:'非常规武器', kahn_l10:'核战争',
+    kahn_current:'▶ 级别8 — 全面地区战争进行中',
+    kahn_next:'黎巴嫩开战 · 贝鲁特遭轰炸 · 布什尔受威胁<br>北约介入 · 伊朗议会遭袭',
+    scenario_1:'🟢 4周内和解: 15%', scenario_2:'🟡 旷日持久: 50%', scenario_3:'🔴 地区升级: 35%',
+    events_title:'事件记录 — D+0 至 D+5',
+    map_title:'作战剧场 — 中东', map_hide:'▲ 隐藏', map_show:'▼ 显示',
+    leg_targets:'被打击目标', leg_iran:'伊朗反击', leg_us:'美军基地', leg_naval:'海军力量', leg_proxies:'伊朗代理人',
+    fx_title:'外汇 — 战争影响', live_badge:'直播',
+    fx_eur_chg:'▼ -1.2% 避险', fx_jpy_chg:'↑ 日元避险', fx_gbp_chg:'▼ 英镑承压', fx_ils_chg:'▲ 谢克尔承压',
+    dxy_label:'DXY（美元指数）', dxy_note:'↑ 抹去年初至今跌幅',
+    coverage_title:'实时报道', intel_title:'关键情报',
+    intel_cia:'追踪哈梅内伊行踪——打击时机由此确定（NYT）',
+    intel_pentagon:'向国会承认：除非以色列先动手，否则伊朗并无攻击美国计划',
+    intel_mossad:'摩萨德在伊朗境内地面行动已证实（阿拉伯卫视，3月2日）',
+    intel_bushehr:'俄罗斯警告：核电站受威胁——数公里外听到爆炸声',
+    src_aljazeera:'iran-live-news · 逐分钟更新', src_toi:'以色列国防军行动 · 内塔尼亚胡 · 拦截',
+    src_wiki:'完整可查证时间线 · IRIS迪纳号沉没', src_wapo:'6名阵亡人员已确认 · 3处大使馆关闭',
+    src_cnn:'D+0至D+5 · 地缘政治分析',
+    mkt_brent_chg:'▲ +18.84% 周涨', mkt_wti_chg:'▲ +16.84% 周涨', mkt_gold_chg:'▼ -4.8% 周二',
+    mkt_sp_chg:'▼ -0.94% 收盘', mkt_close:'收盘 03/03', mkt_yield_chg:'▲ 从3.96%', mkt_yield_src:'战争通胀',
+    mkt_vix_chg:'↑ 盘中 · 收涨+8%', mkt_dxy_chg:'▲ +0.95%（避险）', mkt_dxy_src:'抹去年初跌幅',
+    mkt_vlcc_chg:'▲ +94% 单日纪录', mkt_gas_chg:'2022年以来最大涨幅',
+  },
+  fa: {
+    subtitle:'درگیری ایران–آمریکا–اسرائیل ۲۰۲۶',
+    live_pill:'زنده · روز+۵', real_data:'داده‌های واقعی',
+    ops_title:'وضعیت عملیاتی روز+۵',
+    stat_iran_dead:'☠ کشته‌های ایران', stat_us_kia:'🇺🇸 تلفات آمریکا',
+    stat_ships:'⚓ کشتی‌های غرق‌شده', stat_flights:'✈ پروازهای لغوشده',
+    stat_wave:'💥 موج حمله', stat_israel_dead:'🇮🇱 کشته‌های اسرائیل',
+    hormuz_title:'تنگه هرمز', hormuz_closed:'مسدود',
+    hormuz_detail:'۲۰٪ نفت جهان · ۴ کشتی آسیب‌دیده<br>سپاه: «هر شناوری را به آتش می‌کشیم»<br>پیش‌بینی: ۱۰۰–۱۲۰ دلار/بشکه در صورت ادامه',
+    kahn_title:'مقیاس تشدید کان', kahn_level_badge:'سطح ۸',
+    kahn_explain:'<strong style="color:var(--amber)">چیست؟</strong> هرمان کان (۱۹۶۵) نردبانی ۴۴ پله‌ای از تشدید نظامی تعریف کرد — از تنش دیپلماتیک تا جنگ هسته‌ای. در اینجا ۱۰ سطح خلاصه‌شده داریم. رسیدن به سطح ۹ یعنی تهدید یا استفاده از سلاح‌های غیرمتعارف.',
+    kahn_l1:'تنش دیپلماتیک', kahn_l2:'بحران سیاسی', kahn_l3:'تحریم/اجبار',
+    kahn_l4:'اولتیماتوم نظامی', kahn_l5:'جنگ نیابتی', kahn_l6:'جنگ متعارف',
+    kahn_l7:'هرمز بسته', kahn_l8:'جنگ تمام‌عیار منطقه‌ای ←', kahn_l9:'سلاح غیرمتعارف', kahn_l10:'هسته‌ای',
+    kahn_current:'▶ سطح ۸ — جنگ تمام‌عیار منطقه‌ای فعال',
+    kahn_next:'لبنان درگیر · بیروت بمباران‌شده · بوشهر در خطر<br>ناتو مداخله کرده · مجلس ایران هدف قرار گرفت',
+    scenario_1:'🟢 توافق ۴ هفته‌ای: ۱۵٪', scenario_2:'🟡 جنگ طولانی: ۵۰٪', scenario_3:'🔴 تشدید منطقه‌ای: ۳۵٪',
+    events_title:'گزارش رویدادها — روز+۰ تا روز+۵',
+    map_title:'میدان عملیات — خاورمیانه', map_hide:'▲ پنهان', map_show:'▼ نمایش',
+    leg_targets:'اهداف کوبیده‌شده', leg_iran:'اقدامات تلافی‌جویانه', leg_us:'پایگاه‌های آمریکا', leg_naval:'نیروهای دریایی', leg_proxies:'نیابتی‌های ایران',
+    fx_title:'ارز — اثر جنگ', live_badge:'زنده',
+    fx_eur_chg:'▼ -۱.۲٪ پناهگاه', fx_jpy_chg:'↑ ین پناهگاه', fx_gbp_chg:'▼ فشار بر پوند', fx_ils_chg:'▲ فشار بر شکل',
+    dxy_label:'DXY (شاخص دلار)', dxy_note:'↑ جبران زیان سالانه',
+    coverage_title:'پوشش زنده', intel_title:'اطلاعات کلیدی',
+    intel_cia:'حرکات خامنه‌ای را ردیابی کرد — زمان‌بندی حمله بر این اساس تعیین شد (NYT)',
+    intel_pentagon:'به کنگره اعتراف کرد: ایران برنامه‌ای برای حمله به آمریکا نداشت مگر اینکه اسرائیل اول بزند',
+    intel_mossad:'عملیات زمینی در داخل ایران تأیید شد (العربیه، ۲ مارس)',
+    intel_bushehr:'روسیه هشدار داد: نیروگاه هسته‌ای در خطر — انفجار در فاصله کیلومتری',
+    src_aljazeera:'iran-live-news · به‌روزرسانی دقیقه‌ای', src_toi:'عملیات ارتش اسرائیل · نتانیاهو · رهگیری',
+    src_wiki:'جدول زمانی کامل · غرق شدن IRIS دنا', src_wapo:'۶ کشته شناسایی‌شده · ۳ سفارت بسته',
+    src_cnn:'روز+۰ تا روز+۵ · تحلیل ژئوپلیتیک',
+    mkt_brent_chg:'▲ +۱۸.۸۴٪ هفتگی', mkt_wti_chg:'▲ +۱۶.۸۴٪ هفتگی', mkt_gold_chg:'▼ -۴.۸٪ سه‌شنبه',
+    mkt_sp_chg:'▼ -۰.۹۴٪ بسته', mkt_close:'بسته ۰۳/۰۳', mkt_yield_chg:'▲ از ۳.۹۶٪', mkt_yield_src:'تورم جنگ',
+    mkt_vix_chg:'↑ حین بازار · بست +۸٪', mkt_dxy_chg:'▲ +۰.۹۵٪ (پناه)', mkt_dxy_src:'جبران زیان سالانه',
+    mkt_vlcc_chg:'▲ +۹۴٪ یک‌روزه رکورد', mkt_gas_chg:'بزرگترین از ۲۰۲۲',
+  },
+};
+
+const RTL_LANGS = new Set(['ar','fa']);
+let currentLang = 'en';
+
+function setLang(code) {
+  if (!LANGS[code]) return;
+  currentLang = code;
+  const t = LANGS[code];
+
+  // Apply text translations
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  // Apply HTML translations (for Kahn explain with bold)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  // RTL toggle
+  document.body.classList.toggle('rtl', RTL_LANGS.has(code));
+  // Active button
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === code.toUpperCase() ||
+      (code === 'zh' && btn.textContent === '中文') ||
+      (code === 'fa' && btn.textContent === 'فا'));
+  });
+  // Update map-toggle btn separately (has data-i18n but we also need map state)
+  const mb = document.getElementById('mapToggleBtn');
+  if (mb) mb.textContent = mapVisible ? (t.map_hide||'▲') : (t.map_show||'▼');
+  // Update theme toggle label
+  const tb = document.getElementById('themeToggle');
+  if (tb) tb.textContent = isDark ? '☀ LIGHT' : '🌙 DARK';
+}
+
+// Init with English on load
+document.addEventListener('DOMContentLoaded', () => setLang('en'));
+
+// ─── THEME TOGGLE ───
+let isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('light', !isDark);
+  const btn = document.getElementById('themeToggle');
+  btn.textContent = isDark ? '☀ LIGHT' : '🌙 DARK';
+  // Refresh leaflet tiles for light/dark basemap
+  if (window._tileLayer) {
+    map.removeLayer(window._tileLayer);
+    window._tileLayer = L.tileLayer(
+      isDark
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/dark_matter_no_labels/{z}/{x}/{y}{r}.png',
+      {subdomains:'abcd',maxZoom:19}
+    ).addTo(map);
+  }
+  if (window._wmapLayer && window.wmap) {
+    wmap.removeLayer(window._wmapLayer);
+    window._wmapLayer = L.tileLayer(
+      isDark
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/dark_matter_no_labels/{z}/{x}/{y}{r}.png',
+      {subdomains:'abcd',maxZoom:19}
+    ).addTo(wmap);
+  }
+}
+
+// ─── MAP TOGGLE ───
+let mapVisible=true;
+function toggleMap(){
+  mapVisible=!mapVisible;
+  document.getElementById("mapWrap").classList.toggle("collapsed",!mapVisible);
+  document.getElementById("mapToggleBtn").textContent=mapVisible?"▲ OCULTAR":"▼ MOSTRAR";
+  if(mapVisible) setTimeout(()=>map.invalidateSize(),350);
+}
+
+// ─── CLOCK ───
+(function tick(){
+  const n=new Date();
+  document.getElementById('clock').textContent=n.toUTCString().slice(17,25);
+  setTimeout(tick,1000);
+})();
+
+// ─── MIDDLE EAST MAP ───
+const map=L.map('map',{center:[29,47],zoom:5,zoomControl:true,attributionControl:false});
+window._tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(map);
+L.control.zoom({position:'bottomright'}).addTo(map);
+
+// ── Marker helpers ──
+function mkExpl(lat,lng,label,detail){
+  const pulse=`
+    <div style="position:relative;width:22px;height:22px">
+      <div style="position:absolute;inset:0;border-radius:50%;background:rgba(240,20,45,.25);animation:exPulse 1.6s ease-out infinite"></div>
+      <div style="position:absolute;inset:4px;border-radius:50%;background:#f0142d;border:2px solid #ff4458;box-shadow:0 0 8px rgba(240,20,45,.8)"></div>
+    </div>
+    <style>@keyframes exPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}</style>`;
+  L.marker([lat,lng],{icon:L.divIcon({html:pulse,className:'',iconSize:[22,22],iconAnchor:[11,11]})})
+    .addTo(map).bindPopup(`<b style="color:#f0142d">💥 ${label}</b><br><span style="font-size:11px">${detail}</span>`);
+}
+function mkBase(lat,lng,label,detail,col='#1a9fff'){
+  const ico=`<div style="width:14px;height:14px;background:${col};clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%);filter:drop-shadow(0 0 5px ${col});border:1px solid rgba(255,255,255,.4)"></div>`;
+  L.marker([lat,lng],{icon:L.divIcon({html:ico,className:'',iconSize:[14,14],iconAnchor:[7,7]})})
+    .addTo(map).bindPopup(`<b style="color:${col}">${label}</b><br><span style="font-size:11px">${detail}</span>`);
+}
+function mkNaval(lat,lng,label,detail){
+  const ico=`<div style="width:16px;height:16px;background:#00e5a0;clip-path:polygon(50% 0%,100% 100%,0% 100%);filter:drop-shadow(0 0 6px #00e5a0)"></div>`;
+  L.marker([lat,lng],{icon:L.divIcon({html:ico,className:'',iconSize:[16,16],iconAnchor:[8,8]})})
+    .addTo(map).bindPopup(`<b style="color:#00e5a0">⚓ ${label}</b><br><span style="font-size:11px">${detail}</span>`);
+}
+
+mkExpl(35.68,51.42,'TEHERÁN','Explosiones cerca compuesto Khamenei. Khamenei evacuado (Reuters).');
+mkExpl(32.65,51.68,'ISFAHAN','Instalaciones nucleares. Múltiples impactos confirmados.');
+mkExpl(33.73,51.34,'NATANZ','Planta enriquecimiento. Objetivo primario operación.');
+mkExpl(34.88,50.01,'FORDOW','Subterráneo montaña Qom. Bunker-busters utilizados.');
+mkExpl(34.64,50.88,'QOM','IRGC e infraestructura.');
+mkExpl(35.84,50.99,'KARAJ','Investigación nuclear.');
+mkExpl(34.31,47.06,'KERMANSHAH','Misiles móviles Shahab-3.');
+mkBase(26.1,50.6,'🔵 5ª FLOTA — BAHRÉIN','Bajo ataque misiles iraníes. Shelter-in-place activado.');
+mkBase(25.28,51.52,'🔵 AL-UDEID QATAR','Mayor base EEUU. Qatar interceptó misiles iraníes (verificado).');
+mkBase(29.37,47.97,'🔵 KUWAIT','Camp Arifjan. Sirenas y explosiones reportadas.');
+mkBase(24.49,54.37,'🔵 ABU DHABI (EAU)','Fragmentos misiles iran. UAE interceptó segunda oleada (ToI).');
+mkNaval(27.5,57,'USS FORD (CSG)','Golfo Pérsico. Portaaviones más grande. F/A-18 + F-35C.');
+mkNaval(24,63,'USS LINCOLN','Mar Arábigo. Segundo grupo de ataque.');
+mkBase(31.76,35.21,'🇮🇱 IDF — TEL AVIV','Estado emergencia. Arrow-3 activo. ~80% intercepción.','#f5a623');
+mkBase(33.88,35.5,'🟣 HEZBOLÁ','Lebanon. +150K proyectiles. Cohetes norte Israel.','#a259f7');
+mkBase(15.35,44.2,"🟣 HUTÍES — SANA'A",'Yemen. Drones + misiles.','#a259f7');
+mkBase(33.35,44.42,'🟣 PMF — BAGDAD','Iraq. Ataca base Al-Asad.','#a259f7');
+
+const ormuzIco=L.divIcon({
+  html:`<div style="background:rgba(240,20,45,.18);border:1.5px dashed #f0142d;padding:3px 8px;font-family:'Space Mono';font-size:9px;color:#f0142d;white-space:nowrap;font-weight:700;box-shadow:0 0 8px rgba(240,20,45,.3)">🔴 HORMUZ — CLOSED</div>`,
+  className:'',iconSize:[160,20],iconAnchor:[80,10]
+});
+L.marker([26.5,56.5],{icon:ormuzIco}).addTo(map)
+  .bindPopup('<b style="color:#f0142d">⚠ STRAIT OF HORMUZ</b><br><span style="font-size:11px">20% of global oil. IRGC declared closed. 4 vessels hit. VLCC rates +94%.</span>');
+
+// Strike lines: Israel → Tehran, Tehran → Tel Aviv
+L.polyline([[35.68,51.42],[31.76,35.21]],{color:'#f5a623',weight:1.5,dashArray:'6,4',opacity:.6}).addTo(map);
+L.polyline([[35.68,51.42],[33.88,35.5]], {color:'#f0142d',weight:1.5,dashArray:'4,4',opacity:.6}).addTo(map);
+// Houthi threat arc
+L.polyline([[15.35,44.2],[31.76,35.21]],{color:'#a259f7',weight:1,dashArray:'3,5',opacity:.5}).addTo(map);
+
+// ─── EVENTS LOG ───
+const evs=[
+  {t:'D+0 02:14',k:'atk',x:'[28 FEB] Israel lanza "Op. Roaring Lion" + EEUU "Op. Epic Fury" — primer strike Teherán. (Euronews)'},
+  {t:'D+0 02:28',k:'atk',x:'[28 FEB] Netanyahu: "Remover amenaza nuclear existencial." Khamenei eliminado — CIA lo ubicó en compound residencial.'},
+  {t:'D+0 02:31',k:'atk',x:'[28 FEB] Trump (Truth Social): "Bombs will be dropping everywhere… Major combat operations."'},
+  {t:'D+0 02:51',k:'rep',x:'[28 FEB] Irán "Op. True Promise IV". Internet al 4% (NetBlocks). Khamenei evacuado → confirmado muerto horas después.'},
+  {t:'D+0 04:00',k:'dip',x:'[28 FEB] E3 Macron+Merz+Starmer: Apoyan Israel, endosan strikes, piden negociaciones. (Responsible Statecraft)'},
+  {t:'D+0 04:20',k:'dip',x:'[28 FEB] Tim Kaine (CNN): "Dangerous, unnecessary, idiotic. Colossal mistake." Pide voto War Powers.'},
+  {t:'D+1 09:00',k:'atk',x:'[01 MAR] EEUU+Israel: 1,200+ municiones sobre 24 de 31 provincias iraníes. IRGC: atacó 27 bases USA en región.'},
+  {t:'D+1 11:00',k:'rep',x:'[01 MAR] QatarEnergy DETIENE producción GNL tras ataque iraní en Ras Laffan. Gas Europa +38% en un día.'},
+  {t:'D+1 14:00',k:'rep',x:'[01 MAR] IRGC declara Estrecho de Ormuz CERRADO. Amenaza incendiar cualquier buque. Tasa VLCC: $423K/día (+94%).'},
+  {t:'D+1 17:00',k:'int',x:'[01 MAR] Kuwait interceptó 178 misiles + 384 drones. 3 cazas F-15 USA derribados por error por Kuwait.'},
+  {t:'D+1 18:00',k:'atk',x:'[01 MAR] CENTCOM: "17 barcos iraníes destruidos + submarino más operativo con agujero en casco."'},
+  {t:'D+2 08:30',k:'atk',x:'[02 MAR] Israel hits IRGC Malek-Ashtar building Teherán (confirmado por Iran International). Operaciones especiales Mossad dentro de Irán.'},
+  {t:'D+2 10:00',k:'rep',x:'[02 MAR] Embajada USA Riyadh: 2 drones, incendio limitado, sin bajas. Embajadas Kuwait+Líbano+Saudi cerradas.'},
+  {t:'D+2 12:00',k:'dip',x:'[02 MAR] Rubio: "Los golpes más duros aún están por venir. Dos fuerzas aéreas más poderosas del mundo." Habla ante Congreso.'},
+  {t:'D+2 14:00',k:'int',x:'[02 MAR] Trump: guerra durará "~4 semanas", EEUU "sustancialmente adelantado" del cronograma. Ofrece escoltar tanqueros.'},
+  {t:'D+2 15:30',k:'rep',x:'[02 MAR] Hezbolá lanza misiles norte Israel "en venganza por muerte de Khamenei". Israel arremete contra Beirut.'},
+  {t:'D+2 16:00',k:'dip',x:'[02 MAR] Jamie Dimon (JPMorgan): "Esperar ciberataques y ataques terroristas. Los bancos pueden ser objetivos."'},
+  {t:'D+3 02:00',k:'atk',x:'[03 MAR] Israel golpea HQ de IRIB (emisora estatal iraní) en Teherán. Palacio Golestan (UNESCO) dañado.'},
+  {t:'D+3 06:00',k:'atk',x:'[03 MAR] 10ª ola de ataques israelíes. Simultáneos en Teherán y Beirut. Israel: pide evacuación 50+ aldeas Líbano.'},
+  {t:'D+3 08:00',k:'rep',x:'[03 MAR] Turquía/NATO: sistema defensivo destruye misil balístico iraní en Mediterráneo oriental. Objetivo no confirmado.'},
+  {t:'D+3 09:30',k:'dip',x:'[03 MAR] Rusia advierte: planta nuclear Bushehr bajo amenaza. "Explosiones escuchadas a kilómetros de su perímetro."'},
+  {t:'D+3 11:00',k:'int',x:'[03 MAR] Dow abre -900 pts. S&P cae -2.49% intraday antes de recuperar. Cierre: S&P -0.94%, Dow -437 pts.'},
+  {t:'D+3 14:00',k:'rep',x:'[03 MAR] IRGC anuncia "fuerzas terrestres entraron en operaciones" + operación naval contra barcos USA.'},
+  {t:'D+4 05:00',k:'atk',x:'[04 MAR] Fragata iraní IRIS Dena hundida en Océano Índico por submarino USA, 40mn al sur de Sri Lanka.'},
+  {t:'D+4 07:00',k:'atk',x:'[04 MAR] Muertos en Irán superan 1,045 (Tasnim). Al Jazeera confirma "10ª ola" de ataques israelíes sobre Teherán.'},
+  {t:'D+4 08:00',k:'rep',x:'[04 MAR] Parlamento iraní y Asamblea de Expertos (reunida para elegir nuevo líder) bombardeados por Israel.'},
+  {t:'D+4 09:00',k:'int',x:'[04 MAR] Trump: "suministro virtualmente ilimitado de municiones. Las guerras pueden librarse forever." (Truth Social)'},
+];
+const tags={atk:'t-atk',rep:'t-rep',dip:'t-dip',int:'t-int'};
+const tlbl={atk:'⚡ATK',rep:'🚀REP',dip:'🕊DIP',int:'🔍INT'};
+function renderEvs(){
+  const el=document.getElementById('evlog');
+  el.innerHTML=[...evs].reverse().map(e=>`<div class="ev-row">
+    <div class="ev-time">${e.t}</div>
+    <div class="ev-tag ${tags[e.k]}">${tlbl[e.k]}</div>
+    <div class="ev-txt">${e.x}</div>
+  </div>`).join('');
+  document.getElementById('ev-count').textContent=evs.length+' EVT';
+}
+renderEvs();
+const moreEvs=[
+  {t:'D+5 live',k:'atk',x:'[04 MAR AHORA] Qom + ciudades adicionales bajo ataque. IRGC: 230 drones en operaciones. Planta Bushehr en zona de peligro.'},
+  {t:'D+5 live',k:'rep',x:'[04 MAR AHORA] Iran lanza misiles contra Israel, Tel Aviv + Jerusalén en alerta. MDA: "sistemas trabajando para interceptar."'},
+  {t:'D+5 live',k:'dip',x:'[04 MAR AHORA] Trump: no descarta tropas terrestres en Irán "si es necesario." S&P Global advierte sobre finanzas Israel.'},
+];
+let ei=0;setInterval(()=>{if(ei<moreEvs.length){evs.push(moreEvs[ei++]);renderEvs();}},35000);
+
+// ─── MARKET FLICKER D+5 (04 Mar 2026) verified data ───
+// Brent $84.18 · Gold $5,187 · DXY 98.54
+setInterval(()=>{
+  const n=v=>v+(Math.random()-.5)*v*.003;
+  document.getElementById('brent').textContent='$'+(n(84.18)).toFixed(2);
+  document.getElementById('gold').textContent='$'+(Math.floor(n(5187))).toLocaleString();
+  document.getElementById('dxy-top').textContent=(n(98.54)).toFixed(2);
+},6000);
+
+// ─── FX FLICKER ───
+setInterval(()=>{
+  const n=v=>v+(Math.random()-.5)*v*.0005;
+  document.getElementById('fx-eur').textContent=(n(1.1815)).toFixed(4);
+  document.getElementById('fx-gbp').textContent=(n(1.3470)).toFixed(4);
+  document.getElementById('fx-gbpeur').textContent=(n(1.1401)).toFixed(4);
+  document.getElementById('fx-jpy').textContent=(n(150.42)).toFixed(2);
+  document.getElementById('fx-ils').textContent=(n(3.72)).toFixed(3);
+  const d=(n(97.61)).toFixed(3);
+  document.getElementById('dxy-num').textContent=d;
+  document.getElementById('dxy-top').textContent=d;
+  document.getElementById('dxy-fill').style.width=((d-90)/20*100).toFixed(0)+'%';
+},4000);
+
+// ─── WORLD PANEL ───
+let worldOpen=false,worldMapReady=false,wmap;
+function toggleWorld(){
+  worldOpen=!worldOpen;
+  document.getElementById('worldPanel').classList.toggle('open',worldOpen);
+  if(worldOpen&&!worldMapReady){worldMapReady=true;setTimeout(initWmap,150);}
+}
+
+// REAL verified nations data
+const nations=[
+  {lat:38.9,lng:-77.0,f:'🇺🇸',name:'Donald Trump',handle:'Truth Social @realDonaldTrump',s:'sup',
+   post:'"Our objective is to defend the American people by eliminating imminent threats from the Iranian regime. Bombs will be dropping everywhere. When we are finished, the government will be yours to take."',
+   src:'✔ Truth Social / CNN Live 02:31 UTC 28 Feb 2026',rt:'380K',lk:'1.2M',t:'02:31'},
+  {lat:31.7,lng:35.2,f:'🇮🇱',name:'Benjamin Netanyahu',handle:'@netanyahu',s:'sup',
+   post:'"This murderous terrorist regime must not be allowed to arm itself with nuclear weapons. Together we will stand, together we will fight, and together we will ensure the eternity of Israel."',
+   src:'✔ Netanyahu video statement / Times of Israel liveblog 28 Feb',rt:'98K',lk:'445K',t:'02:28'},
+  {lat:35.6,lng:51.4,f:'🇮🇷',name:'IRGC / Pezeshkian',handle:'IRNA / IRGC state media',s:'opp',
+   post:'"The armed forces of the Islamic Republic will give a crushing response." Khamenei evacuado a lugar seguro (Reuters). Internet iraní al 4% (NetBlocks). Pezeshkian confirmado "en plena salud" (IRNA).',
+   src:'✔ IRNA · NetBlocks · Reuters · CNN Live 28 Feb 2026',rt:'211K',lk:'334K',t:'02:51'},
+  {lat:55.7,lng:37.6,f:'🇷🇺',name:'Dmitry Medvedev',handle:'@MedvedevRussiaE (Consejo Seguridad)',s:'opp',
+   post:'"The peacekeeper is at it again. The talks with Iran were just a cover. The US is just 249 years old. The Persian Empire was founded over 2,500 years ago. Let\'s see what happens in 100 years or so…"',
+   src:'✔ REAL tweet en X / Jerusalem Post confirmó 28 Feb 2026',rt:'87K',lk:'203K',t:'03:05'},
+  {lat:39.9,lng:116.4,f:'🇨🇳',name:'Chinese Ministry of Defense',handle:'MoD China / MFA',s:'opp',
+   post:'"The United States is the largest source of chaos in the international nuclear system." MFA por separado: "Profundamente alarmado. Todas las partes deben ejercer máxima moderación y volver al diálogo."',
+   src:'✔ Chinese MoD / Pravda EN citing Chinese sources 28 Feb 2026',rt:'65K',lk:'187K',t:'03:12'},
+  {lat:48.8,lng:2.35,f:'🇫🇷',name:'Emmanuel Macron / E3',handle:'Declaración conjunta E3',s:'amb',
+   post:'E3 (Macron+Merz+Starmer): Afirmaron apoyo a seguridad de Israel. Dijeron "Irán nunca puede tener armas nucleares." Endorsaron strikes en instalaciones nucleares. Pidieron negociaciones. NOTA: X personal de Macron no actualizado por horas (Jerusalem Post).',
+   src:'✔ Declaración E3 / Responsible Statecraft / Jerusalem Post 28 Feb',rt:'38K',lk:'142K',t:'04:00'},
+  {lat:51.5,lng:-0.12,f:'🇬🇧',name:'UK Government (Keir Starmer)',handle:'E3 / @10DowningStreet',s:'amb',
+   post:'"Iran must never be allowed to develop a nuclear weapon." Co-firmó E3 endorsando los strikes. NOTA: X personal de Starmer también tardó en actualizar (Jerusalem Post: "world leaders silent initially").',
+   src:'✔ UK Govt statement / Jerusalem Post 28 Feb 2026',rt:'29K',lk:'88K',t:'05:00'},
+  {lat:52.5,lng:13.4,f:'🇩🇪',name:'Friedrich Merz',handle:'E3 / Canciller Alemán',s:'amb',
+   post:'Co-firmó E3 endorsando los strikes y afirmando que Irán "nunca puede tener armas nucleares." X personal de Merz también inicialmente silencioso (Jerusalem Post confirmó silencio de líderes occidentales).',
+   src:'✔ Declaración E3 / Jerusalem Post 28 Feb 2026',rt:'18K',lk:'52K',t:'04:00'},
+  {lat:48.2,lng:16.4,f:'🇪🇺',name:'Kaja Kallas / Ursula von der Leyen',handle:'@kajakallas / @vonderleyen',s:'neu',
+   post:'"The situation is dangerous for all. It must stop." (Kallas) / "Greatly concerning. All parties must exercise maximum restraint, protect civilians, and fully respect international law." (VdL). EU retira personal.',
+   src:'✔ X posts reales / CNN Live updates 28 Feb 2026',rt:'24K',lk:'73K',t:'04:30'},
+  {lat:40.4,lng:-3.7,f:'🇪🇸',name:'José Manuel Albares (España)',handle:'@jmalbares Min. Exteriores',s:'neu',
+   post:'"La violencia solo trae caos. La desescalada y el diálogo son la única vía para la paz y la estabilidad regional. Respeto al Derecho Internacional."',
+   src:'✔ Tweet real @jmalbares / El Español liveblog 28 Feb 2026',rt:'11K',lk:'34K',t:'05:30'},
+  {lat:3.1,lng:101.7,f:'🇲🇾',name:'PM Anwar Ibrahim',handle:'Primer Ministro Malasia',s:'opp',
+   post:'"Los ataques de EE.UU. e Israel llevan al Medio Oriente al borde de una catástrofe." Llamó a Washington y Teherán a buscar "un camino de diálogo y negociación."',
+   src:'✔ Declaración PM Anwar Ibrahim / El Español liveblog 28 Feb 2026',rt:'44K',lk:'156K',t:'04:10'},
+  {lat:25.2,lng:55.3,f:'🇦🇪',name:'UAE / Bahréin',handle:'Ministerios de Defensa',s:'neu',
+   post:'UAE: "Interceptó segunda oleada de misiles iraníes. Fragmentos cayeron en Abu Dhabi sin heridos." Bahréin: "Ataque a sitios en el reino — violación flagrante de soberanía. Activan planes de emergencia."',
+   src:'✔ Times of Israel · CNN Live 28 Feb 2026',rt:'31K',lk:'94K',t:'04:52'},
+  {lat:25.3,lng:51.5,f:'🇶🇦',name:'Qatar Ministry of Defense',handle:'Qatar MoD / @USEmbassyDoha',s:'med',
+   post:'"Qatar ha frustrado con éxito varios ataques de misiles iraníes contra su territorio." US Embassy Qatar: "Shelter-in-place for all personnel. We recommend all Americans do the same until further notice."',
+   src:'✔ Qatar MoD statement / @USEmbassyDoha tweet verificado / Euronews 28 Feb',rt:'27K',lk:'78K',t:'05:03'},
+  {lat:33.3,lng:44.4,f:'🇮🇶',name:'KRG Iraq',handle:'Fuerzas contraterrorismo kurdas',s:'neu',
+   post:'"Las fuerzas de la coalición interceptaron exitosamente misiles y drones sobre Erbil. Sin bajas ni daños materiales." Iraq central condenó uso de espacio aéreo sin consentimiento.',
+   src:'✔ KRG Counterterrorism statement / Times of Israel liveblog 28 Feb',rt:'19K',lk:'43K',t:'05:18'},
+  {lat:38.9,lng:-77.1,f:'🇺🇸',name:'Sen. Tim Kaine (D-VA)',handle:'@timkaine',s:'opp',
+   post:'"These strikes are a colossal mistake. I pray they do not cost our sons and daughters their lives. These strikes are dangerous, unnecessary, and idiotic. The Senate should vote on my War Powers Resolution to block the use of U.S. forces against Iran."',
+   src:'✔ @timkaine statement / CNN Live updates 28 Feb 2026',rt:'58K',lk:'210K',t:'04:20'},
+  {lat:55.7,lng:37.3,f:'📡',name:'NetBlocks (OSINT)',handle:'@netblocks',s:'neu',
+   post:'"Confirmed: Network data show #Iran is now in the midst of a near-total internet blackout with national connectivity at 4% of ordinary levels. Matches measures used during last year\'s war with Israel."',
+   src:'✔ Tweet real @netblocks / Euronews live citó explícitamente 28 Feb 2026',rt:'41K',lk:'87K',t:'04:05'},
+  {lat:40.8,lng:14.2,f:'📡',name:'OSINTtechnical',handle:'@Osinttechnical',s:'neu',
+   post:'"Civilian air traffic nightmare right now after Israel\'s preemptive missile strike on Iran, with dozens of civilian aircraft in the air both in Iraq and Iran." + USAF C-17 callsign MOOSE evacuando personal.',
+   src:'✔ Tweets reales / Euronews live confirmó 28 Feb 2026',rt:'67K',lk:'134K',t:'02:40'},
+  {lat:49.0,lng:31.0,f:'🌍',name:'Rima Hassan (MEP)',handle:'@RimaHassanFr',s:'opp',
+   post:'MEP francés-palestina Rima Hassan fue de los primeros europeos en condenar los strikes en X. Detenida por Israel en jun 2025 al intentar entrar con Flotilla Madleen. (Jerusalem Post confirmó su post temprano).',
+   src:'✔ @RimaHassanFr / Jerusalem Post 28 Feb 2026',rt:'34K',lk:'122K',t:'02:55'},
+];
+
+const sclass={sup:'s-sup',opp:'s-opp',neu:'s-neu',amb:'s-amb',med:'s-med'};
+const slbl={sup:'✅ APOYA',opp:'❌ CONDENA',neu:'🕊 NEUTRAL',amb:'↔ AMBIGUO',med:'🤝 MEDIACIÓN'};
+const scol={sup:'var(--green)',opp:'var(--red)',neu:'var(--amber)',amb:'var(--blue)',med:'var(--purple)'};
+
+function initWmap(){
+  wmap=L.map('worldmap',{center:[20,10],zoom:2,zoomControl:true,attributionControl:false,minZoom:2,maxZoom:5});
+  window._wmapLayer = L.tileLayer(
+    isDark ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+           : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    {subdomains:'abcd',maxZoom:19}).addTo(wmap);
+  nations.forEach((n,i)=>{
+    const col=scol[n.s];
+    const ico=L.divIcon({html:`<div style="position:relative;width:26px;height:26px;display:flex;align-items:center;justify-content:center">
+      <div style="position:absolute;inset:0;border-radius:50%;border:2px solid ${col};background:${col}22;animation:wp${i%3} 2.5s ease-out infinite"></div>
+      <div style="font-size:15px;position:relative;filter:drop-shadow(0 1px 3px rgba(0,0,0,.8))">${n.f}</div>
+      <style>@keyframes wp${i%3}{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.2);opacity:0}}</style>
+    </div>`,className:'',iconSize:[26,26],iconAnchor:[13,13]});
+    L.marker([n.lat,n.lng],{icon:ico}).addTo(wmap)
+      .bindPopup(`<div class="pu-title">${n.f} ${n.name}</div><div class="pu-body" style="color:${col};font-size:9px;margin-bottom:3px">${slbl[n.s]}</div><div class="pu-body">${n.post.substring(0,160)}…</div><div class="pu-status">${n.handle} · ${n.t}</div>`);
+  });
+  renderX('all');
+  setTimeout(()=>wmap.invalidateSize(),300);
+}
+
+function renderX(filter){
+  const data=filter==='all'?nations:nations.filter(n=>n.s===filter);
+  document.getElementById('xfeed').innerHTML=data.map(n=>`
+    <div class="xpost">
+      <div class="xpost-hdr">
+        <div class="xavatar" style="background:${scol[n.s]}22;border:1px solid ${scol[n.s]}">${n.f}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:4px">
+            <div class="xname">${n.name}</div><span class="xverif">✓</span>
+          </div>
+          <div class="xhandle">${n.handle}</div>
+        </div>
+        <span class="xstance ${sclass[n.s]}">${slbl[n.s]}</span>
+      </div>
+      <div class="xtext">${n.post}<span class="real-src">📰 ${n.src}</span></div>
+      <div class="xmeta">
+        <div class="xreacts"><span>🔁 ${n.rt}</span><span>❤️ ${n.lk}</span></div>
+        <span>${n.t} UTC · 𝕏</span>
+      </div>
+    </div>`).join('');
+}
+function filterX(f){renderX(f);}
+
+// ─── CHAT ───
+let chatOpen=false;
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chatPanel').classList.toggle('open',chatOpen);
+}
+
+const SYS=`Eres un analista estratégico-militar de élite en un Centro de Mando. HOY ES D+5: 04 Marzo 2026. El conflicto EEUU-Israel-Irán está en su peor escalada.
+
+DATOS REALES VERIFICADOS D+5 (04 MAR 2026):
+
+BAJAS Y OPERACIONES:
+- Muertos Irán: 1,045+ (Tasnim/Al Jazeera) · Muertos Israel: 11 · KIA EEUU: 6 · Muertos Golfo: 9
+- Barcos iraníes destruidos: 17+ (CENTCOM) · IRIS Dena hundida hoy en Océano Índico por submarino USA
+- 10ª ola de ataques israelíes: Teherán, Karaj, Isfahan, Qom · Israel también ataca Beirut + invasión terrestre Líbano
+- IRGC: "230 drones en operaciones + operación naval contra barcos USA"
+- Israel bombeó HQ IRIB (emisora estatal) + Palacio Golestan (UNESCO) + Asamblea Expertos (reunida para elegir nuevo líder)
+- Mossad: operación terrestre dentro de Irán (2 Mar, Al Arabiya)
+- 11,000+ vuelos cancelados · 1M+ pasajeros atrapados
+
+GEOPOLÍTICA CLAVE:
+- Trump: guerra durará "~4 semanas", EEUU "sustancialmente adelantado". "Municiones virtualmente ilimitadas. Wars can be fought forever."
+- Trump no descarta tropas terrestres "si necesario". Sugirió "escenario Venezuela" (capturar líder)
+- Rubio: "Los golpes más duros AÚN ESTÁN POR VENIR. Dos fuerzas aéreas más poderosas del mundo."
+- Pentagon: confesó a congresistas que Irán NO planeaba atacar EEUU a menos que Israel atacara primero (CNN)
+- QatarEnergy: paró producción GNL tras ataque en Ras Laffan
+- Bushehr nuclear plant: Rusia advierte explosiones a kilómetros del perímetro
+- NATO/Turquía: destruyó misil iraní en Mediterráneo oriental
+- US Embajadas cerradas: Kuwait, Líbano, Arabia Saudi. Ciudadanos USA: "salgan AHORA" de 15 países
+- Jamie Dimon: espera "ciberataques y ataques terroristas. Los bancos pueden ser objetivos"
+- S&P Global: advierte impacto en finanzas públicas de Israel
+
+ESTRECHO DE ORMUZ (CERRADO):
+- IRGC declaró Ormuz CERRADO. Amenaza incendiar cualquier barco que pase
+- VLCC supertankers: $423,000/día (récord histórico, +94% en un día) · LSEG
+- Tráfico shipping efectivamente detenido · 4 barcos golpeados en aguas del Golfo
+- Pronóstico: $88-89/bbl si termina rápido · $100-120/bbl si prolonga · riesgo premium puede superar modelos
+
+MERCADOS (fuentes verificadas):
+- Brent: $84.18/bbl (+18.84% vs semana, commodity.com) · abrió hoy $81.64
+- WTI: $77.00 · Gas Nat Europa: +38% en día (mayor desde 2022) · Diesel USA: +12%
+- Oro: $5,187 (investing.com D+5 apertura Asia) · cayó -4.8% el martes · "Cash became king" (Reuters)
+- S&P 500: cerró -0.94% martes · Dow: -437pts (48,468) · S&P futuro ↓ miércoles pre-mkt
+- 10Y Treasury yield: 4.107% (desde 3.96% fin feb) — FED corte verano: probabilidad CERO
+- DXY: ~98.54 (+0.95% lunes, borró pérdidas del año) — dólar como refugio
+- Wells Fargo: mantiene objetivo S&P 7,500 fin 2026. Goldman: sectores cíclicos más afectados a corto plazo
+
+Responde en español. Analítico, preciso, usa datos reales. Prioriza implicaciones estratégicas.`;
+
+async function callAI(msgs){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,system:SYS,messages:msgs.slice(-10)})
+  });
+  const d=await r.json();
+  return d.content?.[0]?.text||'Error de sistema.';
+}
+
+function addMsg(txt,usr){
+  const el=document.getElementById('chatMsgs');
+  const d=document.createElement('div');
+  d.className='bubble '+(usr?'bubble-usr':'bubble-ai');
+  d.innerHTML=`<div class="bubble-lbl">${usr?'◆ TÚ':'◆ ANALISTA IA'}</div>${txt}`;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;return d;
+}
+function addTyping(){
+  const el=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='typing';d.id='typ';
+  d.innerHTML='<span style="font-size:8px;font-family:Space Mono;color:var(--purple)">PROCESANDO</span><div class="td"></div><div class="td"></div><div class="td"></div>';
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+
+async function doSend(){
+  const inp=document.getElementById('chatIn');
+  const msg=inp.value.trim();if(!msg)return;
+  inp.value='';document.getElementById('sendBtn').disabled=true;
+  addMsg(msg,true);addTyping();
+  const msgs=[];
+  document.querySelectorAll('.bubble').forEach(b=>{
+    const lbl=b.querySelector('.bubble-lbl')?.textContent;
+    const txt=b.textContent.replace(lbl||'','').trim();
+    if(b.classList.contains('bubble-usr'))msgs.push({role:'user',content:txt});
+    else msgs.push({role:'assistant',content:txt});
+  });
+  try{
+    const r=await callAI(msgs);
+    document.getElementById('typ')?.remove();
+    addMsg(r,false);
+  }catch(e){
+    document.getElementById('typ')?.remove();
+    addMsg('Error de conexión. Reintenta.',false);
+  }
+  document.getElementById('sendBtn').disabled=false;
+  document.getElementById('chatIn').focus();
+}
+function qsend(q){document.getElementById('chatIn').value=q;doSend();}
+</script>
+<!-- FOOTER CREDIT -->
+<div style="
+  flex-shrink:0;
+  background:var(--bg3);
+  border-top:1px solid var(--bdr);
+  padding:5px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:6px;
+">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <span style="font-family:'Space Mono';font-size:9px;color:var(--t2);letter-spacing:1px">BUILT BY</span>
+    <a href="https://x.com/nelson_ad" target="_blank" style="font-family:'Space Mono';font-size:11px;font-weight:700;color:var(--t1);text-decoration:none;letter-spacing:.5px;display:flex;align-items:center;gap:4px;">
+      <span style="font-size:12px">𝕏</span> @nelson_ad
+    </a>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="font-family:'Space Mono';font-size:8px;color:var(--t2)">All data from verified public sources · Al Jazeera · CNBC · Reuters · CENTCOM · Wikipedia</span>
+    <span style="font-family:'Space Mono';font-size:8px;padding:2px 8px;border:1px solid var(--bdr);color:var(--t2);background:var(--bg2);">v10 · 04 MAR 2026</span>
+  </div>
+</div>
+
+</body>
+</html>
