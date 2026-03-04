@@ -12,8 +12,8 @@ Just open `index.html` in a browser. No build step, no dependencies.
 
 ### 1. Google Analytics 4
 1. Create GA4 property at [analytics.google.com](https://analytics.google.com)
-2. Get Measurement ID (format: `G-XXXXXXXXXX`)
-3. Replace `G-XXXXXXXXXX` in both `index.html` and `landing.html`
+2. Get Measurement ID (format: `G-H7FQVKS66V`)
+3. Replace `G-H7FQVKS66V` in both `index.html` and `landing.html`
 
 **Events tracked:**
 | Event | Trigger |
@@ -30,9 +30,8 @@ Just open `index.html` in a browser. No build step, no dependencies.
 | `waitlist_signup` | Email submitted on landing page |
 
 ### 2. Formspree (Waitlist)
-1. Create account at [formspree.io](https://formspree.io)
-2. Create new form → get form ID
-3. Replace `FORM_ID` in `landing.html` form action URL
+- Form ID: `xlgwqygo` (already configured in `landing.html`)
+- Dashboard: [formspree.io/forms](https://formspree.io/forms)
 
 ### 3. Cloudflare Workers (Real Market Data)
 ```bash
