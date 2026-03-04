@@ -1,11 +1,6 @@
 {
-  "framework": null,
-  "buildCommand": "",
-  "outputDirectory": ".",
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/landing", "destination": "/landing.html" },
-    { "source": "/embed", "destination": "/embed.html" },
-    { "source": "/pricing", "destination": "/pricing.html" },
     { "source": "/conflicts/:slug", "destination": "/conflicts/:slug.html" }
   ],
   "headers": [
