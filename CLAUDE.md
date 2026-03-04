@@ -78,6 +78,14 @@ When Nelson gives new data, update these in order:
 7. AI chat system prompt — update all figures and add new developments
 8. Footer version badge and date
 9. All i18n translations in LANGS{} for any new UI text
+10. Intelligence analysis panels — update static baselines if new verified data changes assessments
+11. **AUDIT VERIFICATION**: Before finalizing any update, cross-check all factual claims:
+    - Every stat must have a named source (CENTCOM, LSEG, Reuters, etc.)
+    - No unverified percentages (e.g. "~80% interception" without source)
+    - Country stances in BOP panel must match X world positions panel
+    - Kahn scenario probabilities must match Scenarios panel probabilities
+    - No analyst opinions attributed as fact (Wells Fargo targets, Goldman predictions) unless sourced
+    - Remove or soften any claim that cannot be traced to a verified report
 
 ## VERCEL DEPLOY
 - No vercel.json needed — auto-detects static
