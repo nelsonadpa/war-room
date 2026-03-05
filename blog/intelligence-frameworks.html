@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Intelligence Frameworks Explained: PMESII-PT, Red/Blue Team, and COA | War Room</title>
+<meta name="description" content="How military intelligence frameworks — PMESII-PT, Red/Blue Team Analysis, and Courses of Action — power War Room's real-time conflict analysis.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>">
+<link rel="canonical" href="https://war-room.live/blog/intelligence-frameworks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Intelligence Frameworks Explained: PMESII-PT, Red/Blue Team, and COA">
+<meta property="og:description" content="How military intelligence frameworks power War Room's real-time conflict analysis.">
+<meta property="og:url" content="https://war-room.live/blog/intelligence-frameworks">
+<meta property="og:site_name" content="War Room">
+<meta property="og:image" content="https://war-room.live/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Intelligence Frameworks Explained: PMESII-PT, Red/Blue Team, and COA">
+<meta name="twitter:description" content="How military intelligence frameworks power War Room's real-time conflict analysis.">
+<meta name="twitter:image" content="https://war-room.live/og-image.svg">
+<meta name="twitter:site" content="@nelson_ad">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Intelligence Frameworks Explained: PMESII-PT, Red/Blue Team, and COA",
+  "description": "How military intelligence frameworks — PMESII-PT, Red/Blue Team Analysis, and Courses of Action — power War Room's real-time conflict analysis.",
+  "datePublished": "2026-03-05",
+  "author": { "@type": "Person", "name": "Nelson Perez" },
+  "publisher": { "@type": "Organization", "name": "War Room", "url": "https://war-room.live" },
+  "mainEntityOfPage": "https://war-room.live/blog/intelligence-frameworks"
+}
+</script>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H7FQVKS66V"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-H7FQVKS66V');</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#040810;--bg2:#080f1c;--bg3:#0b1525;--t1:#e0e6ed;--t2:#8899aa;--red:#ef4444;--green:#22c55e;--amber:#f59e0b;--blue:#3b82f6;}
+body{background:var(--bg);color:var(--t1);font-family:'Barlow Condensed',sans-serif;line-height:1.7;}
+.container{max-width:800px;margin:0 auto;padding:2rem 1rem;}
+nav{display:flex;align-items:center;gap:12px;padding:1rem;border-bottom:1px solid rgba(255,255,255,.08);}
+nav a{color:var(--red);text-decoration:none;font-weight:900;font-size:18px;letter-spacing:1px;}
+nav .back{color:var(--t2);font-size:13px;}
+.hero-banner{background:linear-gradient(180deg,rgba(239,68,68,.08) 0%,transparent 100%);padding:3rem 0 2rem;text-align:center;border-bottom:2px solid var(--red);}
+h1{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;letter-spacing:-0.5px;line-height:1.15;margin-bottom:0.5rem;}
+h1 span{color:var(--red);}
+.meta{font-size:13px;color:var(--t2);margin-bottom:1.5rem;}
+h2{font-size:1.4rem;font-weight:700;color:var(--t1);margin:2.5rem 0 1rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,.08);}
+h3{font-size:1.1rem;color:var(--amber);margin:1.5rem 0 0.5rem;}
+p{font-size:17px;color:var(--t2);margin-bottom:1rem;line-height:1.7;}
+ul,ol{font-size:17px;color:var(--t2);margin-bottom:1rem;padding-left:1.5rem;}
+li{margin-bottom:0.5rem;}
+.tag{display:inline-block;font-family:'Space Mono',monospace;font-size:10px;padding:2px 8px;border:1px solid var(--blue);color:var(--blue);letter-spacing:1px;margin-bottom:1rem;}
+.framework-box{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:1.5rem;margin:1.5rem 0;}
+.framework-box h3{margin-top:0;}
+.cta-box{background:var(--bg2);border:2px solid var(--red);border-radius:6px;padding:2rem;text-align:center;margin:3rem 0;}
+.cta-box h3{color:var(--t1);margin-top:0;}
+.cta-btn{display:inline-block;background:var(--red);color:#fff;padding:12px 32px;font-weight:700;font-size:16px;text-decoration:none;border-radius:4px;margin-top:1rem;text-transform:uppercase;letter-spacing:1px;}
+.cta-btn:hover{background:#dc2626;}
+.related{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.08);}
+.related h3{color:var(--t1);}
+.related a{color:var(--red);text-decoration:none;display:block;padding:0.5rem 0;font-size:15px;}
+.related a:hover{text-decoration:underline;}
+.footer{text-align:center;padding:2rem;font-size:12px;color:var(--t2);border-top:1px solid rgba(255,255,255,.05);margin-top:3rem;}
+.footer a{color:var(--t2);text-decoration:none;}
+@media(max-width:600px){.container{padding:1.5rem 1rem;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/">⬡ WAR ROOM</a>
+  <a href="/blog" class="back">&larr; Blog</a>
+</nav>
+
+<div class="hero-banner">
+  <div class="container">
+    <span class="tag">FRAMEWORK</span>
+    <h1>Intelligence Frameworks <span>Explained</span></h1>
+    <p style="font-size:1.1rem;color:var(--t2);margin-bottom:0;">PMESII-PT, Red/Blue Team Analysis, and Courses of Action</p>
+    <p class="meta">March 5, 2026 &middot; 5 min read</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <h2>Why Intelligence Frameworks Matter</h2>
+  <p>Military and intelligence professionals don't analyze conflicts through gut feeling. They use structured analytical frameworks developed over decades of wargaming, operational planning, and post-action review. These frameworks exist because human cognition is riddled with bias: we anchor on first impressions, mirror-image adversaries, and miss second-order effects.</p>
+  <p>War Room brings three of these frameworks to the public in real-time, applied to live conflict data. Each framework attacks a different analytical blind spot. Together, they provide the kind of structured thinking that was previously locked inside classified briefing rooms.</p>
+
+  <h2>PMESII-PT Analysis</h2>
+  <div class="framework-box">
+    <h3>What It Stands For</h3>
+    <p><strong style="color:var(--t1)">P</strong>olitical, <strong style="color:var(--t1)">M</strong>ilitary, <strong style="color:var(--t1)">E</strong>conomic, <strong style="color:var(--t1)">S</strong>ocial, <strong style="color:var(--t1)">I</strong>nfrastructure, <strong style="color:var(--t1)">I</strong>nformation, <strong style="color:var(--t1)">P</strong>hysical Environment, <strong style="color:var(--t1)">T</strong>ime.</p>
+    <h3>Origin</h3>
+    <p>Developed by US Joint Forces Command (USJFCOM), PMESII-PT is the standard operational environment assessment framework used across NATO military planning. It ensures analysts examine all dimensions of a conflict rather than fixating on the kinetic military picture alone.</p>
+    <h3>How It Works</h3>
+    <p>Each dimension gets assessed independently, then cross-referenced for interactions. The power lies in revealing second-order effects that single-variable analysis misses entirely. A military strike doesn't just have military consequences — it ripples through economics, infrastructure, social cohesion, and information environments simultaneously.</p>
+    <h3>War Room Application</h3>
+    <p>Our PMESII-PT panel assesses each dimension for the Iran conflict with verified data. The Economic dimension shows VLCC supertanker rates at $423K/day — an all-time record (LSEG) — revealing the true impact of the Hormuz Strait closure on global shipping. The Infrastructure dimension tracks 11,000+ cancelled flights, showing disruption extending far beyond the theater of operations. Each data point is sourced, not speculated.</p>
+  </div>
+
+  <h2>Red Team / Blue Team Analysis</h2>
+  <div class="framework-box">
+    <h3>Origin</h3>
+    <p>Red/Blue teaming traces back to Prussian military wargaming (Kriegsspiel) and became doctrine through Cold War-era exercises. Today it's standard practice across intelligence agencies, military planning staffs, and cybersecurity operations.</p>
+    <h3>How It Works</h3>
+    <p><strong style="color:var(--red)">Red Team</strong> = adversary perspective. Analysts deliberately adopt the adversary's worldview, doctrine, capabilities, and constraints. <strong style="color:var(--blue)">Blue Team</strong> = friendly forces perspective. The key insight: by forcing analysts to argue each side's position, you prevent mirror-imaging — the dangerous cognitive bias of assuming the adversary thinks, plans, and values the same things you do.</p>
+    <h3>War Room Application</h3>
+    <p>Our Red/Blue panel presents both perspectives simultaneously. The Red perspective covers IRGC doctrine, proxy network capabilities across Lebanon, Iraq, and Yemen, and asymmetric warfare options including Hormuz mining and anti-ship missile tactics. The Blue perspective covers coalition force posture, air campaign objectives, naval force protection, and intelligence advantages. Seeing both sides at once is how professionals avoid strategic surprise.</p>
+  </div>
+
+  <h2>Courses of Action (COA) Matrix</h2>
+  <div class="framework-box">
+    <h3>Origin</h3>
+    <p>The COA analysis comes from the US Army's Military Decision-Making Process (MDMP), the structured methodology that turns commander's intent into executable plans. It has been adopted and adapted by every NATO member's planning doctrine.</p>
+    <h3>How It Works</h3>
+    <p>Analysts list every plausible course of action for each party in a conflict. Each COA gets assessed for feasibility (can they do it?), acceptability (will they accept the costs?), and distinguishing factors (what makes this COA different from others?). The output identifies the <strong style="color:var(--t1)">Most Likely COA</strong> and the <strong style="color:var(--red)">Most Dangerous COA</strong> — two very different things that demand very different preparations.</p>
+    <h3>War Room Application</h3>
+    <p>Our COA panel maps Iran's options — escalate Hormuz closure, activate all proxy networks simultaneously, seek negotiation through China or Turkey, or launch asymmetric attacks on global shipping lanes — against US/Israel options including sustained air campaign, ground force expansion, negotiated cease-fire, or continued targeted leadership strikes. Each COA carries probability and risk assessments updated with incoming data.</p>
+  </div>
+
+  <h2>How War Room Applies These in Real-Time</h2>
+  <p>All three frameworks update as new verified events come in. When CENTCOM confirms a strike or LSEG reports a market move, the relevant framework dimensions get reassessed. This isn't a static report published weekly — it's living analysis.</p>
+  <p>The AI chat built into War Room has full context from all three panels. Ask the AI about any framework dimension and get analysis grounded in the latest verified data, not training data from months ago. It's the difference between reading yesterday's newspaper and sitting in the briefing room.</p>
+
+  <div class="cta-box">
+    <h3>See These Frameworks Live</h3>
+    <p>All three intelligence panels are running now on the War Room dashboard with real-time data from the Iran-USA-Israel conflict.</p>
+    <a href="/" class="cta-btn">Open War Room Dashboard</a>
+  </div>
+
+  <div class="related">
+    <h3>Related Articles</h3>
+    <a href="/blog/kahn-escalation-scale">Understanding the Kahn Escalation Scale &rarr;</a>
+    <a href="/blog/how-war-room-works">How War Room Works &rarr;</a>
+    <a href="/blog/source-methodology">Our Source Methodology &rarr;</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  BUILT BY <a href="https://x.com/nelson_ad" target="_blank">&#x1D54F; @nelson_ad</a> &middot; <a href="/">war-room.live</a>
+</div>
+
+</body>
+</html>
